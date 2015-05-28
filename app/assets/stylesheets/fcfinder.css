@@ -1,0 +1,80 @@
+* {outline: none;}
+html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 100%;}
+#fcfinder { background: #dddddd; max-width: 100%; height: 100%; }
+#fcfinder .left { height:94%; border: 1px solid #c0c0c0; background: #f0f0f0; width: 25%; min-width: 135px; margin:5px 0 0 5px; border-radius: 5px; float: left; overflow: auto; }
+#fcfinder .left #all_folders { width: 100%; display: flex;}
+#fcfinder .right {  height:94%; margin: 5px 0px 0px 0px; float: left; }
+#fcfinder .right ul.widget  {height:35px; width: 99%; margin:4px 0px 0px 0px; padding:0px 0px 0px 5px; font-size: 15px; }
+#fcfinder .right ul.widget li { float: left; list-style: none; margin-right:10px;   }
+#fcfinder .right ul.widget li a{
+    border-radius: 32px; width:32px; height: 32px; display: block; font-size: 0%;
+    position:relative;
+    overflow:hidden;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    z-index:0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+}
+.ink {display: block;  position: absolute;background:rgba(255, 255, 255, 0.3);border-radius: 100%;-webkit-transform:scale(0);-moz-transform:scale(0);-o-transform:scale(0);transform:scale(0);}
+.animate {-webkit-animation:ripple 0.65s linear;-moz-animation:ripple 0.65s linear;-ms-animation:ripple 0.65s linear;-o-animation:ripple 0.65s linear;animation:ripple 0.65s linear;}
+@-webkit-keyframes ripple {100% {opacity: 0; -webkit-transform: scale(2.5);}}
+@-moz-keyframes ripple {100% {opacity: 0; -moz-transform: scale(2.5);}}
+@-o-keyframes ripple {100% {opacity: 0; -o-transform: scale(2.5);}}
+@keyframes ripple {100% {opacity: 0; transform: scale(2.5);}}
+
+
+/*#fcfinder .right ul.widget li a:hover { border-radius: 5px; border: 1px solid #ccc;}*/
+
+#fcfinder .right ul.widget li a.upload { background: url("./fcfinder/upload.png"); }
+#fcfinder .right ul.widget li a.refresh { background: url("./fcfinder/refresh.png"); }
+#fcfinder .right ul.widget li a.settings { background: url("./fcfinder/settings.png"); }
+
+
+/*#fcfinder .right .widget  {height:35px; border: 1px solid #c0c0c0; background: #f0f0f0; width: 99%; margin:0px 0px 0 5px; border-radius: 5px;}*/
+#fcfinder .right .wrapper {height:2%; border: 1px solid #c0c0c0; background: #f0f0f0; margin:5px 0px 0 5px; border-radius: 5px;}
+#fcfinder .bottom { position: fixed;left: 10px;font-size: 13px;color: #555;bottom: 5px;  }
+#fcfinder .left ul.folders { list-style: none; margin:10px 10px; padding: 0px; font-size: 14px; }
+#fcfinder .left ul.folders li ul.folders { margin-top:4px; margin-left:20px; margin-bottom: 0px;}
+#fcfinder .left ul.folders li { margin:1px 0px;}
+#fcfinder .left ul.folders li a { text-decoration: none; color: #555; display: flex;}
+
+
+
+#fcfinder .left ul.folders li a span.braca {width: 16px; height: 16px; padding:3px 0px 0px 0px; float: left;}
+#fcfinder .left ul.folders li a span.braca.closed { background: url("./fcfinder/tree/plus.png") no-repeat left center;}
+#fcfinder .left ul.folders li a span.braca.opened {background: url("./fcfinder/tree/minus.png") no-repeat left center;}
+
+#fcfinder .left ul.folders li a span.folder {border:1px solid transparent;  background: url("./fcfinder/tree/folder.png") no-repeat 2px center; padding:1px 10px 2px 22px; margin-left: 2px;
+    position:relative;
+    overflow:hidden;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    z-index:0;
+}
+
+
+
+
+
+#fcfinder .left ul.folders li a:hover{ color:#fff;}
+#fcfinder .left ul.folders li a:hover span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #ccc; border: 1px solid #999;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;}
+
+#fcfinder .left ul.folders li a.active{ color:#fff;}
+#fcfinder .left ul.folders li a.active span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #1e92cc; border: 1px solid #216dcc;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;}
+
+#fcfinder .upload_field {cursor: pointer;}
+#fcfinder span.load {background: url("./fcfinder/tree/loader.gif"); float: left;width: 16px; height: 16px;}
+#fcfinder span.folder_load {background: url("./fcfinder/tree/loader.gif") no-repeat; display:block; min-height: 16px; margin: 7px 0px 0px 37px; padding-left: 18px; color: #000;}
+
+#fcfinder .clear { clear: both; width: 100%; height:0px;}
+
