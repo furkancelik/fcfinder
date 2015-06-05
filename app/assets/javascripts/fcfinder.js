@@ -605,6 +605,52 @@
         });
 
 
+        //rename
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.rename",function(){
+            if (!$(this).hasClass("passive")){
+                var file = fcfinder.find(".right ul.wrapper li div.active");
+
+                file.children("span.file_name").html('<form id="file_rename"><input type="text" name="fcfinder[file_name]" value="'+file.children("span.file_name").html()+'" /><input type="hidden" name="fcfinder[type]" value="file_rename"/> <input type="hidden" name="fcfinder[path]" value="'+file.attr("data-path")+'"></form>');
+                //#TODO:select uzantı ayarını yap!
+                file.find("span.file_name form input[name='fcfinder[file_name]']").select();
+
+                //var data = "fcfinder[type]=duplicate&fcfinder[file_path]="+file_path;
+                //$.ajax({
+                //    url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
+                //        console.log(data);
+                //        if (data[0]=="true")
+                //        {
+                //            fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                //        }else
+                //        {
+                //            //Kopyası Oluşmadı
+                //            alert("Bir Hata Meydana Geldi ve Seçtiğiniz Dosyanın Kopyası Oluşturulamadı");
+                //        }
+                //    }});
+
+            }
+            return false;
+        });
+
+
+        //file_rename
+        $("body").on("submit",fcfinder_selector+" #file_rename",function(){
+            var data = $(this).serialize();
+            $.ajax({
+                url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
+                    if (data[0]=="true"){
+                        fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                    }else {
+                        //Bir hata meydana geldi adı değiştirilemedi
+                        alert("Bir Hata Meydana Geldi Dosya Adı Değiştirilemedi");
+                    }
+                }});
+            return false;
+        });
+
+
+
+
         //ESC key press controll
         $(document).keyup(function(e) {
 

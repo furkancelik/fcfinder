@@ -88,7 +88,6 @@ module Fcfinder
             end
 
           when "duplicate"
-
             file_path = get_path(fc_params[:file_path]).chomp("/")
             extension = (file_path.split("/").last.split(".").size>1) ? "."+file_path.split("/").last.split(".").last : ""
             file_name = file_path.split("/").last.chomp(extension)
@@ -108,6 +107,18 @@ module Fcfinder
             else
               FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
               @run = ["true"].to_json
+            end
+          when "file_rename"
+            p get_path(fc_params[:path])
+            p File.exist?(get_path(fc_params[:path]))
+            if (File.exist?(get_path(fc_params[:path])))
+              folder_name = get_path(fc_params[:path]).chomp(get_path(fc_params[:path]).split("/").last).chomp("/")
+              #TODO:if koy!
+              FileUtils.mv(get_path(fc_params[:path]),folder_name+"/"+fc_params[:file_name])
+              @run = ["true"].to_json
+            else
+              #return false Dosya Yok!
+              @run = ["false"].to_json
             end
 
 
