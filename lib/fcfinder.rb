@@ -88,14 +88,13 @@ module Fcfinder
             end
 
           when "duplicate"
+
             file_path = get_path(fc_params[:file_path]).chomp("/")
             extension = (file_path.split("/").last.split(".").size>1) ? "."+file_path.split("/").last.split(".").last : ""
             file_name = file_path.split("/").last.chomp(extension)
             folder_name = file_path.chomp(file_path.split("/").last).chomp("/")
 
             reg_file = "#{file_name}".match(/(.+?) copy ([0-9])/i);
-            p reg_file
-            p reg_file[1]+"."
             unless (reg_file.nil?)
               #"file_name copy 1" şeklinde bir dosya adı var
               j = Dir.glob("#{folder_name}/#{reg_file[1]} copy *#{extension}").last.match(/#{reg_file[1]} copy ([0-9])#{extension}/)[1].to_i + 1
@@ -109,8 +108,6 @@ module Fcfinder
               @run = ["true"].to_json
             end
           when "file_rename"
-            p get_path(fc_params[:path])
-            p File.exist?(get_path(fc_params[:path]))
             if (File.exist?(get_path(fc_params[:path])))
               folder_name = get_path(fc_params[:path]).chomp(get_path(fc_params[:path]).split("/").last).chomp("/")
               #TODO:if koy!
@@ -121,11 +118,15 @@ module Fcfinder
               @run = ["false"].to_json
             end
           when "delete"
+            p "***-*-*-*-*-*-*-*-*-*"
+            p get_path(fc_params[:file_path])
+            p fc_params[:file_path]
             if (File.exist?(get_path(fc_params[:file_path])))
               #TODO:if koy!
               FileUtils.rm_rf(get_path(fc_params[:file_path]))
               @run = ["true"].to_json
             else
+              p "===>=>=>=>==>=>=>=>=>=>=>="
               #return false Dosya Yok!
               @run = ["false"].to_json
             end

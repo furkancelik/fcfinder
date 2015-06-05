@@ -647,6 +647,8 @@
             if (!$(this).hasClass("passive")){
                 var file = fcfinder.find(".right ul.wrapper li div.active");
                 var file_path = file.attr("data-path");
+                if (fcfinder.find("form#delete_file_form").size()>0){fcfinder.find("form#delete_file_form").remove();}
+                fcfinder.append('<form id="delete_file_form"><input name="file_path" value="'+file_path+'" type="hidden" /></form>');
 
                 $(fcfinder_selector).prepend('<div class="dialog-scope"></div>' +
                 '<div style="display: none;" class="dialog"><h1>'+file.attr("data-name")+' Sil</h1>' +
@@ -656,27 +658,25 @@
                 '</div>');
                 fcfinder.find(".dialog").fadeIn(300);
                 fcfinder.find(".dialog").ortala();
-
-                $("body").on("click",fcfinder_selector+" .dialog a.file_delete",function(){
-                    fcfinder.find(".dialog a.close").trigger("click");
-                    var data = "fcfinder[type]=delete&fcfinder[file_path]="+file_path;
-                    $.ajax({
-                        url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
-                            if (data[0]=="true"){
-                                fcfinder.find(".right ul.widget li a.refresh").trigger("click");
-                            }else {
-                                //Dosya Yok
-                                alert("Silmeye Çalıştığınız Dosyaya Erişilemiyor.");
-                            }
-                        }});
-                    return false;
-                });
-
-
             }
             return false;
         });
 
+        $("body").on("click",fcfinder_selector+" .dialog a.file_delete",function(){
+            var file_path = fcfinder.find("form#delete_file_form input[name='file_path']").val();
+            var data = "fcfinder[type]=delete&fcfinder[file_path]="+file_path;
+            fcfinder.find(".dialog a.close").trigger("click");
+            $.ajax({
+                url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
+                    if (data[0]=="true"){
+                        fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                    }else {
+                        //Dosya Yok
+                        alert("Silmeye Çalıştığınız Dosyaya Erişilemiyor.");
+                    }
+                }});
+            return false;
+        });
 
 
 
