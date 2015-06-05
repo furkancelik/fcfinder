@@ -618,7 +618,7 @@
         });
 
 
-        //file_rename
+        //file_rename form submit
         $("body").on("submit",fcfinder_selector+" #file_rename",function(){
             var data = $(this).serialize();
             $.ajax({
@@ -630,6 +630,16 @@
                         alert("Bir Hata Meydana Geldi Dosya Adı Değiştirilemedi");
                     }
                 }});
+            return false;
+        });
+
+
+        //edit
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.edit ",function(){
+            if (!$(this).hasClass("passive")){
+                //#TODO:Geliştirme Yapılacak
+                window.open("http://apps.pixlr.com/editor/");
+            }
             return false;
         });
 
