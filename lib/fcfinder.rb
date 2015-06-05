@@ -26,7 +26,7 @@ module Fcfinder
             create_file_path = File.join(get_path(fc_params[:path]),fc_params[:directory_name])
             unless File.exist?(create_file_path)
               if Dir.mkdir(create_file_path)
-                @run = ["true",{:top_dir => fc_params[:path], :name => fc_params[:directory_name], :url => set_path(create_file_path), :sub_dir => false, :size => format_mb(directory_size(create_file_path)), :ctime => File.ctime(create_file_path).strftime("%d/%m/%Y %H:%M"), :path => set_path(create_file_path) }].to_json
+                @run = ["true",{:top_dir => fc_params[:path], :name => fc_params[:directory_name], :url => set_path(create_file_path), :sub_dir => false, :size_2=>directory_size(create_file_path), :size => format_mb(directory_size(create_file_path)), :ctime => File.ctime(create_file_path).strftime("%d/%m/%Y %H:%M"), :path => set_path(create_file_path) }].to_json
               else
                 #0 => Herhangibir Hata var Dosya Oluşmadı
                 @run = ["false","0"].to_json
@@ -126,7 +126,6 @@ module Fcfinder
               FileUtils.rm_rf(get_path(fc_params[:file_path]))
               @run = ["true"].to_json
             else
-              p "===>=>=>=>==>=>=>=>=>=>=>="
               #return false Dosya Yok!
               @run = ["false"].to_json
             end
@@ -148,14 +147,14 @@ module Fcfinder
       Dir.glob(files_url).each do |file|
         if File.directory?(file)
           @main_file[:sub_dir] = true if @main_file[:sub_dir].nil?
-          all_dir[file.split("/").last] = {:file=>file, :path => set_path(file),:url => get_url(set_path(file)), :sub_dir => false, :size => format_mb(directory_size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M"), :path => set_path(file), :type => "directory" }
+          all_dir[file.split("/").last] = {:file=>file, :path => set_path(file),:url => get_url(set_path(file)), :sub_dir => false, :size_2 => directory_size(file), :size => format_mb(directory_size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M"), :path => set_path(file), :type => "directory" }
           Dir.glob(file+"/*").each do |sub_dir|
             if File.directory?(sub_dir)
               all_dir[file.split("/").last][:sub_dir] = true
             end
           end
         else
-          all_file[file.split("/").last] = {:file=>file, :path => set_path(file), :url => get_url(set_path(file)), :type => set_type(MIME::Types.type_for(file).first.content_type), :size => format_mb(File.size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M")}
+          all_file[file.split("/").last] = {:file=>file, :path => set_path(file), :url => get_url(set_path(file)), :type => set_type(MIME::Types.type_for(file).first.content_type), :size_2 => File.size(file), :size => format_mb(File.size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M")}
         end
       end
       { :directory => all_dir, :file => all_file }
@@ -190,9 +189,7 @@ module Fcfinder
 
     def directory_size(path)
       path << '/' unless path.end_with?('/')
-
       raise RuntimeError, "#{path} is not a directory" unless File.directory?(path)
-
       total_size = 0
       Dir["#{path}**/*"].each do |f|
         total_size += File.size(f) if File.file?(f) && File.size?(f)

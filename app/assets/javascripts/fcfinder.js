@@ -166,7 +166,7 @@
 
 
                 $.each(data.directory,function(key,val){
-                    ul_wrapper.find(".file_wrapper:first").append("<div data-path=\""+val.path+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-date=\""+val.ctime+"\" data-kind=\""+val.type+"\"  class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
+                    ul_wrapper.find(".file_wrapper:first").append("<div data-path=\""+val.path+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-size_2=\""+val.size_2+"\" data-date=\""+val.ctime+"\" data-kind=\""+val.type+"\"  class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
 
 
                     var ths_cls = val.sub_dir? " closed " : "";
@@ -244,7 +244,7 @@
 
                         if (ul_wrapper.find(".file_wrapper:last").html()!=""){ul_wrapper.find(".file_wrapper:last").html("");}
                         $.each(data.directory,function(key,val){
-                            ul_wrapper.find(".file_wrapper:last").append("<div data-path=\""+val.path+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-kind=\""+val.type+"\" data-date=\""+val.ctime+"\" class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
+                            ul_wrapper.find(".file_wrapper:last").append("<div data-path=\""+val.path+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-size_2=\""+val.size_2+"\" data-kind=\""+val.type+"\" data-date=\""+val.ctime+"\" class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
                         });
 
                         appendFiles(data);
@@ -357,7 +357,7 @@
             var dir = fcfinder.find(".right ul.wrapper li[data-show='true']");
             if (dir.html()==empty_dir){dir.html("");}
             fcfinder.find(".right ul.wrapper li div").removeClass("active");
-            dir.prepend('<div data-new="new_folder" data-path="" data-name="" data-size="0" data-date="" data-kind="directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>');
+            dir.prepend('<div data-new="new_folder" data-path="" data-name="" data-size="0" data-size_2="0" data-date="" data-kind="directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>');
             dir.find("input").select();
 
             return false;
@@ -386,7 +386,7 @@
                             "<span class=\"folder\">"+key+"</span>"+
                             "</a></li>");
 
-                            right_wrapper.append("<div data-path=\""+val.path+"\" data-kind=\""+val.type+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-date=\""+val.ctime+"\" class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
+                            right_wrapper.append("<div data-path=\""+val.path+"\" data-kind=\""+val.type+"\" data-name=\""+key+"\" data-size=\""+val.size+"\" data-size_2=\""+val.size_2+"\" data-date=\""+val.ctime+"\" class=\"directory\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
                         });
 
                         appendFiles(data,right_wrapper);
@@ -662,6 +662,7 @@
             return false;
         });
 
+        //dialog ok delete file
         $("body").on("click",fcfinder_selector+" .dialog a.file_delete",function(){
             var file_path = fcfinder.find("form#delete_file_form input[name='file_path']").val();
             var data = "fcfinder[type]=delete&fcfinder[file_path]="+file_path;
@@ -679,6 +680,138 @@
         });
 
 
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.sort",function(){ return false; });
+
+        //name_sorter
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.name_sorter",function(){
+            if (!$(this).hasClass("passive")){
+                var $ul = fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']"),
+                    $li = $ul.find("div");
+                if (!$(this).hasClass("z_a"))
+                {
+                    $li.sort(function(a,b){
+                        var an = a.getAttribute('data-name'),
+                            bn = b.getAttribute('data-name');
+                        if(an > bn) { return 1;}
+                        if(an < bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("a_z").addClass("z_a");
+                }else {
+                    $li.sort(function(a,b){
+                        var an = a.getAttribute('data-name'),
+                            bn = b.getAttribute('data-name');
+                        if(an < bn) { return 1;}
+                        if(an > bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("z_a").addClass("a_z");
+                }
+            }
+            return false;
+        });
+
+
+
+        //size_sorter
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.size_sorter",function(){
+            if (!$(this).hasClass("passive")){
+                var $ul = fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']"),
+                    $li = $ul.find("div");
+                if (!$(this).hasClass("z_a"))
+                {
+                    $li.sort(function(a,b){
+                        var an = parseInt(a.getAttribute('data-size_2')),
+                            bn = parseInt(b.getAttribute('data-size_2'));
+                        if(an > bn) { return 1;}
+                        if(an < bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("a_z").addClass("z_a");
+                }else {
+                    $li.sort(function(a,b){
+                        var an = parseInt(a.getAttribute('data-size_2')),
+                            bn = parseInt(b.getAttribute('data-size_2'));
+                        if(an < bn) { return 1;}
+                        if(an > bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("z_a").addClass("a_z");
+                }
+            }
+            return false;
+        });
+
+        function toDate(date){
+            var a = date.split("/");
+            return Date.parse(a[1]+"/"+a[0]+"/"+a[2]);
+        }
+
+        //date_sorter
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.date_sorter",function(){
+            if (!$(this).hasClass("passive")){
+                var $ul = fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']"),
+                    $li = $ul.find("div");
+                if (!$(this).hasClass("z_a"))
+                {
+                    $li.sort(function(a,b){
+                        var an = toDate(a.getAttribute('data-date')),
+                            bn = toDate(b.getAttribute('data-date'));
+                        if(an > bn) { return 1;}
+                        if(an < bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("a_z").addClass("z_a");
+                }else {
+                    $li.sort(function(a,b){
+                        var an = toDate(a.getAttribute('data-date')),
+                            bn = toDate(b.getAttribute('data-date'));
+                        if(an < bn) { return 1;}
+                        if(an > bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("z_a").addClass("a_z");
+                }
+            }
+            return false;
+        });
+
+        //kind_sorter
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.kind_sorter",function(){
+            if (!$(this).hasClass("passive")){
+                var $ul = fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']"),
+                    $li = $ul.find("div");
+                if (!$(this).hasClass("z_a"))
+                {
+                    $li.sort(function(a,b){
+                        var an = a.getAttribute('data-kind'),
+                            bn = b.getAttribute('data-kind');
+                        if(an > bn) { return 1;}
+                        if(an < bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("a_z").addClass("z_a");
+                }else {
+                    $li.sort(function(a,b){
+                        var an = a.getAttribute('data-kind'),
+                            bn = b.getAttribute('data-kind');
+                        if(an < bn) { return 1;}
+                        if(an > bn) {return -1;}
+                        return 0;
+                    });
+                    $li.detach().appendTo($ul);
+                    $(this).removeClass("z_a").addClass("a_z");
+                }
+            }
+            return false;
+        });
 
 
 
@@ -687,12 +820,17 @@
 
         //ESC key press controll
         $(document).keyup(function(e) {
-
+            //ESC Press
             if (e.keyCode == 27) {
                 if (fcfinder.find(".dialog").size() > 0 || fcfinder.find(".dialog-scope").size() > 0)
                 {
                     fcfinder.find(".dialog").fadeOut(300, function(){ fcfinder.find(".dialog-scope , .dialog").remove(); });
                 }
+            }
+            //F2 Press
+            if(e.which == 113) {
+                //
+                return false;
             }
         });
 
@@ -755,7 +893,7 @@
                 url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
                     console.log(data);
                     if (data[0]=="true"){
-                        directory_div.removeAttr("data-new").attr("data-path",data[1].path).attr("data-name",data[1].name).attr("data-size",data[1].size).attr("data-date",data[1].ctime);
+                        directory_div.removeAttr("data-new").attr("data-path",data[1].path).attr("data-name",data[1].name).attr("data-size",data[1].size).attr("data-size_2",data[1].size_2).attr("data-date",data[1].ctime);
                         directory_div.children("span.file_name").html(data[1].name);
                         directory_div.children("span.file_size").html(data[1].size);
                         directory_div.children("span.file_date").html(data[1].ctime);
@@ -786,7 +924,7 @@
             $.each(data.file,function(key,val){
                 var _style_type = "";
                 if (val.type == "image_file") { _style_type = "style=\"background:url('//"+val.url.replace("uploads","uploads/.thumbs")+"') no-repeat center 5px / 65% 60px \"";  }
-                element.append("<div "+_style_type+" data-kind=\""+val.type+"\" data-date=\""+val.ctime+"\" data-size=\""+val.size+"\" data-name=\""+key+"\" data-path=\""+val.path+"\" class=\""+val.type+"\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
+                element.append("<div "+_style_type+" data-kind=\""+val.type+"\" data-date=\""+val.ctime+"\" data-size=\""+val.size+"\" data-size_2=\""+val.size_2+"\" data-name=\""+key+"\" data-path=\""+val.path+"\" class=\""+val.type+"\"><span class=\"file_name\">"+key+"</span><span class=\"file_size\""+is_show_size+">"+val.size+"</span><span class=\"file_date\""+is_show_date+">"+val.ctime+"</span></div>");
             });
 
 
