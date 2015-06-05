@@ -73,6 +73,18 @@ module Fcfinder
               FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
               @run = ["true"].to_json
             end
+          when "cut"
+            file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:cut_file_path]).split("/").last
+            if (File.exist?(file_path) || File.directory?(file_path))
+              @run = ["false","0"].to_json
+              #0 => Aynı Dosyadan Var
+            else
+              #Kesme İşlemini Gerçekleştir
+              #TODO:buraya bi if getir kesme gerçekleştimi bak
+              FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
+              @run = ["true"].to_json
+            end
+
 
 
           else
