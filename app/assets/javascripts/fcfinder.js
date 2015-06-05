@@ -609,7 +609,6 @@
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.rename",function(){
             if (!$(this).hasClass("passive")){
                 var file = fcfinder.find(".right ul.wrapper li div.active");
-
                 file.children("span.file_name").html('<form id="file_rename"><input type="text" name="fcfinder[file_name]" value="'+file.children("span.file_name").html()+'" /><input type="hidden" name="fcfinder[type]" value="file_rename"/> <input type="hidden" name="fcfinder[path]" value="'+file.attr("data-path")+'"></form>');
                 //#TODO:select uzantı ayarını yap!
                 file.find("span.file_name form input[name='fcfinder[file_name]']").select();
@@ -635,13 +634,53 @@
 
 
         //edit
-        $("body").on("click",fcfinder_selector+" .right ul.widget li a.edit ",function(){
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.edit",function(){
             if (!$(this).hasClass("passive")){
                 //#TODO:Geliştirme Yapılacak
                 window.open("http://apps.pixlr.com/editor/");
             }
             return false;
         });
+
+        //delete
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.delete",function(){
+            if (!$(this).hasClass("passive")){
+                var file = fcfinder.find(".right ul.wrapper li div.active");
+                var file_path = file.attr("data-path");
+
+                $(fcfinder_selector).prepend('<div class="dialog-scope"></div>' +
+                '<div style="display: none;" class="dialog"><h1>'+file.attr("data-name")+' Sil</h1>' +
+                '<p>'+file.attr("data-name")+' Kalıcı Olarak Silmek İstediğinize Eminmisiniz?</p>' +
+                '<a class="close" href="#">Kapat</a>' +
+                '<a class="btn file_delete" href="#">Sil</a>' +
+                '</div>');
+                fcfinder.find(".dialog").fadeIn(300);
+                fcfinder.find(".dialog").ortala();
+
+                $("body").on("click",fcfinder_selector+" .dialog a.file_delete",function(){
+                    fcfinder.find(".dialog a.close").trigger("click");
+                    var data = "fcfinder[type]=delete&fcfinder[file_path]="+file_path;
+                    $.ajax({
+                        url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
+                            if (data[0]=="true"){
+                                fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                            }else {
+                                //Dosya Yok
+                                alert("Silmeye Çalıştığınız Dosyaya Erişilemiyor.");
+                            }
+                        }});
+                    return false;
+                });
+
+
+            }
+            return false;
+        });
+
+
+
+
+
 
 
 

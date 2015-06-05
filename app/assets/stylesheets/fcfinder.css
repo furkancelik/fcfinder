@@ -188,6 +188,8 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 #fcfinder .dialog ul.file_info li a:hover {color: #3F51B5;}
 #fcfinder .dialog a.close { position: relative; overflow: hidden; font-size: 13px; font-weight: bold; color: #3F51B5; text-decoration: none; border-radius: 5px; text-transform: uppercase; padding:10px 15px; display: block; float: right;}
 #fcfinder .dialog a.close:hover{background-color: rgba(158, 158, 158, 0.2);}
+#fcfinder .dialog a.btn { position: relative; overflow: hidden; font-size: 13px; font-weight: bold; color: #3F51B5; text-decoration: none; border-radius: 5px; text-transform: uppercase; padding:10px 15px; display: block; float: right;}
+#fcfinder .dialog a.btn:hover{background-color: rgba(158, 158, 158, 0.2);}
 
 
 #fcfinder .dialog-scope { position: fixed; z-index: 5; background:#000; opacity: 0.5;  width: 100%; height: 100%; left: 0; top:0;  }

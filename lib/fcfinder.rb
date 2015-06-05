@@ -120,6 +120,15 @@ module Fcfinder
               #return false Dosya Yok!
               @run = ["false"].to_json
             end
+          when "delete"
+            if (File.exist?(get_path(fc_params[:file_path])))
+              #TODO:if koy!
+              FileUtils.rm_rf(get_path(fc_params[:file_path]))
+              @run = ["true"].to_json
+            else
+              #return false Dosya Yok!
+              @run = ["false"].to_json
+            end
 
 
           else
