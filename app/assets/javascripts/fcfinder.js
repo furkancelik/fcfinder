@@ -609,7 +609,8 @@
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.rename",function(){
             if (!$(this).hasClass("passive")){
                 var file = fcfinder.find(".right ul.wrapper li div.active");
-                file.children("span.file_name").html('<form id="file_rename"><input type="text" name="fcfinder[file_name]" value="'+file.children("span.file_name").html()+'" /><input type="hidden" name="fcfinder[type]" value="file_rename"/> <input type="hidden" name="fcfinder[path]" value="'+file.attr("data-path")+'"></form>');
+                file.attr("data-rename","true");
+                file.children("span.file_name").html('<form id="file_rename"><input type="text" data-value="'+file.children("span.file_name").html()+'" name="fcfinder[file_name]" value="'+file.children("span.file_name").html()+'" /><input type="hidden" name="fcfinder[type]" value="file_rename"/> <input type="hidden" name="fcfinder[path]" value="'+file.attr("data-path")+'"></form>');
                 //#TODO:select uzantı ayarını yap!
                 file.find("span.file_name form input[name='fcfinder[file_name]']").select();
             }
@@ -829,7 +830,9 @@
             }
             //F2 Press
             if(e.which == 113) {
-                //
+                if (fcfinder.find(".right ul.wrapper li div.active")){
+                    fcfinder.find(".right ul.widget li a.rename").trigger('click');
+                }
                 return false;
             }
         });
@@ -846,6 +849,14 @@
             {
                 fcfinder.find(".right ul.wrapper li[data-show='true'] div[data-new='new_folder']").remove();
                 if (fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']").html()==""){fcfinder.find(".right ul.wrapper li.file_wrapper[data-show='true']").html(empty_dir);}
+            }
+
+
+            if (!$(e.target).is(fcfinder_selector+" .right ul.wrapper li[data-show='true'] div[data-rename='true']") && !$(e.target).is(fcfinder_selector+" .right ul.wrapper li[data-show='true'] div[data-rename='true'] *"))
+            {
+                var file = fcfinder.find(".right ul.wrapper li[data-show='true'] div[data-rename='true']");
+                file.removeAttr("date-name");
+                file.children("span.file_name").html(file.find("form#file_rename input[name='fcfinder[file_name]']").attr("data-value"));
             }
 
             if (
