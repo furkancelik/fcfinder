@@ -273,7 +273,7 @@
                 ".right ul.widget li a.edit , " +
                 ".right ul.widget li a.copy , " +
                 ".right ul.widget li a.cut , " +
-                ".right ul.widget li a.paste  , " +
+                //".right ul.widget li a.paste  , " +
                 ".right ul.widget li a.duplicate , " +
                 ".right ul.widget li a.rename , " +
                 ".right ul.widget li a.delete").removeClass("passive");
@@ -522,6 +522,47 @@
             return false;
         });
 
+        //copy
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.copy",function(){
+            if (!$(this).hasClass("passive")){
+                var file = fcfinder.find(".right ul.wrapper li div.active");
+                var copy_file_path = file.attr("data-path");
+                fcfinder.append('<input type="hidden" name="copy_file_path" value="'+copy_file_path+'" />');
+                fcfinder.find(" .right ul.widget li a.paste").removeClass("passive");
+            }
+            return false;
+        });
+
+        //paste
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.paste",function(){
+            var $ths = $(this);
+            if (!$ths.hasClass("passive")){
+                var $input = fcfinder.find("input[name='copy_file_path']");
+                var copy_file_path = $input.val();
+                var this_folder_path = fcfinder.find(".left #all_folders ul.folders li a.active").attr("href");
+                var data = "fcfinder[type]=copy&fcfinder[copy_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;
+                $.ajax({
+                    url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
+                        console.log(data);
+                        if (data[0]=="true")
+                        {
+                            fcfinder.find(".right ul.widget li a.refresh").removeClass("passive").trigger("click").addClass("passive");
+                        }else {
+                            if (data[1] == "0"){
+                                alert("Kopyalamaya Çalıştığınız Dizinde Aynı İsimde Dosya Bulunmaktadır Kopyalama İşlemi Durduruldu");
+                            }
+                            else{
+                                alert("Bir Hata Meydana Geldi ve Koyalama İşlemi Gerçekleştirilemedi");
+                            }
+                        }
+                    }});
+                $input.remove();
+                $ths.addClass("passive");
+
+            }
+            return false;
+        });
+
 
 
         //ESC key press controll
@@ -556,7 +597,7 @@
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.edit") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.copy") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.cut") &&
-                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.paste") &&
+                //!$(e.target).is(fcfinder_selector+" .right ul.widget li a.paste") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.duplicate") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.rename") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.delete") &&
@@ -571,7 +612,7 @@
                 ".right ul.widget li a.edit , " +
                 ".right ul.widget li a.copy , " +
                 ".right ul.widget li a.cut , " +
-                ".right ul.widget li a.paste  , " +
+                //".right ul.widget li a.paste  , " +
                 ".right ul.widget li a.duplicate , " +
                 ".right ul.widget li a.rename , " +
                 ".right ul.widget li a.delete").addClass("passive");

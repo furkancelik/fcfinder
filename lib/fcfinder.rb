@@ -1,5 +1,7 @@
+require 'fileutils'
 require "fcfinder/version"
 require "fcfinder/engine"
+
 
 module Fcfinder
   class Connector
@@ -60,6 +62,19 @@ module Fcfinder
                      :mime_type => File.directory?(get_path(fc_params[:file])) ? "directory" : MIME::Types.type_for(get_path(fc_params[:file])).first.content_type ,
                      :permissions => {:write => File.writable?(get_path(fc_params[:file])).to_s, :read => File.readable?(get_path(fc_params[:file])).to_s}
             }.to_json
+          when "copy"
+            file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:copy_file_path]).split("/").last
+            if (File.exist?(file_path) || File.directory?(file_path))
+              @run = ["false","0"].to_json
+              #0 => Aynı Dosyadan Var
+            else
+              #Kopyalama İşlemini Gerçekleştir
+              #TODO:buraya bi if getir kopyalma gerçekleştimi bak
+              FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
+              @run = ["true"].to_json
+            end
+
+
           else
             ###
         end
