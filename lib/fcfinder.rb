@@ -62,6 +62,7 @@ module Fcfinder
                      :mime_type => File.directory?(get_path(fc_params[:file])) ? "directory" : MIME::Types.type_for(get_path(fc_params[:file])).first.content_type ,
                      :permissions => {:write => File.writable?(get_path(fc_params[:file])).to_s, :read => File.readable?(get_path(fc_params[:file])).to_s}
             }.to_json
+
           when "copy"
             file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:copy_file_path]).split("/").last
             if (File.exist?(file_path) || File.directory?(file_path))
@@ -73,6 +74,7 @@ module Fcfinder
               FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
               @run = ["true"].to_json
             end
+
           when "cut"
             file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:cut_file_path]).split("/").last
             if (File.exist?(file_path) || File.directory?(file_path))
@@ -85,6 +87,28 @@ module Fcfinder
               @run = ["true"].to_json
             end
 
+          when "duplicate"
+
+            file_path = get_path(fc_params[:file_path]).chomp("/")
+            extension = (file_path.split("/").last.split(".").size>1) ? "."+file_path.split("/").last.split(".").last : ""
+            file_name = file_path.split("/").last.chomp(extension)
+            folder_name = file_path.chomp(file_path.split("/").last).chomp("/")
+
+            reg_file = "#{file_name}".match(/(.+?) copy ([0-9])/i);
+            p reg_file
+            p reg_file[1]+"."
+            unless (reg_file.nil?)
+              #"file_name copy 1" şeklinde bir dosya adı var
+              j = Dir.glob("#{folder_name}/#{reg_file[1]} copy *#{extension}").last.match(/#{reg_file[1]} copy ([0-9])#{extension}/)[1].to_i + 1
+              new_file_name = "#{reg_file[1]} copy #{j}#{extension}"
+              new_file_path = folder_name.chomp("/")+"/"+new_file_name
+              #TODO:fosya kopyalamaya if koy
+              FileUtils.cp_r(file_path,new_file_path)
+              @run = ["true"].to_json
+            else
+              FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
+              @run = ["true"].to_json
+            end
 
 
           else

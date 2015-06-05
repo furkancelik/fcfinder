@@ -582,6 +582,27 @@
             return false;
         });
 
+        //duplicate
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.duplicate",function(){
+            if (!$(this).hasClass("passive")){
+                var file_path = fcfinder.find(".right ul.wrapper li div.active").attr("data-path");
+                var data = "fcfinder[type]=duplicate&fcfinder[file_path]="+file_path;
+                $.ajax({
+                    url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
+                        console.log(data);
+                        if (data[0]=="true")
+                        {
+                            fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                        }else
+                        {
+                            //Kopyası Oluşmadı
+                            alert("Bir Hata Meydana Geldi ve Seçtiğiniz Dosyanın Kopyası Oluşturulamadı");
+                        }
+                    }});
+
+            }
+            return false;
+        });
 
 
         //ESC key press controll
