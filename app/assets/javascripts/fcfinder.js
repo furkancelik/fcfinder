@@ -1154,7 +1154,7 @@
                 y = e.pageY - $(this).offset().top - ink.height()/2;
 
                 ink.css({top: y+'px', left: x+'px'}).addClass("animate");
-                //setTimeout(function(){ ink.remove();},600);
+                setTimeout(function(){ ink.remove(); fcfinder.find("span.ink").remove(); },600);
             });
         }
 
