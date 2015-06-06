@@ -31,6 +31,7 @@
         Cookies.getCookie("FCFINDER_size_show")==""?Cookies.setCookie("FCFINDER_size_show","false",60*60*24*365):'';
         Cookies.getCookie("FCFINDER_date_show")==""?Cookies.setCookie("FCFINDER_date_show","false",60*60*24*365):'';
         Cookies.getCookie("FCFINDER_sortable")==""?Cookies.setCookie("FCFINDER_sortable","kind",60*60*24*365):'';
+        Cookies.getCookie("FCFINDER_view_type")==""?Cookies.setCookie("FCFINDER_view_type","icon",60*60*24*365):'';
 
 
 
@@ -89,7 +90,7 @@
 
         "<li><a href=\"fcfinder:settings\" title=\"Ayarlar\" class=\"settings\">Ayarlar</a><div>" +
         "<ul>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Simge Görünümü\" class=\"icon_view passive\">Simge Görünümü</a></li>" +
+        "<li><a href=\"fcfinder:settings\" title=\"Simge Görünümü\" class=\"icon_view\">Simge Görünümü</a></li>" +
         "<li><a href=\"fcfinder:settings\" title=\"Liste Görünümü\" class=\"list_view\">Liste Görünümü</a></li>" +
 
 
@@ -118,12 +119,21 @@
 
 
                 "</ul>"+
-                "<ul class=\"wrapper icon_view\">" +
+                "<ul class=\"wrapper\">" +
                         "<li>Loading...<span class=\"load\"></span></li>"+
                 "</ul>"+
             "</div>" +
             "<div class=\"clear\"></div>" +
             "<div class=\"bottom\">%s Files (%s MB)</div>");
+
+        if (Cookies.getCookie("FCFINDER_view_type")=="icon"){
+            fcfinder.find(".right ul.widget li a.icon_view").addClass("passive");
+            fcfinder.find(".right ul.wrapper").addClass("icon_view");
+        }
+        else{
+            fcfinder.find(".right ul.widget li a.list_view").addClass("passive");
+            fcfinder.find(".right ul.wrapper").addClass("list_view");
+        }
 
 
 
@@ -181,6 +191,7 @@
                 });
                 appendFiles(data);
                 sortable(Cookies.getCookie("FCFINDER_sortable"));
+                if (Cookies.getCookie("FCFINDER_view_type")=="list"){fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");}
             }
 
 
@@ -253,6 +264,7 @@
 
                         appendFiles(data);
                         sortable(Cookies.getCookie("FCFINDER_sortable"));
+                        if (Cookies.getCookie("FCFINDER_view_type")=="list"){fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");}
                     }
 
                    ths.next("span.folder_load").remove();
@@ -267,21 +279,24 @@
 
         $("body").on("click",fcfinder_selector+" .right ul.wrapper li div",function(){
             var ths = $(this);
-            fcfinder.find(".right ul.wrapper li div").removeClass("active");
-            ths.addClass("active");
-            if (fcfinder.find(".right ul.wrapper li div.active").attr("data-new")!="new_folder")
-            {
-                fcfinder.find(".right ul.widget li a.download , " +
-                ".right ul.widget li a.info , " +
-                ".right ul.widget li a.preview , " +
-                ".right ul.widget li a.edit , " +
-                ".right ul.widget li a.copy , " +
-                ".right ul.widget li a.cut , " +
-                //".right ul.widget li a.paste  , " +
-                ".right ul.widget li a.duplicate , " +
-                ".right ul.widget li a.rename , " +
-                ".right ul.widget li a.delete").removeClass("passive");
+            if (ths.attr("class")!="list_head"){
+                fcfinder.find(".right ul.wrapper li div").removeClass("active");
+                ths.addClass("active");
+                if (fcfinder.find(".right ul.wrapper li div.active").attr("data-new")!="new_folder")
+                {
+                    fcfinder.find(".right ul.widget li a.download , " +
+                    ".right ul.widget li a.info , " +
+                    ".right ul.widget li a.preview , " +
+                    ".right ul.widget li a.edit , " +
+                    ".right ul.widget li a.copy , " +
+                    ".right ul.widget li a.cut , " +
+                        //".right ul.widget li a.paste  , " +
+                    ".right ul.widget li a.duplicate , " +
+                    ".right ul.widget li a.rename , " +
+                    ".right ul.widget li a.delete").removeClass("passive");
+                }
             }
+
         });
 
         $("body").on("click",fcfinder_selector+' .left #all_folders ul.folders li a span.braca',function(){
@@ -319,40 +334,45 @@
         });
 
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.show_size",function(){
-            var show = $(this).attr("data-show");
-            if (show=="false") {
-                fcfinder.find(".right ul.wrapper li div span.file_size").css({"display":"block"});
-                fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()+16);
-                $(this).attr("data-show","true");
-                Cookies.setCookie("FCFINDER_size_show","true",60*60*24*365);
-                is_show_size = fcfinder.find(".right ul.widget li a.show_size").attr("data-show")=="true"?" style=\"display:block;\"":"";
-            }
-            else {
-                fcfinder.find(".right ul.wrapper li div span.file_size").hide();
-                fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()-16);
-                $(this).attr("data-show","false");
-                Cookies.setCookie("FCFINDER_size_show","false",60*60*24*365);
-                is_show_size = fcfinder.find(".right ul.widget li a.show_size").attr("data-show")=="false"?" style=\"display:block;\"":"";
+            if (Cookies.getCookie('FCFINDER_view_type')=="icon"){
+                var show = $(this).attr("data-show");
+                if (show=="false") {
+                    fcfinder.find(".right ul.wrapper li div span.file_size").css({"display":"block"});
+                    fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()+16);
+                    $(this).attr("data-show","true");
+                    Cookies.setCookie("FCFINDER_size_show","true",60*60*24*365);
+                    is_show_size = fcfinder.find(".right ul.widget li a.show_size").attr("data-show")=="true"?" style=\"display:block;\"":"";
+                }
+                else {
+                    fcfinder.find(".right ul.wrapper li div span.file_size").hide();
+                    fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()-16);
+                    $(this).attr("data-show","false");
+                    Cookies.setCookie("FCFINDER_size_show","false",60*60*24*365);
+                    is_show_size = fcfinder.find(".right ul.widget li a.show_size").attr("data-show")=="false"?" style=\"display:block;\"":"";
+                }
             }
             return false;
         });
 
-        $("body").on("click",fcfinder_selector+" .right ul.widget li a.show_date",function(){
-            var show = $(this).attr("data-show");
-            if (show=="false") {
-                fcfinder.find(".right ul.wrapper li div span.file_date").css({"display":"block"});
-                fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()+32);
-                $(this).attr("data-show","true");
-                Cookies.setCookie("FCFINDER_date_show","true",60*60*24*365);
-                is_show_date = fcfinder.find(".right ul.widget li a.show_date").attr("data-show")=="true"?" style=\"display:block;\"":"";
 
-            }
-            else {
-                fcfinder.find(".right ul.wrapper li div span.file_date").hide();
-                fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()-32);
-                $(this).attr("data-show","false");
-                Cookies.setCookie("FCFINDER_date_show","false",60*60*24*365);
-                is_show_date = fcfinder.find(".right ul.widget li a.show_date").attr("data-show")=="false"?" style=\"display:block;\"":"";
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.show_date",function(){
+            if (Cookies.getCookie('FCFINDER_view_type')=="icon"){
+                var show = $(this).attr("data-show");
+                if (show=="false") {
+                    fcfinder.find(".right ul.wrapper li div span.file_date").css({"display":"block"});
+                    fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()+32);
+                    $(this).attr("data-show","true");
+                    Cookies.setCookie("FCFINDER_date_show","true",60*60*24*365);
+                    is_show_date = fcfinder.find(".right ul.widget li a.show_date").attr("data-show")=="true"?" style=\"display:block;\"":"";
+
+                }
+                else {
+                    fcfinder.find(".right ul.wrapper li div span.file_date").hide();
+                    fcfinder.find(".right ul.wrapper li div").height(fcfinder.find(".right ul.wrapper li div").height()-32);
+                    $(this).attr("data-show","false");
+                    Cookies.setCookie("FCFINDER_date_show","false",60*60*24*365);
+                    is_show_date = fcfinder.find(".right ul.widget li a.show_date").attr("data-show")=="false"?" style=\"display:block;\"":"";
+                }
             }
             return false;
         });
@@ -395,6 +415,7 @@
 
                         appendFiles(data,right_wrapper);
                         sortable(Cookies.getCookie("FCFINDER_sortable"));
+                        if (Cookies.getCookie("FCFINDER_view_type")=="list"){fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");}
                     }
                 }});
             }else {
@@ -732,8 +753,8 @@
                 if (!$(this).hasClass("z_a"))
                 {
                     $li.sort(function(a,b){
-                        var an = parseInt(a.getAttribute('data-size_2')),
-                            bn = parseInt(b.getAttribute('data-size_2'));
+                        var an = toInt(a.getAttribute('data-size_2')),
+                            bn = toInt(b.getAttribute('data-size_2'));
                         if(an < bn) { return 1;}
                         if(an > bn) {return -1;}
                         return 0;
@@ -742,10 +763,10 @@
                     $(this).removeClass("a_z").addClass("z_a");
                 }else {
                     $li.sort(function(a,b){
-                        var an = parseInt(a.getAttribute('data-size_2')),
-                            bn = parseInt(b.getAttribute('data-size_2'));
-                        if(an < bn) { return 1;}
-                        if(an > bn) {return -1;}
+                        var an = toInt(a.getAttribute('data-size_2')),
+                            bn = toInt(b.getAttribute('data-size_2'));
+                        if(an > bn) { return 1;}
+                        if(an < bn) {return -1;}
                         return 0;
                     });
                     $li.detach().appendTo($ul);
@@ -757,8 +778,19 @@
         });
 
         function toDate(date){
-            var a = date.split("/");
-            return Date.parse(a[1]+"/"+a[0]+"/"+a[2]);
+            if (date!=null)
+            {
+                var a = date.split("/");
+                return Date.parse(a[1]+"/"+a[0]+"/"+a[2]);
+            }
+        }
+
+        function toInt(size)
+        {
+            if (size!=null)
+            {
+                return parseInt(size);
+            }
         }
 
         //date_sorter
@@ -826,17 +858,92 @@
         });
 
 
-        /*dialog ekle
-        * //settings
 
-        * */
+        //icon_view////Cookies.getCookie("FCFINDER_view_type")
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.icon_view",function(){
+            if (!$(this).hasClass("passive")) {
+                fcfinder.find(".right ul.wrapper").removeClass("list_view").addClass("icon_view");
+                Cookies.setCookie("FCFINDER_view_type","icon",60*60*24*365);
+                $(this).addClass("passive");
+                fcfinder.find(".right ul.widget li a.list_view").removeClass("passive");
+                fcfinder.find(".right ul.wrapper li div.list_head").remove();
+            }
+            return false;
+        });
+
+
+        //list_view////Cookies.getCookie("FCFINDER_view_type")
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.list_view",function(){
+            if (!$(this).hasClass("passive")) {
+                fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");
+                fcfinder.find(".right ul.wrapper").removeClass("icon_view").addClass("list_view");
+                Cookies.setCookie("FCFINDER_view_type","list",60*60*24*365);
+                $(this).addClass("passive");
+                fcfinder.find(".right ul.widget li a.icon_view").removeClass("passive");
+            }
+            return false;
+        });
+
+
+
+
+
+
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.settings",function(){
+            if (!$(this).hasClass("passive")){
+                var list_type = Cookies.getCookie("FCFINDER_view_type");
+                var size_show = Cookies.getCookie("FCFINDER_size_show");
+                var date_show = Cookies.getCookie("FCFINDER_date_show");
+
+                var dialog_text = '<div class="dialog-scope"></div>' +
+                    '<div style="display: none;" class="dialog"><h1>Ayarlar</h1>' +
+                    '<div class="content">';
+                dialog_text += '<div><label><input type="radio" name="view" value="icon"';
+                dialog_text += list_type == "icon" ? ' checked="checked" ' : '';
+                dialog_text += ' /> Simge Görünümü </label></div>';
+                dialog_text += '<div><label><input type="radio" name="view" value="list"';
+                dialog_text += list_type == "list" ? ' checked="checked" ' : ''
+                dialog_text += ' /> Liste Görünümü </label></div>'
+                dialog_text += '<div><label><input type="checkbox" name="size_show" value="true"'
+                dialog_text += size_show == "true" ? ' checked="checked" ' : ''
+                dialog_text +=' /> Dosya Boyutunu Göster </label></div>'
+                dialog_text +='<div><label><input type="checkbox" name="date_show" value="true"'
+                dialog_text += date_show == "true" ? ' checked="checked" ' : ''
+                dialog_text +=' /> Dosya Oluşturulma Tarihini Göster </label></div>' +
+                '</div>' +
+                '<a class="close" href="#">Kapat</a>' +
+                '</div>';
+                $(fcfinder_selector).prepend(dialog_text);
+                fcfinder.find(".dialog").fadeIn(300);
+                fcfinder.find(".dialog").ortala();
+            }
+            return false;
+        });
+
+
+        $("body").on("change",fcfinder_selector+" .dialog div.content div label input[name='date_show']",function(){
+            fcfinder.find(".right ul.widget li a.show_date").trigger('click');
+        });
+
+        $("body").on("change",fcfinder_selector+" .dialog div.content div label input[name='size_show']",function(){
+            fcfinder.find(".right ul.widget li a.show_size").trigger('click');
+        });
+
+        $("body").on("change",fcfinder_selector+" .dialog div.content div label input[name='view']",function(){
+            var view_type = $(this).val();
+            if (view_type=="icon"){ fcfinder.find(".right ul.widget li a.icon_view").trigger("click"); }
+            if (view_type=="list"){ fcfinder.find(".right ul.widget li a.list_view").trigger("click");}
+        });
+
+
+
 
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.sort",function(){
             if (!$(this).hasClass("passive")){
                 var sortable_type = Cookies.getCookie("FCFINDER_sortable");
                 var dialog_text = '<div class="dialog-scope"></div>' +
                     '<div style="display: none;" class="dialog"><h1>Sıralama Düzenle</h1>' +
-                    '<div class="sortable_type">';
+                    '<div class="content">';
                 dialog_text += '<div><label><input type="radio" name="sortable" value="name"';
                 dialog_text += sortable_type == "name" ? ' checked="checked" ' : '';
                 dialog_text += ' /> Ada Göre Sırala </label></div>';
@@ -860,8 +967,7 @@
         });
 
 
-
-        $("body").on("change",fcfinder_selector+" .dialog div.sortable_type div label input[name='sortable']",function(){
+        $("body").on("change",fcfinder_selector+" .dialog div.content div label input[name='sortable']",function(){
             var sort_type = $(this).val();
             Cookies.setCookie("FCFINDER_sortable",sort_type,60*60*24*365);
             sortable(sort_type);
@@ -902,7 +1008,17 @@
         // Hedef dışı tıklama
         $("*").click(function(e){
 
-            if (!$(e.target).is(fcfinder_selector+" .dialog") && !$(e.target).is(fcfinder_selector+" .dialog *"))
+
+            if (!$(e.target).is(fcfinder_selector+" .dialog") && !$(e.target).is(fcfinder_selector+" .dialog *") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.icon_view") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.list_view") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.show_size") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.show_date") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.name_sorter") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.size_sorter") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.date_sorter") &&
+                !$(e.target).is(fcfinder_selector+" .right ul.widget li a.kind_sorter") &&
+                !$(e.target).is(fcfinder_selector+" "))
             {
                 fcfinder.find(".dialog").fadeOut(300, function(){ fcfinder.find(".dialog-scope , .dialog").remove(); });
             }
@@ -917,7 +1033,7 @@
             if (!$(e.target).is(fcfinder_selector+" .right ul.wrapper li[data-show='true'] div[data-rename='true']") && !$(e.target).is(fcfinder_selector+" .right ul.wrapper li[data-show='true'] div[data-rename='true'] *"))
             {
                 var file = fcfinder.find(".right ul.wrapper li[data-show='true'] div[data-rename='true']");
-                file.removeAttr("date-name");
+                file.removeAttr("data-rename");
                 file.children("span.file_name").html(file.find("form#file_rename input[name='fcfinder[file_name]']").attr("data-value"));
             }
 
