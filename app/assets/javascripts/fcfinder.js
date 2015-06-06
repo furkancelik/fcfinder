@@ -3,6 +3,7 @@
         var fcfinder = $(this);
         var fcfinder_selector = fcfinder.selector;
 
+        //Txtleri tanımla
         var empty_dir = "Dizin Boş";
 
         Cookies = {
@@ -29,6 +30,9 @@
         // Cookies Settings
         Cookies.getCookie("FCFINDER_size_show")==""?Cookies.setCookie("FCFINDER_size_show","false",60*60*24*365):'';
         Cookies.getCookie("FCFINDER_date_show")==""?Cookies.setCookie("FCFINDER_date_show","false",60*60*24*365):'';
+        Cookies.getCookie("FCFINDER_sortable")==""?Cookies.setCookie("FCFINDER_sortable","kind",60*60*24*365):'';
+
+
 
 
 
@@ -175,8 +179,8 @@
                     "<span class=\"folder\">"+key+"</span>"+
                     "</a></li>");
                 });
-
                 appendFiles(data);
+                sortable(Cookies.getCookie("FCFINDER_sortable"));
             }
 
 
@@ -248,7 +252,7 @@
                         });
 
                         appendFiles(data);
-
+                        sortable(Cookies.getCookie("FCFINDER_sortable"));
                     }
 
                    ths.next("span.folder_load").remove();
@@ -390,7 +394,7 @@
                         });
 
                         appendFiles(data,right_wrapper);
-
+                        sortable(Cookies.getCookie("FCFINDER_sortable"));
                     }
                 }});
             }else {
@@ -681,7 +685,10 @@
         });
 
 
-        $("body").on("click",fcfinder_selector+" .right ul.widget li a.sort",function(){ return false; });
+
+
+
+
 
         //name_sorter
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.name_sorter",function(){
@@ -711,6 +718,7 @@
                     $(this).removeClass("z_a").addClass("a_z");
                 }
             }
+            Cookies.setCookie("FCFINDER_sortable","name",60*60*24*365);
             return false;
         });
 
@@ -726,8 +734,8 @@
                     $li.sort(function(a,b){
                         var an = parseInt(a.getAttribute('data-size_2')),
                             bn = parseInt(b.getAttribute('data-size_2'));
-                        if(an > bn) { return 1;}
-                        if(an < bn) {return -1;}
+                        if(an < bn) { return 1;}
+                        if(an > bn) {return -1;}
                         return 0;
                     });
                     $li.detach().appendTo($ul);
@@ -744,6 +752,7 @@
                     $(this).removeClass("z_a").addClass("a_z");
                 }
             }
+            Cookies.setCookie("FCFINDER_sortable","size",60*60*24*365);
             return false;
         });
 
@@ -780,6 +789,7 @@
                     $(this).removeClass("z_a").addClass("a_z");
                 }
             }
+            Cookies.setCookie("FCFINDER_sortable","date",60*60*24*365);
             return false;
         });
 
@@ -811,8 +821,60 @@
                     $(this).removeClass("z_a").addClass("a_z");
                 }
             }
+            Cookies.setCookie("FCFINDER_sortable","kind",60*60*24*365);
             return false;
         });
+
+
+        /*dialog ekle
+        * //settings
+
+        * */
+
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.sort",function(){
+            if (!$(this).hasClass("passive")){
+                var sortable_type = Cookies.getCookie("FCFINDER_sortable");
+                var dialog_text = '<div class="dialog-scope"></div>' +
+                    '<div style="display: none;" class="dialog"><h1>Sıralama Düzenle</h1>' +
+                    '<div class="sortable_type">';
+                dialog_text += '<div><label><input type="radio" name="sortable" value="name"';
+                dialog_text += sortable_type == "name" ? ' checked="checked" ' : '';
+                dialog_text += ' /> Ada Göre Sırala </label></div>';
+                dialog_text += '<div><label><input type="radio" name="sortable" value="size"';
+                dialog_text += sortable_type == "size" ? ' checked="checked" ' : ''
+                dialog_text += ' /> Boyuta Göre Sırala </label></div>'
+                dialog_text += '<div><label><input type="radio" name="sortable" value="date"'
+                dialog_text +=sortable_type == "date" ? ' checked="checked" ' : ''
+                dialog_text +=' /> Tarihe Göre Sırala </label></div>'
+                dialog_text +='<div><label><input type="radio" name="sortable" value="kind"'
+                dialog_text +=sortable_type == "kind" ? ' checked="checked" ' : ''
+                dialog_text +=' /> Dosya Türün Göre Sırala </label></div>' +
+                '</div>' +
+                '<a class="close" href="#">Kapat</a>' +
+                '</div>';
+                $(fcfinder_selector).prepend(dialog_text);
+                fcfinder.find(".dialog").fadeIn(300);
+                fcfinder.find(".dialog").ortala();
+            }
+            return false;
+        });
+
+
+
+        $("body").on("change",fcfinder_selector+" .dialog div.sortable_type div label input[name='sortable']",function(){
+            var sort_type = $(this).val();
+            Cookies.setCookie("FCFINDER_sortable",sort_type,60*60*24*365);
+            sortable(sort_type);
+            return false;
+        });
+
+
+        function sortable(type){
+            if (type=="name"){ fcfinder.find(".right ul.widget li a.name_sorter").removeClass("z_a").removeClass("a_z").trigger('click'); }
+            if (type=="size"){ fcfinder.find(".right ul.widget li a.size_sorter").removeClass("z_a").removeClass("a_z").trigger('click'); }
+            if (type=="date"){ fcfinder.find(".right ul.widget li a.date_sorter").removeClass("z_a").removeClass("a_z").trigger('click'); }
+            if (type=="kind"){ fcfinder.find(".right ul.widget li a.kind_sorter").removeClass("z_a").removeClass("a_z").trigger('click'); }
+        }
 
 
 
@@ -988,7 +1050,7 @@
 
 
 
-
+console.log(document.cookie)
 
 
 
