@@ -200,6 +200,12 @@
 
 
 
+        $("body").on("dblclick",fcfinder_selector+" .right ul.wrapper li div",function(){
+            var path = $(this).attr("data-path");
+            fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").trigger("click");
+
+        });
+
         $("body").on("click",fcfinder_selector+" ul.folders a",function(e){
             var ths = $(this);
             var url = ths.attr("href");
@@ -1126,10 +1132,10 @@
         $("body").on("click",fcfinder_selector+" ul#ctxMenu li a",function(){
             if ($(this).attr("class")=="none"){ return false; }else {
                 fcfinder.find("ul#ctxMenu").remove();
-                //if ($(this).attr("href")=="fcfinder:open"){ fcfinder.find().trigger("click");}
+                if ($(this).attr("href")=="fcfinder:open"){ fcfinder.find(".right ul.wrapper li div.active").trigger("dblclick");}
                 if ($(this).attr("href")=="fcfinder:preview"){ fcfinder.find(".right ul.widget li a.preview").trigger("click"); }
                 //TODO:düzenle
-                if ($(this).attr("href")=="fcfinder:download"){fcfinder.find().trigger("click");}
+                //if ($(this).attr("href")=="fcfinder:download"){fcfinder.find().trigger("click");}
                 if ($(this).attr("href")=="fcfinder:copy"){fcfinder.find(".right ul.widget li a.copy").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:cut"){fcfinder.find(".right ul.widget li a.cut").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:duplicate"){fcfinder.find(".right ul.widget li a.duplicate").trigger("click");}
