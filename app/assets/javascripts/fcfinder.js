@@ -387,7 +387,12 @@
             var dir = fcfinder.find(".right ul.wrapper li[data-show='true']");
             if (dir.html()==empty_dir){dir.html("");}
             fcfinder.find(".right ul.wrapper li div").removeClass("active");
-            dir.prepend('<div data-new="new_folder" data-path="" data-name="" data-size="0" data-size_2="0" data-date="" data-kind="directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>');
+            var html = '<div data-new="new_folder" data-path="" data-name="" data-size="0" data-size_2="0" data-date="" data-kind="directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>';
+            if (Cookies.getCookie('FCFINDER_view_type')=="list"){
+                dir.find(".list_head").after(html);
+            }else {
+                dir.prepend(html);
+            }
             dir.find("input").select();
 
             return false;
@@ -1012,6 +1017,7 @@
                 }
                 return false;
             }
+
         });
 
         // Hedef dışı tıklama
@@ -1150,18 +1156,11 @@
 
         $("body").on("submit",fcfinder_selector+" #new_directory",function(){
             var data = $(this).serialize();
-            var directory_div = $(this).parents("div.directory[data-new='new_folder']");
             $.ajax({
                 url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
                     console.log(data);
                     if (data[0]=="true"){
-                        directory_div.removeAttr("data-new").attr("data-path",data[1].path).attr("data-name",data[1].name).attr("data-size",data[1].size).attr("data-size_2",data[1].size_2).attr("data-date",data[1].ctime);
-                        directory_div.children("span.file_name").html(data[1].name);
-                        directory_div.children("span.file_size").html(data[1].size);
-                        directory_div.children("span.file_date").html(data[1].ctime);
-                        fcfinder.find(".left #all_folders ul.folders li a.active").next("ul.folders")
-                            .append('<li><a href="'+data[1].path+'"><span class="braca"></span><span class="folder">'+data[1].name+'</span></a></li>');
-                        fcfinder.find(".left #all_folders ul.folders li a[href='"+data[1].top_dir+"']").children("span.braca").addClass("closed");
+                        fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                     }else {
                         if (data[1]=="-1"){alert("Bu İsimde Dosya Var");}
                         else {alert("Bir Hata Meydana Geldi ve Klasör Oluşturulamadı");}

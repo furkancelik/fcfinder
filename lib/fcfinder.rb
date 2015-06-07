@@ -26,7 +26,7 @@ module Fcfinder
             create_file_path = File.join(get_path(fc_params[:path]),fc_params[:directory_name])
             unless File.exist?(create_file_path)
               if Dir.mkdir(create_file_path)
-                @run = ["true",{:top_dir => fc_params[:path], :name => fc_params[:directory_name], :url => set_path(create_file_path), :sub_dir => false, :size_2=>directory_size(create_file_path), :size => format_mb(directory_size(create_file_path)), :ctime => File.ctime(create_file_path).strftime("%d/%m/%Y %H:%M"), :path => set_path(create_file_path) }].to_json
+                @run = ["true"].to_json
               else
                 #0 => Herhangibir Hata var Dosya Oluşmadı
                 @run = ["false","0"].to_json
