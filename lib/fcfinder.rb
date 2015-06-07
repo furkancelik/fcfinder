@@ -41,7 +41,13 @@ module Fcfinder
             @run = file_list.to_json
           when "download"
             #TODO:dosya indirmesini düzenles
-            #@run = { :path =>get_path(fc_params[:path]), :type => MIME::Types.type_for(get_path(fc_params[:path])).first.content_type }.to_json
+            if (File.directory?(get_path(fc_params[:path])))
+              #rarla
+              file = ""
+            else
+              file = fc_params[:path].sub("fcdir:/","")
+            end
+            @run = { :file =>file, :type => MIME::Types.type_for(get_path(fc_params[:path])).first.content_type }.to_json
           when "info"
             @run = { :url => get_url(fc_params[:file]),
                      :path => fc_params[:file],

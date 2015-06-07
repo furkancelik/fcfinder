@@ -66,7 +66,7 @@
         "<li><a href=\"fcfinder:settings\" title=\"Yeni Klasör\" class=\"new_folder\">Yeni Klasör</a></li>"+
         "<li><a href=\"fcfinder:refresh\" title=\"Yenile\" class=\"refresh\">Yenile</a></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"İndir\" class=\"download passive\">İndir</a></li>"+
+        "<li><a href=\"\" title=\"İndir\" class=\"download passive\">İndir</a></li>"+
 
         "<li><a href=\"fcfinder:settings\" title=\"Bilgiler\" class=\"info passive\">Bilgiler</a><div>" +
         "<ul>" +
@@ -439,15 +439,15 @@
 
         //download_file
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.download",function(){
-            //#TODO:download işlemini yaptırt
             if (!$(this).hasClass("passive")){
+                var path = fcfinder.find(".right ul.wrapper li div.active").attr("data-path").replace("fcdir:/","");
                 var data = "fcfinder[type]=download&fcfinder[path]="+fcfinder.find(".right ul.wrapper li div.active").attr("data-path");
                 $.ajax({
                     url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
-                        alert(data);
                         console.log(data);
+                        window.open(location+"/download/"+data.file);
                     }});
-                    }
+            }
             return false;
         });
 
