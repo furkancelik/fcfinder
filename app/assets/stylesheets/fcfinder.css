@@ -9,7 +9,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 #fcfinder .left { height:94%; border: 1px solid #c0c0c0; background: #f0f0f0; width: 25%; min-width: 135px; margin:5px 0 0 5px; border-radius: 5px; float: left; overflow: auto; }
 #fcfinder .left #all_folders { width: 100%; display: flex;}
 #fcfinder .right {  height:94%; margin: 5px 0px 0px 0px; float: left; }
-#fcfinder .right ul.widget  {height:35px; width: 99%; margin:4px 0px 0px 0px; padding:0px 0px 0px 5px; font-size: 15px; }
+#fcfinder .right ul.widget {height:35px; width: 99%; margin:4px 0px 0px 0px; padding:0px 0px 0px 5px; font-size: 15px; }
 #fcfinder .right ul.widget li { float: left; list-style: none; margin-right:10px;   }
 #fcfinder .right ul.widget li a{
     border-radius: 32px; width:32px; height: 32px; display: block; font-size: 0%;
@@ -100,8 +100,8 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 #fcfinder .right ul.wrapper.list_view li div span.file_date { float: left; font-size: 12px; color: #666; display:block !important; margin: 0; padding: 8px 5px 0 10px; text-align:left; width: 180px;}
 #fcfinder .right ul.wrapper.list_view li div:hover {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 0px none;border-radius: 0;}
 #fcfinder .right ul.wrapper.list_view li div.active {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 0px none; border-radius: 0;}
-#fcfinder .right ul.wrapper.list_view li div.list_head { width: 100%; background: #ccc; color: #000;  font-size: 14px; border-radius: 0 !important; }
-#fcfinder .right ul.wrapper.list_view li div.list_head:hover {  color:#000; background-color:#ccc !important; border: 0 none !important; box-shadow:none !important; -webkit-box-shadow:none !important;-moz-box-shadow:none !important; }
+#fcfinder .right ul.wrapper.list_view li div.list_head { width: 100%; background: #ddd; color: #000;  font-size: 14px; border-radius: 0 !important; border-bottom: 1px solid #ccc; cursor: default; }
+#fcfinder .right ul.wrapper.list_view li div.list_head:hover {  color:#000; background-color:#ddd !important; box-shadow:none !important; -webkit-box-shadow:none !important;-moz-box-shadow:none !important; border-bottom: 1px solid #ccc;}
 #fcfinder .right ul.wrapper.list_view li div.list_head span.file_name { color: #000; font-size: 13px; width:200px; text-align: left;}
 #fcfinder .right ul.wrapper.list_view li div.list_head span.file_size { color: #000; font-size: 13px; width:100px; text-align: left;}
 #fcfinder .right ul.wrapper.list_view li div.list_head span.file_date { color: #000; font-size: 13px; width:180px; text-align: left;}
@@ -158,7 +158,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 
 #fcfinder .left ul.folders li a:hover{ color:#fff;}
-#fcfinder .left ul.folders li a:hover span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #ccc; border: 1px solid #999;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+#fcfinder .left ul.folders li a:hover span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #ccc; border: 1px solid #999; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
     -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;}
 
@@ -181,7 +181,9 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
     max-height: 90%;
     overflow: auto;
     min-height: 150px;
-    box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.14), 0px 16px 24px 2px rgba(0, 0, 0, 0.098), 0px 6px 30px 5px rgba(0, 0, 0, 0.082);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
     z-index: 6;
     position: absolute;
     left: 0;
@@ -212,3 +214,10 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 #fcfinder .dialog-scope { position: fixed; z-index: 5; background:#000; opacity: 0.5;  width: 100%; height: 100%; left: 0; top:0;  }
 
+#fcfinder ul#ctxMenu {margin: 0; padding: 0; list-style: none; position: absolute; display: block; width:200px; max-height:350px;height: 300px; overflow: auto; overflow-x:hidden; z-index: 4;border: solid 1px #CCC; background: #fff; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);-webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; border-radius: 3px;}
+#fcfinder ul#ctxMenu li { padding:3px 0; font-size: 13px; }
+#fcfinder ul#ctxMenu li a {padding:8px; display: block; color: #000; text-decoration: none; border-left: 5px solid transparent; }
+#fcfinder ul#ctxMenu li a.none:hover { background: none;border-left: 5px solid transparent; }
+
+#fcfinder ul#ctxMenu li a:hover {background: #ededed; border-left: 5px solid #ddd; }
+#fcfinder ul#ctxMenu li.hr {padding:0px;font-size:0%; border-bottom: 1px solid #ccc;}

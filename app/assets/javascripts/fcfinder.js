@@ -607,6 +607,7 @@
             return false;
         });
 
+
         //duplicate
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.duplicate",function(){
             if (!$(this).hasClass("passive")){
@@ -667,6 +668,8 @@
             }
             return false;
         });
+
+
 
         //delete
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.delete",function(){
@@ -1008,6 +1011,10 @@
         // Hedef dışı tıklama
         $("*").click(function(e){
 
+            if (!$(e.target).is(fcfinder_selector+" ul#ctxMenu") && !$(e.target).is(fcfinder_selector+" ul#ctxMenu *") )
+            {
+                fcfinder.find("#ctxMenu").remove();
+            }
 
             if (!$(e.target).is(fcfinder_selector+" .dialog") && !$(e.target).is(fcfinder_selector+" .dialog *") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.icon_view") &&
@@ -1049,6 +1056,9 @@
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.rename") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.delete") &&
 
+                !$(e.target).is(fcfinder_selector+" ul#ctxMenu li") &&
+                !$(e.target).is(fcfinder_selector+" ul#ctxMenu li *") &&
+
 
                 !$(e.target).is(fcfinder_selector+" .right ul.wrapper li div") && !$(e.target).is(fcfinder_selector+" .right ul.wrapper li div *"))
             {
@@ -1069,9 +1079,66 @@
         });
 
         //right click false
-        $("*").contextmenu(function(){
-            //#TODO:Right click düzenle
+        $("*").contextmenu(function(e){
+            fcfinder.find("#ctxMenu").remove();
+            if (!$(e.target).is(fcfinder_selector+" .right ul.wrapper li div.list_head") && !$(e.target).is(fcfinder_selector+" .right ul.wrapper li div.list_head *")){
+                if ($(e.target).is(fcfinder_selector+" .right ul.wrapper li div") || $(e.target).is(fcfinder_selector+" .right ul.wrapper li div *")) {
+                    if (typeof $(e.target).parent("div").attr("data-name") === "undefined") {
+                        var file = $(e.target);
+                    }else {
+                        var file = $(e.target).parent("div");
+                    }
+                    file.trigger("click");
+
+                    fcfinder.prepend('<ul id="ctxMenu"></ul>');
+                    var ctxMenu = fcfinder.find("#ctxMenu");
+                    var x = parseInt(e.pageX) - 20;
+                    var y = parseInt(e.pageY) - 30;
+                    var d_x = $(document).width();
+                    var d_y = $(document).height();
+                    var ctxW_x = ctxMenu.width();
+                    var ctxH_y = ctxMenu.height();
+
+                    if (x >= d_x - ctxW_x - 50) { x = d_x - ctxW_x - 50; }
+                    if (y >= d_y - ctxH_y - 40) { y = d_y - ctxH_y - 40;}
+
+                    ctxMenu.html("<li><a class='none'>" + file.attr("data-name") + "</a></li><li class='hr'>&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:open\">Aç</a></li>" +
+                    "<li><a href=\"fcfinder:preview\">Ön İzle</a></li>" +
+                    "<li><a href=\"fcfinder:download\">İndir</a></li>" +
+                    "<li class=\"hr\">&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:copy\">Kopyala</a></li>" +
+                    "<li><a href=\"fcfinder:cut\">Kes</a></li>" +
+                    "<li><a href=\"fcfinder:duplicate\">Kopyasını Oluştur</a></li>" +
+                    "<li><a href=\"fcfinder:rename\">Yeniden Adlandır</a></li>" +
+                    "<li><a href=\"fcfinder:delete\">Sil</a></li>" +
+                    "<li class=\"hr\">&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:info\">Bilgiler</a></li>");
+
+                    ctxMenu.css({"left": x + "px", "top": y + "px"});
+                }
+            }
             return false;
+        });
+
+
+
+        $("body").on("click",fcfinder_selector+" ul#ctxMenu li a",function(){
+            if ($(this).attr("class")=="none"){ return false; }else {
+                fcfinder.find("ul#ctxMenu").remove();
+                //if ($(this).attr("href")=="fcfinder:open"){ fcfinder.find().trigger("click");}
+                if ($(this).attr("href")=="fcfinder:preview"){ fcfinder.find(".right ul.widget li a.preview").trigger("click"); }
+                //TODO:düzenle
+                if ($(this).attr("href")=="fcfinder:download"){fcfinder.find().trigger("click");}
+                if ($(this).attr("href")=="fcfinder:copy"){fcfinder.find(".right ul.widget li a.copy").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:cut"){fcfinder.find(".right ul.widget li a.cut").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:duplicate"){fcfinder.find(".right ul.widget li a.duplicate").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:rename"){fcfinder.find(".right ul.widget li a.rename").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:delete"){fcfinder.find(".right ul.widget li a.delete").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:info"){fcfinder.find(".right ul.widget li a.info").trigger("click");}
+                return false;
+            }
+
         });
 
 
@@ -1167,7 +1234,6 @@
 
 
 console.log(document.cookie)
-
 
 
     };
