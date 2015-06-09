@@ -221,3 +221,49 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 #fcfinder ul#ctxMenu li a:hover {background: #ededed; border-left: 5px solid #ddd; }
 #fcfinder ul#ctxMenu li.hr {padding:0px;font-size:0%; border-bottom: 1px solid #ccc;}
+
+#progress {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: -6px;
+    width: 1%;
+    height: 2px;
+    background: #1293cc;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    -moz-transition: width 500ms ease-out,opacity 400ms linear;
+    -ms-transition: width 500ms ease-out,opacity 400ms linear;
+    -o-transition: width 500ms ease-out,opacity 400ms linear;
+    -webkit-transition: width 500ms ease-out,opacity 400ms linear;
+    transition: width 500ms ease-out,opacity 400ms linear;
+}
+
+#progress dd, #progress dt {
+    position: absolute;
+    top: 0;
+    height: 3px;
+    -moz-box-shadow: #1293cc 1px 0 6px 1px;
+    -ms-box-shadow: #1293cc 1px 0 6px 1px;
+    -webkit-box-shadow: #1293cc 1px 0 6px 1px;
+    box-shadow: #1293cc 1px 0 6px 1px;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    background:#1293CC;
+}
+
+#progress dt {
+    opacity: .6;
+    width: 180px;
+    right: -80px;
+    clip: rect(-6px,90px,14px,-6px);
+}
+
+#progress dd {
+    opacity: .6;
+    width: 20px;
+    right: 0;
+    clip: rect(-6px,22px,14px,10px);
+}

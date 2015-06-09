@@ -41,12 +41,10 @@
 
 
 
-
-        fcfinder.append("" +
-            "<div class=\"left\"><div id=\"all_folders\">" +
-            "<ul class=\"folders\">" +
-                "<li><a><span class=\"folder\">Loading...<span class=\"load\"></span></span>" +
-                "</a></li>"+
+        fcfinder.append("<div class=\"left\"><div id=\"all_folders\">" +
+        "<ul class=\"folders\">" +
+        "<li><a><span class=\"folder\">Loading...<span class=\"load\"></span></span>" +
+        "</a></li>"+
             //    "<li><a href=\"#\" class='active'>" +
             //    "<span class=\"braca closed\"></span>" +
             //    "<span class=\"folder\">home</span>"+
@@ -55,13 +53,23 @@
             //    "<span class=\"braca closed\"></span>" +
             //    "<span class=\"folder\">home</span>"+
             //    "</a></li>"+
-            "</div></div>" +
-            "<div class=\"right\">" +
-                "<ul class=\"widget\">" +
-                    "<li><a title=\"Yükle\" class=\"upload\"><form style=\"opacity:0;\" action=\"\" method=\"POST\" enctype=\"multipart/form-data\">" +
-                    "<input class=\"upload_field\" name=\"upload[]\" onchange=\"this.form.submit()\" style=\"height:31px\" multiple=\"multiple\" type=\"file\">"+
-                    "<input name=\"type\" value=\"upload_file\" type=\"hidden\">"+
-                    "</form></a></li>"+
+        "</div></div>" +
+        "<div class=\"right\">" +
+        "<ul class=\"widget\">" +
+        "<li><a title=\"Yükle\" class=\"upload\">" +
+        "<form style=\"opacity:0;\" id=\"file_upload\" method=\"post\" action=\"\" enctype=\"multipart/form-data\">" +
+            //"<div style=\"display:none\">"+
+            //"<input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" />"+
+            //"<input name=\"authenticity_token\" type=\"hidden\" value=\""+$("meta[name='csrf-token']").attr("content")+"\" />"+
+            //"</div>"+
+        "<input class=\"upload_field\" name=\"fcfinder[upload][]\" style=\"height:31px\" multiple=\"multiple\" type=\"file\">"+
+        "<input name=\"fcfinder[type]\" value=\"upload\" type=\"hidden\">"+
+        "<input name=\"fcfinder[path]\" value=\"\" type=\"hidden\">"+
+        "</form>" +
+        "</a></li>"+
+
+
+
 
         "<li><a href=\"fcfinder:settings\" title=\"Yeni Klasör\" class=\"new_folder\">Yeni Klasör</a></li>"+
         "<li><a href=\"fcfinder:refresh\" title=\"Yenile\" class=\"refresh\">Yenile</a></li>"+
@@ -118,13 +126,13 @@
         "<li><a href=\"fcfinder:settings\" title=\"Hakkında\" class=\"about\">Hakkında</a></li>"+
 
 
-                "</ul>"+
-                "<ul class=\"wrapper\">" +
-                        "<li>Loading...<span class=\"load\"></span></li>"+
-                "</ul>"+
-            "</div>" +
-            "<div class=\"clear\"></div>" +
-            "<div class=\"bottom\">%s Files (%s MB)</div>");
+        "</ul>"+
+        "<ul class=\"wrapper\">" +
+        "<li>Loading...<span class=\"load\"></span></li>"+
+        "</ul>"+
+        "</div>" +
+        "<div class=\"clear\"></div>" +
+        "<div class=\"bottom\">%s Files (%s MB)</div>");
 
         if (Cookies.getCookie("FCFINDER_view_type")=="icon"){
             fcfinder.find(".right ul.widget li a.icon_view").addClass("passive");
@@ -198,11 +206,95 @@
         }});
 
 
+        //$("body").on("click",fcfinder_selector+" .right ul.widget li a.upload",function(){
+        //    fcfinder.prepend('<div class="dialog-scope"></div><div class="dialog"><h1>Yükle</h1>' +
+        //    "<form accept-charset=\"UTF-8\" id=\"file_upload\" action=\"\" method=\"POST\" enctype=\"multipart/form-data\">" +
+        //        //"<div style=\"display:none\">"+
+        //        //"<input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\" />"+
+        //        //"<input name=\"authenticity_token\" type=\"hidden\" value=\""+$("meta[name='csrf-token']").attr("content")+"\" />"+
+        //        //"</div>"+
+        //        "<input class=\"upload_field\" name=\"fcfinder[upload][]\" style=\"height:31px\" multiple=\"multiple\" type=\"file\">"+
+        //        "<input name=\"fcfinder[type]\" value=\"upload\" type=\"hidden\">" +
+        //    "<input type=\"text\" name=\"title\" />"+
+        //    "<input type=\"submit\" value=\"OK\" />"+
+        //        "</form>" +
+        //    '</div>');
+        //    return false;
+        //});
+
+
+        $("body").on("change",fcfinder_selector+" input.upload_field",function(e){
+            //fcfinder.find("form#file_upload").trigger("submit");
+            console.log(e.target.files);
+            fcfinder.find("input[name='fcfinder[path]']").val(fcfinder.find(".left #all_folders ul li a.active").attr("href"));
+            $(this).closest('form').trigger('submit');
+        });
+
+
+
+
+        $("body").on("submit",fcfinder_selector+" form#file_upload",function(e){
+            var formData = new FormData(this);
+            console.log(formData);
+            $.ajax({url:ayarlar.url,dataType:'json',processData: false,contentType: false,type:'POST',data:formData,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (fcfinder.find("#progress").length === 0) {
+                                fcfinder.prepend($("<div><dt/><dd/></div>").attr("id", "progress"));
+                            }
+                            fcfinder.find("#progress").css({width: percentComplete * 100 + '%'});
+                            if (percentComplete === 1) {
+                                fcfinder.find("#progress").width("101%").delay(100).fadeOut(300, function() {
+                                    $(this).remove();
+                                });
+                            }
+                        }
+                    }, false);
+                    xhr.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            fcfinder.find('#progress').css({
+                                width: percentComplete * 100 + '%'
+                            });
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success:function(data) {
+                    if (data[0]=="true"){
+                        fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                    }else{
+                        if (data[1]=="0"){ alert("Dosya Boyutu İzin Verilen Dosya Boyutundan Fazla \n İzin Verilen Dosya Boyutu:"+data[2]); }
+                        if (data[1]=="-1"){
+                            var txt = [];
+                                $.each(data[2],function(k,v){
+                                    txt.push(v[0]);
+                                });
+                            alert("Yüklemeye Çalıştığınız Dosya Türüne İzin Verilmemiş \n İzin Verilen Dosya Türü(leri):\n"+txt.join(", ")+"."); }
+                        else{
+                            alert("Bir Hata Meydana Geldi ve Dosya Yüklenemedi Hata Sebebi: \""+data[2]+"\" Olabilir.");
+                        }
+                    }
+                }
+            });
+
+
+            //upload_files
+            return false;
+        });
 
 
         $("body").on("dblclick",fcfinder_selector+" .right ul.wrapper li div",function(){
             var path = $(this).attr("data-path");
-            fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").trigger("click");
+            if (fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").size()>0){
+                fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").trigger("click");
+            }else{
+                //#TODO:Aç'a basınca editör'e dosya yolu yapışacak!
+                alert("Dosya Seçldi");
+            }
 
         });
 
@@ -273,7 +365,7 @@
                         if (Cookies.getCookie("FCFINDER_view_type")=="list"){fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");}
                     }
 
-                   ths.next("span.folder_load").remove();
+                    ths.next("span.folder_load").remove();
 
                 }});
                 ths.attr("id","true");
@@ -1063,7 +1155,7 @@
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.edit") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.copy") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.cut") &&
-                //!$(e.target).is(fcfinder_selector+" .right ul.widget li a.paste") &&
+                    //!$(e.target).is(fcfinder_selector+" .right ul.widget li a.paste") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.duplicate") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.rename") &&
                 !$(e.target).is(fcfinder_selector+" .right ul.widget li a.delete") &&
@@ -1081,7 +1173,7 @@
                 ".right ul.widget li a.edit , " +
                 ".right ul.widget li a.copy , " +
                 ".right ul.widget li a.cut , " +
-                //".right ul.widget li a.paste  , " +
+                    //".right ul.widget li a.paste  , " +
                 ".right ul.widget li a.duplicate , " +
                 ".right ul.widget li a.rename , " +
                 ".right ul.widget li a.delete").addClass("passive");
@@ -1238,7 +1330,7 @@
 
 
 
-console.log(document.cookie)
+        console.log(document.cookie)
 
 
     };

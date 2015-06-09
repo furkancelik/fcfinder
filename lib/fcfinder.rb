@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'mini_magick'
 require "fcfinder/version"
 require "fcfinder/engine"
 
@@ -6,7 +7,15 @@ require "fcfinder/engine"
 module Fcfinder
   class Connector
     attr_reader :run
-    def initialize(file,host_url,fc_params=nil)
+    def initialize(file,host_url,fc_params=nil,options = {})
+
+
+      #1MB
+      max_file_size = options[:max_file_size] ||= 1_000_000
+      options[:allowed_mime] ||= {}
+      options[:disallowed_mime] ||= {}
+      permission_mime = permission_mime(options[:allowed_mime],options[:disallowed_mime])
+
       @fcdir = file.chomp("/*")
       @main_folder = @fcdir.split("/").last
       @host_url = host_url
@@ -135,7 +144,126 @@ module Fcfinder
               #return false Dosya Yok!
               @run = ["false"].to_json
             end
+          when "upload"
+            # p "77777777777777777777777777777777777777777777"
+            #p fc_params
+            # File.open(@fcdir + fc_params[:upload][:filename], "w") do |f|
+            #   f.write(fc_params[:upload][:tempfile].read)
+            # end
+            # p "*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
+            ### p fc_params[:upload]
+            # p fc_params[:upload][0].class
+            # p fc_params[:upload][0].tempfile
+            # p fc_params[:upload][0][:filename]
+            #p fc_params[:upload][0][:filename].class
+            # p "*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
 
+            # Dosya boyut hesabı yap
+            # dosya varmı diye bak
+
+
+
+            #   p "22222222222222222222222222222222"
+            # p fc_params[:upload]
+            #   p "22222222222222222222222222222222"
+
+               # File.open(File.join(get_path(fc_params[:path]),files.original_filename), "wb")  do |f|
+               #   p f.write(files.read)
+               # end
+
+
+=begin
+            image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png image/tiff image/x-targa image/x-icon)
+            file_path = []
+p "/////////////////////////////////////////"
+            fc_params[:upload].each do |file|
+              p "**************************************"
+              p file
+              p File.size(file.tempfile)
+              p max_file_size
+              #dosya büyük
+              return @run = ["false","0"].to_json if file.tempfile.size > max_file_size
+              #format yok
+              return @run = ["false","1"].to_json  unless permission_mime.has_key?(file.original_filename.split(".").last) || permission_mime[file.original_filename.split(".").last]==file.content_type
+
+              file_path.push(File.join(get_path(fc_params[:path]),file.original_filename)) if image_mime_type.include?(file.content_type)
+
+              File.open(File.join(get_path(fc_params[:path]),file.original_filename), "wb")  do |f|
+                f.write(file.read)
+              end
+            end
+
+
+
+            # resimleri yeniden boyutlandır
+            file_path.each{ |file|
+              thumbs = file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").chomp(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").split("/").last).chomp("/")
+              unless (File.exist?(thumbs))
+                _file = ""
+                thumbs.split("/").each { |file|
+                  _file << file+"/"
+                  p _file
+                  unless (File.exist?(_file))
+                    Dir.mkdir(_file.chomp("/"))
+                  end
+                }
+              end
+
+              image = MiniMagick::Image.open(file)
+              image.resize "64x64"
+              image.write(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
+            }
+
+=end
+            #@run = ["true"].to_json
+
+
+            begin
+                image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png image/tiff image/x-targa image/x-icon)
+                file_path = []
+                error_delete_file = []
+                fc_params[:upload].each do |file|
+
+                  #dosya büyük
+                  return @run = ["false","0",format_mb(max_file_size)].to_json if file.tempfile.size > max_file_size
+                  #format yok
+                  return @run = ["false","-1",permission_mime.to_a].to_json  unless permission_mime.has_key?(file.original_filename.split(".").last) || permission_mime[file.original_filename.split(".").last]==file.content_type
+
+                  file_path.push(File.join(get_path(fc_params[:path]),file.original_filename)) if image_mime_type.include?(file.content_type)
+                  error_delete_file.push(File.join(get_path(fc_params[:path]),file.original_filename))
+                  File.open(File.join(get_path(fc_params[:path]),file.original_filename), "wb")  do |f|
+                    f.write(file.read)
+                  end
+
+                end
+
+                # resimleri yeniden boyutlandır
+                file_path.each{ |file|
+                  thumbs = file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").chomp(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").split("/").last).chomp("/")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+
+                  image = MiniMagick::Image.open(file)
+                  image.resize "64x64"
+                  image.write(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
+                }
+
+                @run = ["true"].to_json
+            rescue Exception => e
+              error_delete_file.each{ |file|
+                FileUtils.rm_rf(file) unless File.size(file) > 0
+              }
+              @run = ["false","-2",e.to_s].to_json
+            end
+            @run
 
           else
             ###
@@ -222,7 +350,79 @@ module Fcfinder
         end
       end
       ndx=7
-      return "#{'%.3f' % (size/(scale**(ndx-1)))} #{conv[ndx-1]}"
+      "#{'%.3f' % (size/(scale**(ndx-1)))} #{conv[ndx-1]}"
+    end
+
+    def permission_mime(allowed_mime,disallowed_mime)
+      permission = {
+          'doc'   => 'application/vnd.ms-word',
+          'docx'  => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'xls'   => 'application/vnd.ms-excel',
+          'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'ppt'   => 'application/vnd.ms-powerpoint',
+          'pps'   => 'application/vnd.ms-powerpoint',
+          'pdf'   => 'application/pdf',
+          'xml'   => 'application/xml',
+          'swf'   => 'application/x-shockwave-flash',
+          # archives
+          'gz'    => 'application/x-gzip',
+          'tgz'   => 'application/x-gzip',
+          'bz'    => 'application/x-bzip2',
+          'bz2'   => 'application/x-bzip2',
+          'tbz'   => 'application/x-bzip2',
+          'zip'   => 'application/zip',
+          'rar'   => 'application/x-rar',
+          'tar'   => 'application/x-tar',
+          'rar'   => 'application/x-rar-compressed',
+          '7z'    => 'application/x-7z-compressed',
+          # texts
+          'txt'   => 'text/plain',
+          'php'   => 'text/x-php',
+          'html'  => 'text/html',
+          'htm'   => 'text/html',
+          'js'    => 'text/javascript',
+          'css'   => 'text/css',
+          'rtf'   => 'text/rtf',
+          'rtfd'  => 'text/rtfd',
+          'py'    => 'text/x-python',
+          'java'  => 'text/x-java-source',
+          'rb'    => 'text/x-ruby',
+          'erb'   => 'text/x-ruby',
+          'sh'    => 'text/x-shellscript',
+          'pl'    => 'text/x-perl',
+          'sql'   => 'text/x-sql',
+          # images
+          'bmp'   => 'image/x-ms-bmp',
+          'jpg'   => 'image/jpeg',
+          'jpeg'  => 'image/jpeg',
+          'gif'   => 'image/gif',
+          'png'   => 'image/png',
+          'tif'   => 'image/tiff',
+          'tiff'  => 'image/tiff',
+          'tga'   => 'image/x-targa',
+          'psd'   => 'image/vnd.adobe.photoshop',
+          'ico'   =>  'image/x-icon',
+          # audio
+          'mp3'   => 'audio/mpeg',
+          'mid'   => 'audio/midi',
+          'ogg'   => 'audio/ogg',
+          'mp4a'  => 'audio/mp4',
+          'wav'   => 'audio/wav',
+          'wma'   => 'audio/x-ms-wma',
+          # video
+          'avi'   => 'video/x-msvideo',
+          'dv'    => 'video/x-dv',
+          'mp4'   => 'video/mp4',
+          'mpeg'  => 'video/mpeg',
+          'mpg'   => 'video/mpeg',
+          'mov'   => 'video/quicktime',
+          'wm'    => 'video/x-ms-wmv',
+          'flv'   => 'video/x-flv',
+          'mkv'   => 'video/x-matroska'
+      }
+      permission.merge!(allowed_mime)
+      permission.delete_if {|key| disallowed_mime.include?(key) }
+      permission
     end
 
 
