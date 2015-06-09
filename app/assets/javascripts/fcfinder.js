@@ -56,6 +56,7 @@
         "</div></div>" +
         "<div class=\"right\">" +
         "<ul class=\"widget\">" +
+        "<li><a href=\"fcfinder:up\" title=\"Üst Klasor\" class=\"up_folder passive\">Üst Klasor</a></li>"+
         "<li><a title=\"Yükle\" class=\"upload\">" +
         "<form style=\"opacity:0;\" id=\"file_upload\" method=\"post\" action=\"\" enctype=\"multipart/form-data\">" +
             //"<div style=\"display:none\">"+
@@ -67,9 +68,6 @@
         "<input name=\"fcfinder[path]\" value=\"\" type=\"hidden\">"+
         "</form>" +
         "</a></li>"+
-
-
-
 
         "<li><a href=\"fcfinder:settings\" title=\"Yeni Klasör\" class=\"new_folder\">Yeni Klasör</a></li>"+
         "<li><a href=\"fcfinder:refresh\" title=\"Yenile\" class=\"refresh\">Yenile</a></li>"+
@@ -157,6 +155,7 @@
 
 
 
+
         $.ajax({url:ayarlar.url,dataType:'json',type:'POST',success:function(data) {
             console.log(data);
             if (data == "Access not allowed!") {
@@ -200,6 +199,8 @@
                 appendFiles(data);
                 sortable(Cookies.getCookie("FCFINDER_sortable"));
                 if (Cookies.getCookie("FCFINDER_view_type")=="list"){fcfinder.find(".right ul.wrapper li[data-show='true']").prepend("<div class='list_head'><span class='file_name'>Dosya Adı</span><span class='file_size'>Dosya Boyutu</span><span class='file_date'>Dosya Oluşturulma Tarihi</span></div>");}
+                if (fcfinder.find(".left #all_folders ul.folders li a.active").attr("href")!="fcdir:/"){ fcfinder.find(".right ul.widget li a.up_folder").removeClass("passive");}
+                else{fcfinder.find(".right ul.widget li a.up_folder").addClass("passive");}
             }
 
 
@@ -295,15 +296,17 @@
                 //#TODO:Aç'a basınca editör'e dosya yolu yapışacak!
                 alert("Dosya Seçldi");
             }
-
+            if (fcfinder.find(".left #all_folders ul.folders li a.active").attr("href")!="fcdir:/"){ fcfinder.find(".right ul.widget li a.up_folder").removeClass("passive");}
+            else{fcfinder.find(".right ul.widget li a.up_folder").addClass("passive");}
         });
+
+
 
         $("body").on("click",fcfinder_selector+" ul.folders a",function(e){
             var ths = $(this);
             var url = ths.attr("href");
             var id = ths.attr("id");
             var data_path = ths.attr("href");
-
 
 
             fcfinder.find(".right ul.wrapper li.file_wrapper").attr("data-show","false").hide();
@@ -371,6 +374,8 @@
                 ths.attr("id","true");
             }
 
+            if (fcfinder.find(".left #all_folders ul.folders li a.active").attr("href")!="fcdir:/"){ fcfinder.find(".right ul.widget li a.up_folder").removeClass("passive");}
+            else{fcfinder.find(".right ul.widget li a.up_folder").addClass("passive");}
             return false;
         });
 
@@ -426,10 +431,10 @@
                 ths.removeClass("opened").addClass("closed");
             }
 
-
-
-
+            if (fcfinder.find(".left #all_folders ul.folders li a.active").attr("href")!="fcdir:/"){ fcfinder.find(".right ul.widget li a.up_folder").removeClass("passive");}
+            else{fcfinder.find(".right ul.widget li a.up_folder").addClass("passive");}
         });
+
 
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.show_size",function(){
             if (Cookies.getCookie('FCFINDER_view_type')=="icon"){
@@ -560,6 +565,22 @@
                 "margin-top":-(this.height()/2)+"px"
             });
         }
+
+
+        //up_folder
+        $("body").on("click",fcfinder_selector+" .right ul.widget li a.up_folder",function(){
+            if (!$(this).hasClass("passive")){
+                //$("body").on("click",fcfinder_selector+" ul.folders a",function(e){
+                var up_path = fcfinder.find(".left  #all_folders ul.folders li a.active").attr("href").split("/");
+                up_path.pop();
+                //Trigger'i ayarla hatasını çöz
+                $(this).attr("href",up_path.join("/")).trigger("click");
+                //.trigger("click");
+                $(this).removeAttr("id").removeClass("active").removeAttr("data-show");
+            }
+            return false;
+        });
+
 
         //info
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.info",function(){

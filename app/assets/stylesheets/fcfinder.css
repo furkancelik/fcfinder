@@ -41,6 +41,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 /*#fcfinder .right ul.widget li a:hover { border-radius: 5px; border: 1px solid #ccc;}*/
 
+#fcfinder .right ul.widget li a.up_folder { background: url("./fcfinder/up_folder.png") no-repeat; }
 #fcfinder .right ul.widget li a.upload { background: url("./fcfinder/upload.png") no-repeat; }
 #fcfinder .right ul.widget li a.refresh { background: url("./fcfinder/refresh.png") no-repeat; }
 #fcfinder .right ul.widget li a.settings { background: url("./fcfinder/settings.png") no-repeat; }
