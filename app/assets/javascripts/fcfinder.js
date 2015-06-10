@@ -69,35 +69,35 @@
         "</form>" +
         "</a></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"Yeni Klasör\" class=\"new_folder\">Yeni Klasör</a></li>"+
+        "<li><a href=\"fcfinder:newfolder\" title=\"Yeni Klasör\" class=\"new_folder\">Yeni Klasör</a></li>"+
         "<li><a href=\"fcfinder:refresh\" title=\"Yenile\" class=\"refresh\">Yenile</a></li>"+
 
         "<li><a href=\"\" title=\"İndir\" class=\"download passive\">İndir</a></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"Bilgiler\" class=\"info passive\">Bilgiler</a><div>" +
+        "<li><a href=\"fcfinder:info\" title=\"Bilgiler\" class=\"info passive\">Bilgiler</a><div>" +
         "<ul>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Önizle\" class=\"preview passive\">Önizle</a></li>" +
+        "<li><a href=\"fcfinder:preview\" title=\"Önizle\" class=\"preview passive\">Önizle</a></li>" +
         "</ul>" +
         "</div></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"Düzenle\" class=\"edit passive\">Düzenle</a><div>" +
+        "<li><a href=\"fcfinder:edit\" title=\"Düzenle\" class=\"edit passive\">Düzenle</a><div>" +
         "<ul>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Kopyala\" class=\"copy passive\">Kopyala</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Kes\" class=\"cut passive\">Kes</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Yapıştır\" class=\"paste passive\">Yapıştır</a></li>" +
+        "<li><a href=\"fcfinder:copy\" title=\"Kopyala\" class=\"copy passive\">Kopyala</a></li>" +
+        "<li><a href=\"fcfinder:cut\" title=\"Kes\" class=\"cut passive\">Kes</a></li>" +
+        "<li><a href=\"fcfinder:paste\" title=\"Yapıştır\" class=\"paste passive\">Yapıştır</a></li>" +
 
-        "<li><a href=\"fcfinder:settings\" title=\"Kopyasını Oluştur\" class=\"duplicate passive\">Kopyasını Oluştur</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Yeniden Adlandır\" class=\"rename passive\">Yeniden Adlandır</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Düzenle\" class=\"edit passive\">Düzenle</a></li>" +
+        "<li><a href=\"fcfinder:duplicate\" title=\"Kopyasını Oluştur\" class=\"duplicate passive\">Kopyasını Oluştur</a></li>" +
+        "<li><a href=\"fcfinder:rename\" title=\"Yeniden Adlandır\" class=\"rename passive\">Yeniden Adlandır</a></li>" +
+        "<li><a href=\"fcfinder:edit\" title=\"Düzenle\" class=\"edit passive\">Düzenle</a></li>" +
         "</ul>" +
         "</div></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"Sil\" class=\"delete passive\">Sil</a></li>"+
+        "<li><a href=\"fcfinder:delete\" title=\"Sil\" class=\"delete passive\">Sil</a></li>"+
 
         "<li><a href=\"fcfinder:settings\" title=\"Ayarlar\" class=\"settings\">Ayarlar</a><div>" +
         "<ul>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Simge Görünümü\" class=\"icon_view\">Simge Görünümü</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Liste Görünümü\" class=\"list_view\">Liste Görünümü</a></li>" +
+        "<li><a href=\"fcfinder:iconview\" title=\"Simge Görünümü\" class=\"icon_view\">Simge Görünümü</a></li>" +
+        "<li><a href=\"fcfinder:listview\" title=\"Liste Görünümü\" class=\"list_view\">Liste Görünümü</a></li>" +
 
 
         "<li><a data-show=\""+Cookies.getCookie("FCFINDER_size_show")+"\" href=\"fcfinder:showsize\" title=\"Boyutu Göster\" class=\"show_size\">Boyutu Göster</a></li>"+
@@ -105,13 +105,13 @@
         "</ul>" +
         "</div></li>"+
 
-        "<li><a href=\"fcfinder:settings\" title=\"Sırala\" class=\"sort\">Sırala</a><div>" +
+        "<li><a href=\"fcfinder:sorting\" title=\"Sırala\" class=\"sort\">Sırala</a><div>" +
         "<ul>" +
 
-        "<li><a href=\"fcfinder:settings\" title=\"Ada Göre Sırala\" class=\"name_sorter\">Ada Göre Sırala</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Boyuta Göre Sırala\" class=\"size_sorter\">Boyuta Göre Sırala</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Tarihe Göre Sırala\" class=\"date_sorter\">Tarihe Göre Sırala</a></li>" +
-        "<li><a href=\"fcfinder:settings\" title=\"Türüne Göre Sırala\" class=\"kind_sorter\">Türüne Göre Sırala</a></li>" +
+        "<li><a href=\"fcfinder:namesorter\" title=\"Ada Göre Sırala\" class=\"name_sorter\">Ada Göre Sırala</a></li>" +
+        "<li><a href=\"fcfinder:sizesorter\" title=\"Boyuta Göre Sırala\" class=\"size_sorter\">Boyuta Göre Sırala</a></li>" +
+        "<li><a href=\"fcfinder:datesorter\" title=\"Tarihe Göre Sırala\" class=\"date_sorter\">Tarihe Göre Sırala</a></li>" +
+        "<li><a href=\"fcfinder:kindsorter\" title=\"Türüne Göre Sırala\" class=\"kind_sorter\">Türüne Göre Sırala</a></li>" +
 
 
         "</ul>" +
