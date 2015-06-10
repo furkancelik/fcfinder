@@ -91,6 +91,8 @@ module Fcfinder
                      :mime_type => File.directory?(get_path(fc_params[:file])) ? "directory" : MIME::Types.type_for(get_path(fc_params[:file])).first.content_type ,
                      :permissions => {:write => File.writable?(get_path(fc_params[:file])).to_s, :read => File.readable?(get_path(fc_params[:file])).to_s}
             }.to_json
+
+          #Onizleme
           when "preview"
             @run = { :url => get_url(fc_params[:file]),
                      :path => fc_params[:file],
@@ -102,70 +104,187 @@ module Fcfinder
                      :permissions => {:write => File.writable?(get_path(fc_params[:file])).to_s, :read => File.readable?(get_path(fc_params[:file])).to_s}
             }.to_json
 
+
+          #Dosya Kopyala
           when "copy"
-            file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:copy_file_path]).split("/").last
-            if (File.exist?(file_path) || File.directory?(file_path))
-              @run = ["false","0"].to_json
-              #0 => Aynı Dosyadan Var
-            else
-              #Kopyalama İşlemini Gerçekleştir
-              #TODO:buraya bi if getir kopyalma gerçekleştimi bak
-              FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
-              @run = ["true"].to_json
-            end
+            begin
+              file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:copy_file_path]).split("/").last
+              if (File.exist?(file_path))
+                @run = ["false","0"].to_json
+                #0 => Aynı Dosyadan Var
+              else
+                #Kopyalama İşlemini Gerçekleştir
+                FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
 
+                #thumbs'a kopyasını gönder
+                if !File.directory?(get_path(fc_params[:copy_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                  thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                end
+
+                @run = ["true"].to_json
+              end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
+            end
+            @run
+
+
+          #Dosya Kesme
           when "cut"
-            file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:cut_file_path]).split("/").last
-            if (File.exist?(file_path) || File.directory?(file_path))
-              @run = ["false","0"].to_json
-              #0 => Aynı Dosyadan Var
-            else
-              #Kesme İşlemini Gerçekleştir
-              #TODO:buraya bi if getir kesme gerçekleştimi bak
-              FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
-              @run = ["true"].to_json
-            end
+            begin
+              file_path = get_path(fc_params[:this_folder_path]).chomp("/")+"/"+get_path(fc_params[:cut_file_path]).split("/").last
+              if (File.exist?(file_path) || File.directory?(file_path))
+                @run = ["false","0"].to_json
+                #0 => Aynı Dosyadan Var
+              else
+                #Kesme İşlemini Gerçekleştir
+                FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
 
+                if !File.directory?(get_path(fc_params[:cut_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                  thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                end
+                @run = ["true"].to_json
+              end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
+            end
+            @run
+
+
+          #Dosya Kopyasını Oluşturma
           when "duplicate"
+            begin
+              file_path = get_path(fc_params[:file_path]).chomp("/")
+              extension = (file_path.split("/").last.split(".").size>1) ? "."+file_path.split("/").last.split(".").last : ""
+              file_name = file_path.split("/").last.chomp(extension)
+              folder_name = file_path.chomp(file_path.split("/").last).chomp("/")
 
-            file_path = get_path(fc_params[:file_path]).chomp("/")
-            extension = (file_path.split("/").last.split(".").size>1) ? "."+file_path.split("/").last.split(".").last : ""
-            file_name = file_path.split("/").last.chomp(extension)
-            folder_name = file_path.chomp(file_path.split("/").last).chomp("/")
+              reg_file = "#{file_name}".match(/(.+?) copy ([0-9])/i);
+              unless (reg_file.nil? && !(File.exist?(folder_name+"/"+file_name+" copy 1"+extension)))
+                #"file_name copy 1" şeklinde bir dosya adı var
+                reg_file = "#{file_name} copy 1#{extension}".match(/(.+?) copy ([0-9])/i) if reg_file.nil?
+                j = Dir.glob("#{folder_name}/#{reg_file[1]} copy *#{extension}").last.match(/#{reg_file[1]} copy ([0-9])#{extension}/)[1].to_i + 1
 
-            reg_file = "#{file_name}".match(/(.+?) copy ([0-9])/i);
-            unless (reg_file.nil?)
-              #"file_name copy 1" şeklinde bir dosya adı var
-              j = Dir.glob("#{folder_name}/#{reg_file[1]} copy *#{extension}").last.match(/#{reg_file[1]} copy ([0-9])#{extension}/)[1].to_i + 1
-              new_file_name = "#{reg_file[1]} copy #{j}#{extension}"
-              new_file_path = folder_name.chomp("/")+"/"+new_file_name
-              #TODO:fosya kopyalamaya if koy
-              FileUtils.cp_r(file_path,new_file_path)
-              @run = ["true"].to_json
-            else
-              FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
-              @run = ["true"].to_json
+                new_file_name = "#{reg_file[1]} copy #{j}#{extension}"
+                new_file_path = folder_name.chomp("/")+"/"+new_file_name
+                FileUtils.cp_r(file_path,new_file_path)
+
+                if !File.directory?(file_path) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
+                  thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.cp_r(thumbs,new_file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
+                end
+
+                @run = ["true"].to_json
+              else
+
+                  FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
+
+
+                if !File.directory?(file_path) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
+                  thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.cp_r(thumbs,folder_name.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")+"/"+file_name+" copy 1"+extension)
+                end
+                @run = ["true"].to_json
+              end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
             end
+            @run
+
+
+          #Dosya Yeniden Adlandır
           when "file_rename"
-            if (File.exist?(get_path(fc_params[:path])))
-              folder_name = get_path(fc_params[:path]).chomp(get_path(fc_params[:path]).split("/").last).chomp("/")
-              #TODO:if koy!
-              FileUtils.mv(get_path(fc_params[:path]),folder_name+"/"+fc_params[:file_name])
-              @run = ["true"].to_json
-            else
-              #return false Dosya Yok!
-              @run = ["false"].to_json
+            begin
+              if (File.exist?(get_path(fc_params[:path])))
+                folder_name = get_path(fc_params[:path]).chomp(get_path(fc_params[:path]).split("/").last).chomp("/")
+                FileUtils.mv(get_path(fc_params[:path]),folder_name+"/"+fc_params[:file_name])
+                if !File.directory?(get_path(fc_params[:path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:path])).first.content_type)
+                  thumbs = get_path(fc_params[:path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.mv(thumbs,folder_name.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").chomp("/")+"/"+fc_params[:file_name])
+                end
+                @run = ["true"].to_json
+              else
+                #return false Dosya Yok!
+                @run = ["false"].to_json
+              end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
             end
-          when "delete"
-            if (File.exist?(get_path(fc_params[:file_path])))
-              #TODO:if koy!
-              FileUtils.rm_rf(get_path(fc_params[:file_path]))
-              @run = ["true"].to_json
-            else
-              #return false Dosya Yok!
-              @run = ["false"].to_json
-            end
+            @run
 
+
+          #Dosya Silme İşlemi
+          when "delete"
+            begin
+              if (File.exist?(get_path(fc_params[:file_path])))
+                FileUtils.rm_rf(get_path(fc_params[:file_path]))
+                @run = ["true"].to_json
+                if !File.directory?(get_path(fc_params[:file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:file_path])).first.content_type)
+                  thumbs = get_path(fc_params[:file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  FileUtils.rm_rf(thumbs)
+                end
+              else
+                #return false Dosya Yok!
+                @run = ["false","0"].to_json
+              end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
+            end
+            @run
+
+
+          #Dosya Yükleme İşlemi
           when "upload"
             begin
                 image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png)

@@ -173,6 +173,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 #fcfinder .right ul.wrapper li div:hover {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 2px solid #216DCC;}
 #fcfinder .right ul.wrapper li div.active {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 2px solid #216DCC;}
+#fcfinder .right ul.wrapper li div.cutting { opacity: 0.5;}
 #fcfinder .right ul.wrapper li div span.file_name { font-size:13px; text-align: center; display: block; margin-top: 64px; height: 16px; overflow: hidden;}
 #fcfinder .right ul.wrapper li div span.file_name input { width: 69px;padding: 0 2px;font-size: 12px;height: 14px;border-radius: 5px;display: block;border: 1px solid #999;}
 #fcfinder .right ul.wrapper li div span.file_date,

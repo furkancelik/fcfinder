@@ -699,8 +699,9 @@
         //cut
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.cut",function(){
             if (!$(this).hasClass("passive")){
+                fcfinder.find(".right ul.wrapper li div").removeClass("cutting");
                 var file = fcfinder.find(".right ul.wrapper li div.active");
-                cut_file = file;
+                file.addClass("cutting");
                 var copy_file_path = file.attr("data-path");
                 if (fcfinder.find("#copy_form").size()>0){ fcfinder.find("#copy_form").remove(); }
                 fcfinder.append('<form id="copy_form"><input type="hidden" name="copy_file_path" value="'+copy_file_path+'" /><input type="hidden" name="copy_type" value="cut" /></form>');
@@ -724,15 +725,14 @@
                     url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
                         console.log(data);
                         if (data[0]=="true")
-                        {
-                            if (cut_file){cut_file.remove();}
+                        {if (fcfinder.find(".right ul.wrapper li div.cutting")){fcfinder.find(".right ul.wrapper li div.cutting").remove(); }
                             fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                         }else {
                             if (data[1] == "0"){
                                 alert("Kopyalamaya Çalıştığınız Dizinde Aynı İsimde Dosya Bulunmaktadır Kopyalama İşlemi Durduruldu");
                             }
                             else{
-                                alert("Bir Hata Meydana Geldi ve Koyalama İşlemi Gerçekleştirilemedi");
+                                alert("Bir Hata Meydana Geldi ve Koyalama İşlemi Gerçekleştirilemedi Hata Sebebi \""+data[2]+"\" Olabilir.");
                             }
                         }
                     }});
