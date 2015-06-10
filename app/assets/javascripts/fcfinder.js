@@ -758,7 +758,7 @@
                         }else
                         {
                             //Kopyası Oluşmadı
-                            alert("Bir Hata Meydana Geldi ve Seçtiğiniz Dosyanın Kopyası Oluşturulamadı");
+                            alert("Bir Hata Meydana Geldi ve Seçtiğiniz Dosyanın Kopyası Oluşturulamadı Hata Sebebi: \""+data[2]+"\" Olabilir.");
                         }
                     }});
 
@@ -789,7 +789,7 @@
                         fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                     }else {
                         //Bir hata meydana geldi adı değiştirilemedi
-                        alert("Bir Hata Meydana Geldi Dosya Adı Değiştirilemedi");
+                        alert("Bir Hata Meydana Geldi Dosya Adı Değiştirilemedi Hata Sebebi: \""+data[2]+"\" Olabilir.");
                     }
                 }});
             return false;
@@ -837,8 +837,8 @@
                     if (data[0]=="true"){
                         fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                     }else {
-                        //Dosya Yok
-                        alert("Silmeye Çalıştığınız Dosyaya Erişilemiyor.");
+                        if (data[1]=="0"){alert("Silmeye Çalıştığınız Dosyaya Erişilemiyor Dosya Olmayabilir.");}
+                        else { alert("Bir Hata Meydana Geldi ve Dosya Silme İşlemi Gerçekleştirilemedi Hata Sebebi: \""+data[2]+"\" Olabilir."); }
                     }
                 }});
             return false;
@@ -1287,7 +1287,7 @@
                         fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                     }else {
                         if (data[1]=="-1"){alert("Bu İsimde Dosya Var");}
-                        else {alert("Bir Hata Meydana Geldi ve Klasör Oluşturulamadı");}
+                        else {alert("Bir Hata Meydana Geldi ve Klasör Oluşturulamadı, Hata Sebebi: \""+data[2]+"\" Olabilir.");}
                     }
                 }
             });
