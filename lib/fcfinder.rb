@@ -389,6 +389,15 @@ module Fcfinder
             end
             @run
 
+          #Dosya Duzenleme
+          when "edit_file"
+            if (File.exist?(get_path(fc_params[:file_path])))
+              @run = {:url => get_url(fc_params[:file_path]), :title => fc_params[:file_path].chomp("/").split("/").last }.to_json
+            else
+              #Dosya Yok
+              @run = ["false","0"].to_json
+            end
+
 
           else
             ###

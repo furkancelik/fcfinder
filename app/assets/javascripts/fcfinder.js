@@ -347,8 +347,6 @@
                         });
                     }
 
-                    //#TODO: oluşma tarihi gibi bilgileri çek küçükten büyüğe doğru sırala sıralamaları yap
-
                     if ($.isEmptyObject(data.directory) && $.isEmptyObject(data.file))
                     {
                         fcfinder.find(".right ul.wrapper li.file_wrapper").hide();
@@ -400,11 +398,11 @@
                 else { fcfinder.find("ul.bottom li").hide(); fcfinder.find("ul.bottom li[data-name='"+ths.attr("data-path")+"']").show();}
 
                 if (fcfinder.find(".right ul.wrapper li div.active").attr("data-new")!="new_folder")
-                {
+                {if (fcfinder.find(".right ul.wrapper li div.active").attr("data-kind")=="image_file"){fcfinder.find(".right ul.widget li a.edit").removeClass("passive"); }
                     fcfinder.find(".right ul.widget li a.download , " +
                     ".right ul.widget li a.info , " +
                     ".right ul.widget li a.preview , " +
-                    ".right ul.widget li a.edit , " +
+                    //".right ul.widget li a.edit , " +
                     ".right ul.widget li a.copy , " +
                     ".right ul.widget li a.cut , " +
                         //".right ul.widget li a.paste  , " +
@@ -510,7 +508,6 @@
         });
 
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.refresh",function(){
-            //#TODO Bulunan Dizin listesi ve görüntüleri yenilenecek içleri html kısımları tekrardan append edilecek;
             var left_wrapper = fcfinder.find(".left #all_folders ul li a.active");
             var right_wrapper =  fcfinder.find(".right  ul.wrapper li.file_wrapper[data-show='true']");
             if (right_wrapper.attr("data-path") == left_wrapper.attr("href")){
@@ -852,8 +849,16 @@
         //edit
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.edit",function(){
             if (!$(this).hasClass("passive")){
-                //#TODO:Geliştirme Yapılacak
-                window.open("http://apps.pixlr.com/editor/");
+                var data = "fcfinder[type]=edit_file&fcfinder[file_path]="+fcfinder.find(".right ul.wrapper li div.active").attr("data-path");
+                $.ajax({
+                    url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
+                        console.log(data);
+                        if (data[0]=="false"){
+                            alert("Bir Hata Meydana Geldi, Açmaya Çalıştığınız Dosyanın Sunucuda Olmaya Bilir.");
+                        }else {
+                            window.open("http://apps.pixlr.com/editor/?s=c&image="+encodeURIComponent(data.url)+"&title="+encodeURIComponent(data.title));
+                        }
+                    }});
             }
             return false;
         });
@@ -1256,7 +1261,7 @@
                 fcfinder.find(".right ul.widget li a.download , " +
                 ".right ul.widget li a.info , " +
                 ".right ul.widget li a.preview , " +
-                ".right ul.widget li a.edit , " +
+                //".right ul.widget li a.edit , " +
                 ".right ul.widget li a.copy , " +
                 ".right ul.widget li a.cut , " +
                     //".right ul.widget li a.paste  , " +
