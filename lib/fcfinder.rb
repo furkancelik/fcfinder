@@ -1,7 +1,9 @@
 require 'fileutils'
 require 'mini_magick'
+require 'zip'
 require "fcfinder/version"
 require "fcfinder/engine"
+require 'fcfinder/zip_file_generator'
 
 
 module Fcfinder
@@ -9,28 +11,35 @@ module Fcfinder
     attr_reader :run
     def initialize(file,host_url,fc_params=nil,options = {})
 
-
       #1MB
       max_file_size = options[:max_file_size] ||= 1_000_000
       options[:allowed_mime] ||= {}
       options[:disallowed_mime] ||= {}
+      #izin verilen dosyalar
       permission_mime = permission_mime(options[:allowed_mime],options[:disallowed_mime])
 
       @fcdir = file.chomp("/*")
       @main_folder = @fcdir.split("/").last
       @host_url = host_url
       @main_file = {}
+
       p "----------------------------"
       p "file->",file
       p "host_url->",host_url
       p "fc_params->",fc_params
       p "----------------------------"
+
       unless fc_params.nil?
         case fc_params[:type]
+
+          #Tum Dosyaları Listele
+          #Klasor Secilme İslemi Yapilinca
           when "all_file_list"
             url_params = get_path(fc_params[:url])
             @url_params = append_file(url_params+"/*")
             @run = @url_params.to_json
+
+          #Yeni Klasor Olusturma
           when "create_directory"
             create_file_path = File.join(get_path(fc_params[:path]),fc_params[:directory_name])
             unless File.exist?(create_file_path)
@@ -44,19 +53,33 @@ module Fcfinder
               #-1 => Aynı İsimde Dosya Var Dosya Oluşmadı
               @run = ["false","-1"].to_json
             end
+
+          #Yenileme Islemi
           when "refresh"
             refresh_path = get_path(fc_params[:path])
             file_list = append_file(refresh_path+"/*")
             @run = file_list.to_json
+
+          #Dosya Indirme Islemi
           when "download"
-            #TODO:dosya indirmesini düzenles
-            if (File.directory?(get_path(fc_params[:path])))
-              #rarla
-              file = ""
-            else
-              file = fc_params[:path].sub("fcdir:/","")
+            begin
+              if (File.directory?(get_path(fc_params[:path])))
+                directoryToZip = get_path(fc_params[:path])
+                outputFile = get_path(fc_params[:path]).chomp("/")+".zip"
+                zf = ZipFileGenerator.new(directoryToZip, outputFile)
+                zf.write()
+                file = set_path(outputFile).sub("fcdir:/","")
+                type = get_path(fc_params[:path].chomp("/")+".zip").chomp("/")
+              else
+                file = fc_params[:path].sub("fcdir:/","")
+                type = get_path(fc_params[:path])
+              end
+              @run = { :file =>file, :type => MIME::Types.type_for(type).first.content_type }.to_json
+            rescue Exception => e
+              @run = ["false","0",e.to_s]
             end
-            @run = { :file =>file, :type => MIME::Types.type_for(get_path(fc_params[:path])).first.content_type }.to_json
+            @run
+
           when "info"
             @run = { :url => get_url(fc_params[:file]),
                      :path => fc_params[:file],
@@ -133,9 +156,6 @@ module Fcfinder
               @run = ["false"].to_json
             end
           when "delete"
-            p "***-*-*-*-*-*-*-*-*-*"
-            p get_path(fc_params[:file_path])
-            p fc_params[:file_path]
             if (File.exist?(get_path(fc_params[:file_path])))
               #TODO:if koy!
               FileUtils.rm_rf(get_path(fc_params[:file_path]))
@@ -144,89 +164,14 @@ module Fcfinder
               #return false Dosya Yok!
               @run = ["false"].to_json
             end
+
           when "upload"
-            # p "77777777777777777777777777777777777777777777"
-            #p fc_params
-            # File.open(@fcdir + fc_params[:upload][:filename], "w") do |f|
-            #   f.write(fc_params[:upload][:tempfile].read)
-            # end
-            # p "*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-            ### p fc_params[:upload]
-            # p fc_params[:upload][0].class
-            # p fc_params[:upload][0].tempfile
-            # p fc_params[:upload][0][:filename]
-            #p fc_params[:upload][0][:filename].class
-            # p "*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/"
-
-            # Dosya boyut hesabı yap
-            # dosya varmı diye bak
-
-
-
-            #   p "22222222222222222222222222222222"
-            # p fc_params[:upload]
-            #   p "22222222222222222222222222222222"
-
-               # File.open(File.join(get_path(fc_params[:path]),files.original_filename), "wb")  do |f|
-               #   p f.write(files.read)
-               # end
-
-
-=begin
-            image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png image/tiff image/x-targa image/x-icon)
-            file_path = []
-p "/////////////////////////////////////////"
-            fc_params[:upload].each do |file|
-              p "**************************************"
-              p file
-              p File.size(file.tempfile)
-              p max_file_size
-              #dosya büyük
-              return @run = ["false","0"].to_json if file.tempfile.size > max_file_size
-              #format yok
-              return @run = ["false","1"].to_json  unless permission_mime.has_key?(file.original_filename.split(".").last) || permission_mime[file.original_filename.split(".").last]==file.content_type
-
-              file_path.push(File.join(get_path(fc_params[:path]),file.original_filename)) if image_mime_type.include?(file.content_type)
-
-              File.open(File.join(get_path(fc_params[:path]),file.original_filename), "wb")  do |f|
-                f.write(file.read)
-              end
-            end
-
-
-
-            # resimleri yeniden boyutlandır
-            file_path.each{ |file|
-              thumbs = file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").chomp(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs").split("/").last).chomp("/")
-              unless (File.exist?(thumbs))
-                _file = ""
-                thumbs.split("/").each { |file|
-                  _file << file+"/"
-                  p _file
-                  unless (File.exist?(_file))
-                    Dir.mkdir(_file.chomp("/"))
-                  end
-                }
-              end
-
-              image = MiniMagick::Image.open(file)
-              image.resize "64x64"
-              image.write(file.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
-            }
-
-=end
-            #@run = ["true"].to_json
-
-
             begin
                 image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png)
                 file_path = []
                 error_delete_file = []
                 fc_params[:upload].each do |file|
 
-                  #Dosya tipini konsolda görebilmek için yazdırıldı
-                  p "888888888888888888888"
-                  p file.content_type
                   #dosya büyük
                   return @run = ["false","0",format_mb(max_file_size)].to_json if file.tempfile.size > max_file_size
                   #format yok
@@ -267,6 +212,7 @@ p "/////////////////////////////////////////"
               @run = ["false","-2",e.to_s].to_json
             end
             @run
+
 
           else
             ###

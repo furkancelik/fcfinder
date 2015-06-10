@@ -542,7 +542,15 @@
                 $.ajax({
                     url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
                         console.log(data);
-                        window.open(location+"/download/"+data.file);
+                        if (data[0]=="false"){
+                            alert("Bir Hata Meydana Geldi ve Dosya İndirilemiyor Hata Sebebi: \""+data[2]+"\" Olabilir. \n  Dosya Arşive Eklenirken Hata Oluşmuş Olabilir Klasor Adıyla Aynı Arşiv Dosyası Olmadığından Emin Olun");
+                        }
+                        else{
+                            window.open(location+"/download/"+data.file);
+                            fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                        }
+
+
                     }});
             }
             return false;
@@ -1257,8 +1265,7 @@
                 fcfinder.find("ul#ctxMenu").remove();
                 if ($(this).attr("href")=="fcfinder:open"){ fcfinder.find(".right ul.wrapper li div.active").trigger("dblclick");}
                 if ($(this).attr("href")=="fcfinder:preview"){ fcfinder.find(".right ul.widget li a.preview").trigger("click"); }
-                //TODO:düzenle
-                //if ($(this).attr("href")=="fcfinder:download"){fcfinder.find().trigger("click");}
+                if ($(this).attr("href")=="fcfinder:download"){fcfinder.find(".right ul.widget li a.download").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:copy"){fcfinder.find(".right ul.widget li a.copy").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:cut"){fcfinder.find(".right ul.widget li a.cut").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:duplicate"){fcfinder.find(".right ul.widget li a.duplicate").trigger("click");}
