@@ -484,7 +484,7 @@
             var dir = fcfinder.find(".right ul.wrapper li[data-show='true']");
             if (dir.html()==empty_dir){dir.html("");}
             fcfinder.find(".right ul.wrapper li div").removeClass("active");
-            var html = '<div data-new="new_folder" data-path="" data-name="" data-size="0" data-size_2="0" data-date="" data-kind="directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>';
+            var html = '<div data-new="new_folder" data-path="" data-name="" data-size="0" data-size_2="0" data-date="" data-kind="_directory" class="active directory"><span class="file_name"><form id="new_directory"><input type="text" name="fcfinder[directory_name]" /><input type="hidden" name="fcfinder[type]" value="create_directory"/> <input type="hidden" name="fcfinder[path]" value="'+dir.attr("data-path")+'"></form></span><span class="file_size"></span><span class="file_date"></span></div>';
             if (Cookies.getCookie('FCFINDER_view_type')=="list"){
                 dir.find(".list_head").after(html);
             }else {

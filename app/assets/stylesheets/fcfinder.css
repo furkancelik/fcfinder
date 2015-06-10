@@ -147,6 +147,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 #fcfinder .right ul.wrapper li div.pps {   background: url("./fcfinder/files/pps.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.ppt {   background: url("./fcfinder/files/ppt.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.psd {   background: url("./fcfinder/files/psd.png") center 5px no-repeat;     }
+#fcfinder .right ul.wrapper li div.pptx {   background: url("./fcfinder/files/pptx.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.rar {   background: url("./fcfinder/files/rar.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.rb {   background: url("./fcfinder/files/rb.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.swf {   background: url("./fcfinder/files/swf.png") center 5px no-repeat;     }

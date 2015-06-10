@@ -219,11 +219,14 @@ p "/////////////////////////////////////////"
 
 
             begin
-                image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png image/tiff image/x-targa image/x-icon)
+                image_mime_type = %w(image/x-ms-bmp image/jpeg image/gif image/png)
                 file_path = []
                 error_delete_file = []
                 fc_params[:upload].each do |file|
 
+                  #Dosya tipini konsolda görebilmek için yazdırıldı
+                  p "888888888888888888888"
+                  p file.content_type
                   #dosya büyük
                   return @run = ["false","0",format_mb(max_file_size)].to_json if file.tempfile.size > max_file_size
                   #format yok
@@ -281,7 +284,7 @@ p "/////////////////////////////////////////"
       Dir.glob(files_url).each do |file|
         if File.directory?(file)
           @main_file[:sub_dir] = true if @main_file[:sub_dir].nil?
-          all_dir[file.split("/").last] = {:file=>file, :path => set_path(file),:url => get_url(set_path(file)), :sub_dir => false, :size_2 => directory_size(file), :size => format_mb(directory_size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M"), :path => set_path(file), :type => "directory" }
+          all_dir[file.split("/").last] = {:file=>file, :path => set_path(file),:url => get_url(set_path(file)), :sub_dir => false, :size_2 => directory_size(file), :size => format_mb(directory_size(file)), :ctime => File.ctime(file).strftime("%d/%m/%Y %H:%M"), :path => set_path(file), :type => "_directory" }
           Dir.glob(file+"/*").each do |sub_dir|
             if File.directory?(sub_dir)
               all_dir[file.split("/").last][:sub_dir] = true
@@ -319,13 +322,12 @@ p "/////////////////////////////////////////"
           "doc"
         when "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           "docx"
-
         when "application/vnd.ms-excel"
           "xls"
         when "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           "xlsx"
-        when "application/vnd.ms-powerpoint"
-          "ppt"
+        when "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+          "pptx"
         when "application/vnd.ms-powerpoint"
           "ppt"
         when "application/pdf"
@@ -334,18 +336,14 @@ p "/////////////////////////////////////////"
           "xml"
         when "application/x-shockwave-flash"
           "swf"
-
-        when "application/x-gzip"
+        when "application/x-gzip","application/gzip"
           "gz"
-
-        when "application/xxxxxx"
+        when "application/x-gtar"
           "tgz"
-        when "application/x-bzip2"
+        when "application/x-bzip"
           "bz"
         when "application/x-bzip2"
           "bz2"
-        when "application/x-bzip2"
-          "tbz"
         when "application/zip"
           "zip"
         when "application/x-rar","application/x-rar-compressed"
@@ -354,16 +352,15 @@ p "/////////////////////////////////////////"
           "tar"
         when "application/x-7z-compressed"
           "7z"
-
         when "text/plain"
           "txt"
-        when "text/x-php"
+        when "text/x-php","application/x-httpd-php"
           "php"
         when "text/html"
           "html"
-        when "text/html"
-          "html"
-        when "text/javascript"
+        when "text/htm"
+          "htm"
+        when "application/javascript"
           "js"
         when "text/css"
           "css"
@@ -394,7 +391,6 @@ p "/////////////////////////////////////////"
 
         when "video/x-msvideo"
           "avi"
-
         when "video/x-dv"
           "dv"
         when "video/mp4"
@@ -460,6 +456,7 @@ p "/////////////////////////////////////////"
           'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           'ppt'   => 'application/vnd.ms-powerpoint',
           'pps'   => 'application/vnd.ms-powerpoint',
+          'pptx'  => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
           'pdf'   => 'application/pdf',
           'xml'   => 'application/xml',
           'swf'   => 'application/x-shockwave-flash',
