@@ -1254,6 +1254,53 @@
 
                     ctxMenu.css({"left": x + "px", "top": y + "px"});
                 }
+
+                if ($(e.target).is(fcfinder_selector+" .right ul.wrapper li[data-show='true']") || $(e.target).is(fcfinder_selector+" .right ul.wrapper")) {
+
+                    fcfinder.prepend('<ul id="ctxMenu"></ul>');
+                    var ctxMenu = fcfinder.find("#ctxMenu");
+                    var x = parseInt(e.pageX) - 20;
+                    var y = parseInt(e.pageY) - 30;
+                    var d_x = $(document).width();
+                    var d_y = $(document).height();
+                    var ctxW_x = ctxMenu.width();
+                    var ctxH_y = ctxMenu.height();
+
+                    if (x >= d_x - ctxW_x - 50) { x = d_x - ctxW_x - 50; }
+                    if (y >= d_y - ctxH_y - 40) { y = d_y - ctxH_y - 40;}
+
+
+                    var paste;
+                    if (fcfinder.find(".right ul.widget li a.paste").hasClass("passive")){
+                        paste = "<li><a class=\"none\" href=\"fcfinder:paste\">Yapıştır</a></li>";
+                    }else{paste = "<li><a href=\"fcfinder:paste\">Yapıştır</a></li>";}
+
+                    var view;
+                    if (Cookies.getCookie("FCFINDER_view_type")=="icon"){
+                        view = "<li><a href=\"fcfinder:list_view\">Liste Görünümü</a></li>";
+                    }else{
+                        view = "<li><a href=\"fcfinder:icon_view\">Simge Görünümü</a></li>";
+                    }
+
+                    ctxMenu.html("<li><a class='none'>" + fcfinder.find(".right ul.wrapper li[data-show='true']").attr("data-path") + "</a></li><li class='hr'>&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:upload\">Dosya Yükle</a></li>" +
+                    "<li><a href=\"fcfinder:newfolder\">Yeni Klasor</a></li>" +
+                    "<li><a href=\"fcfinder:refresh\">Yenile</a></li>" +
+                    paste+
+                    "<li class=\"hr\">&nbsp;</li>" +
+                    view+
+                    "<li class=\"hr\">&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:showsize\">Boyutu Göster / Gizle</a></li>" +
+                    "<li><a href=\"fcfinder:showdate\">Tarihi Göster / Gizle</a></li>" +
+                    "<li class=\"hr\">&nbsp;</li>" +
+                    "<li><a href=\"fcfinder:namesorter\">Ada Göre Sırala</a></li>" +
+                    "<li><a href=\"fcfinder:sizesorter\">Boyuta Göre Sırala</a></li>" +
+                    "<li><a href=\"fcfinder:datesorter\">Tarihe Göre Sırala</a></li>" +
+                    "<li><a href=\"fcfinder:kindsorter\">Türüne Göre Sırala</a></li>");
+
+
+                    ctxMenu.css({"left": x + "px", "top": y + "px"});
+                }
             }
             return false;
         });
@@ -1272,6 +1319,23 @@
                 if ($(this).attr("href")=="fcfinder:rename"){fcfinder.find(".right ul.widget li a.rename").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:delete"){fcfinder.find(".right ul.widget li a.delete").trigger("click");}
                 if ($(this).attr("href")=="fcfinder:info"){fcfinder.find(".right ul.widget li a.info").trigger("click");}
+
+                if ($(this).attr("href")=="fcfinder:upload"){ fcfinder.find(".right ul.widget li a.upload input.upload_field").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:newfolder"){ fcfinder.find(".right ul.widget li a.new_folder").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:refresh"){ fcfinder.find(".right ul.widget li a.refresh").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:paste"){ fcfinder.find(".right ul.widget li a.paste").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:list_view"){ fcfinder.find(".right ul.widget li a.list_view").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:icon_view"){ fcfinder.find(".right ul.widget li a.icon_view").trigger("click");}
+
+                if ($(this).attr("href")=="fcfinder:showdate"){ fcfinder.find(".right ul.widget li a.show_date").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:showsize"){ fcfinder.find(".right ul.widget li a.show_size").trigger("click");}
+
+                if ($(this).attr("href")=="fcfinder:namesorter"){ fcfinder.find(".right ul.widget li a.name_sorter").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:sizesorter"){ fcfinder.find(".right ul.widget li a.size_sorter").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:datesorter"){ fcfinder.find(".right ul.widget li a.date_sorter").trigger("click");}
+                if ($(this).attr("href")=="fcfinder:kindsorter"){ fcfinder.find(".right ul.widget li a.kind_sorter").trigger("click");}
+
+
                 return false;
             }
 
