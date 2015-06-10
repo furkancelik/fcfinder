@@ -192,7 +192,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 
 
-#fcfinder .bottom { position: fixed;left: 10px;font-size: 13px;color: #555;bottom: 5px;  }
+#fcfinder ul.bottom { margin: 0; padding: 0; list-style: none; position: fixed;left: 10px;font-size: 13px;color: #555;bottom: 5px;  }
 #fcfinder .left ul.folders { list-style: none; margin:10px 10px; padding: 0px; font-size: 14px; }
 #fcfinder .left ul.folders li ul.folders { margin-top:4px; margin-left:20px; margin-bottom: 0px;}
 #fcfinder .left ul.folders li { margin:1px 0px;}

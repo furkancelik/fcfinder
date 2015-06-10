@@ -37,7 +37,7 @@ module Fcfinder
           when "all_file_list"
             url_params = get_path(fc_params[:url])
             @url_params = append_file(url_params+"/*")
-            @run = @url_params.to_json
+            @run = [@url_params,@url_params[:directory].size+@url_params[:file].size,format_mb(directory_size(url_params))].to_json
 
           #Yeni Klasor Olusturma
           when "create_directory"
@@ -396,7 +396,8 @@ module Fcfinder
       else
         @main_params = append_file(file)
         @main_params[:main_file] = { :path => file.split("/")[-2], :url => file, :sub_dir => @main_file[:sub_dir] }
-        @run = @main_params.to_json
+        @run = [@main_params,@main_params[:directory].size+@main_params[:file].size,format_mb(directory_size(@main_params[:main_file][:url].chomp("/*")))].to_json
+
       end
 
     end

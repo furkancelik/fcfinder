@@ -130,7 +130,7 @@
         "</ul>"+
         "</div>" +
         "<div class=\"clear\"></div>" +
-        "<div class=\"bottom\">%s Files (%s MB)</div>");
+        "<ul class=\"bottom\">Loading...<span class=\"load\"></span></ul>");
 
         if (Cookies.getCookie("FCFINDER_view_type")=="icon"){
             fcfinder.find(".right ul.widget li a.icon_view").addClass("passive");
@@ -155,14 +155,15 @@
 
 
 
-
-        $.ajax({url:ayarlar.url,dataType:'json',type:'POST',success:function(data) {
-            console.log(data);
-            if (data == "Access not allowed!") {
+        $.ajax({url:ayarlar.url,dataType:'json',type:'POST',success:function(_data) {
+            console.log(_data);
+            if (_data == "Access not allowed!") {
                 alert("Erişim İzniniz Yok!");
                 // Erişim izni YOK!
             }
             else{
+                if (fcfinder.find("ul.bottom li[data-path='fcdir:/']").size()===0){fcfinder.find("ul.bottom").html("").append('<li data-path="fcdir:/">'+_data[1]+' Files ( '+_data[2]+' )</li>');}
+                var data = _data[0];
                 main_file_path = data.main_file.path;
 
                 var main_class = data.main_file.sub_dir ? " opened " : " ";
@@ -302,7 +303,7 @@
 
 
 
-        $("body").on("click",fcfinder_selector+" ul.folders a",function(e){
+        $("body").on("click",fcfinder_selector+" ul.folders a",function(){
             var ths = $(this);
             var url = ths.attr("href");
             var id = ths.attr("id");
@@ -313,6 +314,9 @@
             fcfinder.find(".right ul.wrapper li.file_wrapper[data-path='" + data_path + "']").attr("data-show","true").show();
             fcfinder.find("ul.folders li a").removeClass("active");
             ths.addClass("active").attr("data-show","true");
+            fcfinder.find("ul.bottom li").hide();
+            fcfinder.find("ul.bottom li[data-path='"+url+"']").show();
+
 
 
             if (id!="true" && id!="false"){
@@ -325,8 +329,12 @@
                 ths.parent("li").append("<span class=\"folder_load\">Load Directory..</span>");
 
                 var data = 'fcfinder[url]='+url+'&fcfinder[type]=all_file_list';
-                $.ajax({url:ayarlar.url,dataType:'json',type:'POST',data:data,success:function(data) {
-                    console.log(data);
+                $.ajax({url:ayarlar.url,dataType:'json',type:'POST',data:data,success:function(_data) {
+                    console.log(_data);
+                    if (fcfinder.find("ul.bottom li[data-path='"+url+"']").size()===0){fcfinder.find("ul.bottom").append('<li data-path="'+url+'">'+_data[1]+' Files ( '+_data[2]+' )</li>');}
+                    else { fcfinder.find("ul.bottom li").hide(); fcfinder.find("ul.bottom li[data-path='"+url+"']").show();}
+
+                    var data = _data[0];
                     if (!$.isEmptyObject(data.directory))
                     {
                         ths.parent("li").append("<ul class=\"folders\"></ul>");
@@ -385,6 +393,12 @@
             if (ths.attr("class")!="list_head"){
                 fcfinder.find(".right ul.wrapper li div").removeClass("active");
                 ths.addClass("active");
+
+                if (fcfinder.find("ul.bottom li[data-name='"+ths.attr("data-path")+"']").size()===0){
+                    fcfinder.find("ul.bottom li").hide();
+                    fcfinder.find("ul.bottom").append('<li style="display:block;" data-name="'+ths.attr("data-path")+'">'+ths.attr("data-name")+' ( '+ths.attr("data-size")+', '+ths.attr("data-date")+' )</li>');}
+                else { fcfinder.find("ul.bottom li").hide(); fcfinder.find("ul.bottom li[data-name='"+ths.attr("data-path")+"']").show();}
+
                 if (fcfinder.find(".right ul.wrapper li div.active").attr("data-new")!="new_folder")
                 {
                     fcfinder.find(".right ul.widget li a.download , " +
@@ -587,6 +601,11 @@
                 fcfinder.find(".right ul.wrapper li.file_wrapper[data-path='" + data_path + "']").attr("data-show","true").show();
                 fcfinder.find("ul.folders li a").removeClass("active");
                 ths.addClass("active").attr("data-show","true");
+
+                if (fcfinder.find("ul.bottom li[data-path='"+data_path+"']").size()===0){
+                    fcfinder.find("ul.bottom li").hide();}
+                else { fcfinder.find("ul.bottom li").hide(); fcfinder.find("ul.bottom li[data-path='"+data_path+"']").show();}
+
                 fcfinder.find(".right ul.widget li a.refresh").trigger("click");
             }
             return false;
