@@ -44,7 +44,7 @@ module Fcfinder
             create_file_path = File.join(get_path(fc_params[:path]),fc_params[:directory_name])
             unless File.exist?(create_file_path)
               if Dir.mkdir(create_file_path)
-                @run = ["true"].to_json
+                @run = ["true",{:top_dir=>fc_params[:path], :path=>set_path(create_file_path)},].to_json
               else
                 #0 => Herhangibir Hata var Dosya Oluşmadı
                 @run = ["false","0"].to_json

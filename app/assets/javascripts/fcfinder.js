@@ -1407,6 +1407,8 @@
                     console.log(data);
                     if (data[0]=="true"){
                         fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                        fcfinder.find(".left #all_folders ul.folders li a[href='"+data[1].top_dir+"']").trigger("click");
+                        fcfinder.find(".left #all_folders ul.folders li a[href='"+data[1].top_dir+"']").children("span.braca").addClass("closed");
                     }else {
                         if (data[1]=="-1"){alert("Bu İsimde Dosya Var");}
                         else {alert("Bir Hata Meydana Geldi ve Klasör Oluşturulamadı, Hata Sebebi: \""+data[2]+"\" Olabilir.");}
