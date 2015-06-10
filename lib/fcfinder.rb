@@ -140,6 +140,35 @@ module Fcfinder
             @run
 
 
+          #Dosya Zorunlu Kopyala
+          when "copy!"
+            begin
+                #Kopyalama İşlemini Gerçekleştir
+                FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
+
+                #thumbs'a kopyasını gönder
+                if !File.directory?(get_path(fc_params[:copy_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                  thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                end
+
+                @run = ["true"].to_json
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
+            end
+            @run
+
+
           #Dosya Kesme
           when "cut"
             begin
@@ -167,6 +196,33 @@ module Fcfinder
                 end
                 @run = ["true"].to_json
               end
+            rescue Exception => e
+              @run = ["false","-1",e.to_s].to_json
+            end
+            @run
+
+
+          #Dosyayı Zorla Kes
+          when "cut!"
+            begin
+                #Kesme İşlemini Gerçekleştir
+                FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
+
+                if !File.directory?(get_path(fc_params[:cut_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                  thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                  unless (File.exist?(thumbs))
+                    _file = ""
+                    thumbs.split("/").each { |file|
+                      _file << file+"/"
+                      p _file
+                      unless (File.exist?(_file))
+                        Dir.mkdir(_file.chomp("/"))
+                      end
+                    }
+                  end
+                  FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                end
+                @run = ["true"].to_json
             rescue Exception => e
               @run = ["false","-1",e.to_s].to_json
             end

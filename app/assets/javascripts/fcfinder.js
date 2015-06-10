@@ -718,9 +718,17 @@
                 var $type = fcfinder.find("input[name='copy_type']").val();
                 var copy_file_path = $input.val();
                 var this_folder_path = fcfinder.find(".left #all_folders ul.folders li a.active").attr("href");
-                var data = "";
-                if ($type=="copy"){ data = "fcfinder[type]=copy&fcfinder[copy_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;}
-                if ($type=="cut") { data = "fcfinder[type]=cut&fcfinder[cut_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;}
+                var data;
+                var data_input;
+                if ($type=="copy"){
+                    data = "fcfinder[type]=copy&fcfinder[copy_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;
+                    data_input = "fcfinder[type]=copy!&fcfinder[copy_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;
+                }
+                if ($type=="cut") {
+                    data = "fcfinder[type]=cut&fcfinder[cut_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;
+                    data_input = "fcfinder[type]=cut!&fcfinder[cut_file_path]="+copy_file_path+"&fcfinder[this_folder_path]="+this_folder_path;
+                }
+
                 $.ajax({
                     url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
                         console.log(data);
@@ -729,7 +737,16 @@
                             fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                         }else {
                             if (data[1] == "0"){
-                                alert("Kopyalamaya Çalıştığınız Dizinde Aynı İsimde Dosya Bulunmaktadır Kopyalama İşlemi Durduruldu");
+                                $(fcfinder_selector).prepend('<div class="dialog-scope"></div>' +
+                                '<div style="display: none;" class="dialog"><h1>Dosya Değiştir veya Atla</h1>' +
+                                '<p>Hedefte Zaten "'+copy_file_path.split("/").pop()+'" Adında Bir Dosya Var Üzerine Yazılsınmı?' +
+                                '<input type="hidden" name="data_input" value="'+data_input+'" /> </p>' +
+                                '<a class="close" href="#">İptal Et</a>' +
+                                '<a class="btn file_copy_ok" href="#">Evet</a>' +
+                                '</div>');
+                                fcfinder.find(".dialog").fadeIn(300);
+                                fcfinder.find(".dialog").ortala();
+                                //alert("Kopyalamaya Çalıştığınız Dizinde Aynı İsimde Dosya Bulunmaktadır Kopyalama İşlemi Durduruldu");
                             }
                             else{
                                 alert("Bir Hata Meydana Geldi ve Koyalama İşlemi Gerçekleştirilemedi Hata Sebebi \""+data[2]+"\" Olabilir.");
@@ -740,6 +757,23 @@
                 $ths.addClass("passive");
 
             }
+            return false;
+        });
+
+        //üzerine yaz
+        //file_copy_ok
+        $("body").on("click",fcfinder_selector+" .dialog a.file_copy_ok",function(){
+            var data = fcfinder.find(".dialog input[name='data_input']").val();
+            $.ajax({
+                url: ayarlar.url, dataType: 'json', type: 'POST', data: data, success: function (data){
+                    console.log(data);
+                    if (data[0]=="true")
+                    {if (fcfinder.find(".right ul.wrapper li div.cutting")){fcfinder.find(".right ul.wrapper li div.cutting").remove(); }
+                        fcfinder.find(".right ul.widget li a.refresh").trigger("click");
+                    }else {
+                            alert("Bir Hata Meydana Geldi ve Koyalama İşlemi Gerçekleştirilemedi Hata Sebebi \""+data[2]+"\" Olabilir.");
+                    }
+                }});
             return false;
         });
 
