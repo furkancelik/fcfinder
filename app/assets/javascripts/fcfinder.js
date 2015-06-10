@@ -581,7 +581,7 @@
                 var up_path = fcfinder.find(".left  #all_folders ul.folders li a.active").attr("href").split("/");
                 up_path.pop();
                 var data_path = up_path.length > 1 ? up_path.join("/") : up_path[0]+"/";
-                var ths = fcfinder.find(".left #all_folders ul.folders li a[href='"+url+"']");
+                var ths = fcfinder.find(".left #all_folders ul.folders li a[href='"+data_path+"']");
                 if (data_path=="fcdir:/"){$(this).addClass("passive");}
                 fcfinder.find(".right ul.wrapper li.file_wrapper").attr("data-show","false").hide();
                 fcfinder.find(".right ul.wrapper li.file_wrapper[data-path='" + data_path + "']").attr("data-show","true").show();

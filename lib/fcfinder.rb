@@ -80,6 +80,7 @@ module Fcfinder
             end
             @run
 
+          #Bilgiler
           when "info"
             @run = { :url => get_url(fc_params[:file]),
                      :path => fc_params[:file],
