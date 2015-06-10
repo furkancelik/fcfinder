@@ -117,7 +117,7 @@ module Fcfinder
                 FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
 
                 #thumbs'a kopyasını gönder
-                if !File.directory?(get_path(fc_params[:copy_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:copy_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -147,7 +147,7 @@ module Fcfinder
                 FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
 
                 #thumbs'a kopyasını gönder
-                if !File.directory?(get_path(fc_params[:copy_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:copy_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -180,7 +180,7 @@ module Fcfinder
                 #Kesme İşlemini Gerçekleştir
                 FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
 
-                if !File.directory?(get_path(fc_params[:cut_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:cut_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -208,7 +208,7 @@ module Fcfinder
                 #Kesme İşlemini Gerçekleştir
                 FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
 
-                if !File.directory?(get_path(fc_params[:cut_file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:cut_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -247,7 +247,7 @@ module Fcfinder
                 new_file_path = folder_name.chomp("/")+"/"+new_file_name
                 FileUtils.cp_r(file_path,new_file_path)
 
-                if !File.directory?(file_path) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
+                if !File.directory?(file_path) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
                   thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -268,7 +268,7 @@ module Fcfinder
                   FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
 
 
-                if !File.directory?(file_path) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
+                if !File.directory?(file_path) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
                   thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -296,7 +296,7 @@ module Fcfinder
               if (File.exist?(get_path(fc_params[:path])))
                 folder_name = get_path(fc_params[:path]).chomp(get_path(fc_params[:path]).split("/").last).chomp("/")
                 FileUtils.mv(get_path(fc_params[:path]),folder_name+"/"+fc_params[:file_name])
-                if !File.directory?(get_path(fc_params[:path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:path])).first.content_type)
                   thumbs = get_path(fc_params[:path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   unless (File.exist?(thumbs))
                     _file = ""
@@ -325,11 +325,11 @@ module Fcfinder
             begin
               if (File.exist?(get_path(fc_params[:file_path])))
                 FileUtils.rm_rf(get_path(fc_params[:file_path]))
-                @run = ["true"].to_json
-                if !File.directory?(get_path(fc_params[:file_path])) &&  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:file_path])).first.content_type)
+                if !File.directory?(get_path(fc_params[:file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:file_path])).first.content_type)
                   thumbs = get_path(fc_params[:file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
                   FileUtils.rm_rf(thumbs)
                 end
+                @run = ["true"].to_json
               else
                 #return false Dosya Yok!
                 @run = ["false","0"].to_json

@@ -167,7 +167,7 @@
                 main_file_path = data.main_file.path;
 
                 var main_class = data.main_file.sub_dir ? " opened " : " ";
-                ul_folders.html("").append("<li><a id=\"true\" href=\"fcdir:/\" class='active'>" +
+                ul_folders.html("").append("<li><a id=\"true\" href=\"fcdir:/\" data-show=\"true\" class='active'>" +
                 "<span class=\"braca"+main_class+
                 "\"></span>" +
                 "<span class=\"folder\">"+main_file_path+"</span>"+
@@ -175,7 +175,7 @@
 
                 if($.isEmptyObject(data.directory) &&  $.isEmptyObject(data.file))
                 {
-                    ul_wrapper.html("").append("<li>Dosya Boş</li>");
+                    ul_wrapper.html("").append("<li class=\"file_wrapper\" data-show=\"true\" data-path=\"fcdir:/\">Dosya Boş</li>");
                 }else
                 {
                     ul_wrapper.html("").append("<li class=\"file_wrapper\" data-show=\"true\" data-path=\"fcdir:/\"></li>");
