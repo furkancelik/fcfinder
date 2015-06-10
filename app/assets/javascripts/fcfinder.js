@@ -570,13 +570,16 @@
         //up_folder
         $("body").on("click",fcfinder_selector+" .right ul.widget li a.up_folder",function(){
             if (!$(this).hasClass("passive")){
-                //$("body").on("click",fcfinder_selector+" ul.folders a",function(e){
                 var up_path = fcfinder.find(".left  #all_folders ul.folders li a.active").attr("href").split("/");
                 up_path.pop();
-                //Trigger'i ayarla hatasını çöz
-                $(this).attr("href",up_path.join("/")).trigger("click");
-                //.trigger("click");
-                $(this).removeAttr("id").removeClass("active").removeAttr("data-show");
+                var data_path = up_path.length > 1 ? up_path.join("/") : up_path[0]+"/";
+                var ths = fcfinder.find(".left #all_folders ul.folders li a[href='"+url+"']");
+                if (data_path=="fcdir:/"){$(this).addClass("passive");}
+                fcfinder.find(".right ul.wrapper li.file_wrapper").attr("data-show","false").hide();
+                fcfinder.find(".right ul.wrapper li.file_wrapper[data-path='" + data_path + "']").attr("data-show","true").show();
+                fcfinder.find("ul.folders li a").removeClass("active");
+                ths.addClass("active").attr("data-show","true");
+                fcfinder.find(".right ul.widget li a.refresh").trigger("click");
             }
             return false;
         });
