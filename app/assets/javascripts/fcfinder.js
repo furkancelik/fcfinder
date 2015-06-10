@@ -643,12 +643,13 @@
                         if (data.mime_type == "directory") { data.mime_type = "Klasör"; var _class = " directory"; }
 
                         if (kind == "image_file"){
-                            fcfinder.find(".dialog").css({"width":"80%"});
                             $(fcfinder_selector).find(".dialog").html('<h1>'+file.attr("data-name")+'</h1>' +
                             '<img style="width:'+$(window).width()/4+'px;" class="preview" src="//'+data.url+'" />' +
                             '<div class="clear"></div>'+
                             '<a href="#" class="close">Kapat</a>' +
                             '<div class="clear"></div>');
+                            var img_width = fcfinder.find(".dialog img").width();
+                            fcfinder.find(".dialog").css({"width":img_width+100+"px"});
                             fcfinder.find(".dialog").ortala();
                         }
                         else{
