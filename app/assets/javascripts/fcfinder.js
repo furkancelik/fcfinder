@@ -1,5 +1,6 @@
 ;(function($){
     $.fn.fcFinder = function(ayarlar) {
+
         var fcfinder = $(this);
         var fcfinder_selector = fcfinder.selector;
 
@@ -283,7 +284,6 @@
                 }
             });
 
-
             //upload_files
             return false;
         });
@@ -294,12 +294,34 @@
             if (fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").size()>0){
                 fcfinder.find(".left #all_folders ul.folders li a[href='"+path+"']").trigger("click");
             }else{
-                //#TODO:Aç'a basınca editör'e dosya yolu yapışacak!
-                alert("Dosya Seçldi");
+                var data = 'fcfinder[path]='+path+'&fcfinder[type]=path_to_url';
+
+                $.ajax({url:ayarlar.url,dataType:'json',type:'POST',data:data,success:function(data) { console.log(data);
+                    if (data[0]=="true"){ var url = "//"+data[1];
+                        //CKEditor ise
+                        var funcNum = getUrlParam('CKEditorFuncNum');
+                        if (funcNum>0)
+                        {
+                            window.opener.CKEDITOR.tools.callFunction(funcNum, url);
+                            window.close();
+                        }else
+                        {
+                        //Değilse getFileCallback Fonksiyonunu Çağır
+                            if (typeof (ayarlar.getFileCallback) == "function" && ayarlar.getFileCallback)
+                            {
+                                ayarlar.getFileCallback(url);
+                            }
+                        }
+                    }
+                    else{
+                        alert("Bir Hata Meydana Geldi ve Dosya Açılamadı, Açmaya Çalıştığınız Dosya Sunucuda Olmayabilir.");
+                    }
+                     }});
             }
             if (fcfinder.find(".left #all_folders ul.folders li a.active").attr("href")!="fcdir:/"){ fcfinder.find(".right ul.widget li a.up_folder").removeClass("passive");}
             else{fcfinder.find(".right ul.widget li a.up_folder").addClass("passive");}
         });
+
 
 
 
@@ -1441,6 +1463,13 @@
             if (is_show_size == " style=\"display:block;\"" ){fcfinder.find(".right ul.wrapper li div").height(80+16+10);}
             if (is_show_date == " style=\"display:block;\"" && is_show_size ==  " style=\"display:block;\"" ){fcfinder.find(".right ul.wrapper li div").height(80+16+32+10);}
 
+        }
+
+        function getUrlParam(paramName) {
+            var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i') ;
+            var match = window.location.search.match(reParam) ;
+
+            return (match && match.length > 1) ? match[1] : '' ;
         }
 
 

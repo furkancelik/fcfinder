@@ -32,6 +32,14 @@ module Fcfinder
       unless fc_params.nil?
         case fc_params[:type]
 
+          when "path_to_url"
+            if (File.exist?(get_path(fc_params[:path])))
+              @run = ["true",get_url(fc_params[:path])].to_json
+            else
+              @run = ["false","0"].to_json
+            end
+
+
           #Tum Dosyaları Listele
           #Klasor Secilme İslemi Yapilinca
           when "all_file_list"
