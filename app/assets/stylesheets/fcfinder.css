@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,latin-ext);
-* {outline: none;
+* {outline: none; position: relative;
     /*font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;*/
     font-family: 'Roboto', Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
     font-weight: 300;
