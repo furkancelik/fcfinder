@@ -234,6 +234,7 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 #fcfinder .clear { clear: both; width: 100%; height:0px;}
 
+
 #fcfinder .dialog { border-radius:4px;
     background-color: #FFF;
     padding: 10px;
@@ -270,10 +271,26 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 
 #fcfinder .dialog div.content { padding:15px 5px;}
 #fcfinder .dialog div.content div { padding:5px;}
-
-
-
 #fcfinder .dialog-scope { position: fixed; z-index: 5; background:#000; opacity: 0.5;  width: 100%; height: 100%; left: 0; top:0;  }
+
+#fcfinder .dialog.danger { border:2px solid #A94442;
+    -webkit-box-shadow: 0px 0px 20px 5px #A94442;
+    -moz-box-shadow: 0px 0px 20px 5px #A94442;
+    box-shadow: 0px 0px 20px 5px #A94442;
+}
+#fcfinder .dialog.warning{ border: 2px solid #CEA969;
+    -webkit-box-shadow: 0px 0px 20px 5px #CEA969;
+    -moz-box-shadow: 0px 0px 20px 5px #CEA969;
+    box-shadow: 0px 0px 20px 5px #CEA969;
+}
+#fcfinder .dialog.success { border: 2px solid #6CBC6D;
+    -webkit-box-shadow: 0px 0px 20px 5px #6CBC6D;
+    -moz-box-shadow: 0px 0px 20px 5px #6CBC6D;
+    box-shadow: 0px 0px 20px 5px #6CBC6D;
+}
+
+
+
 
 #fcfinder ul#ctxMenu {margin: 0; padding: 0; list-style: none; position: absolute; display: block; width:200px; max-height:350px;height: 300px; overflow: auto; overflow-x:hidden; z-index: 4;border: solid 1px #CCC; background: #fff; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);-webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; border-radius: 3px;}
 #fcfinder ul#ctxMenu li { padding:3px 0; font-size: 13px; }
