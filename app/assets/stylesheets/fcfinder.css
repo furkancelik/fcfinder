@@ -115,57 +115,57 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
 #fcfinder .right ul.wrapper li div.directory {   background: url("./fcfinder/directory.png") center 5px no-repeat;     }
 #fcfinder .right ul.wrapper li div.other {   background: url("./fcfinder/files/other.png") center 5px no-repeat;     }
 /*---*/
-#fcfinder .right ul.wrapper li div.seven_z {   background: url("./fcfinder/files/7z.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.avi {   background: url("./fcfinder/files/avi.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.bmp{   background: url("./fcfinder/files/bmp.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.bz {   background: url("./fcfinder/files/bz.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.bz2 {   background: url("./fcfinder/files/bz2.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.css {   background: url("./fcfinder/files/css.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.doc {   background: url("./fcfinder/files/doc.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.docx {   background: url("./fcfinder/files/docx.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.dv {   background: url("./fcfinder/files/dv.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.flv {   background: url("./fcfinder/files/flv.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.gif {   background: url("./fcfinder/files/gif.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.gz {   background: url("./fcfinder/files/gz.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.html {   background: url("./fcfinder/files/html.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.htm {   background: url("./fcfinder/files/htm.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.ico {   background: url("./fcfinder/files/ico.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.jpeg {   background: url("./fcfinder/files/jpeg.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.jpg {   background: url("./fcfinder/files/jpg.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.js {   background: url("./fcfinder/files/js.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mid {   background: url("./fcfinder/files/mid.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mkv {   background: url("./fcfinder/files/mkv.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mov {   background: url("./fcfinder/files/mov.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mp3 {   background: url("./fcfinder/files/mp3.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mp4 {   background: url("./fcfinder/files/mp4.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mp4a {   background: url("./fcfinder/files/mp4a.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mpg {   background: url("./fcfinder/files/mpg.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.ogg {   background: url("./fcfinder/files/ogg.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.pdf {   background: url("./fcfinder/files/pdf.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.php {   background: url("./fcfinder/files/php.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.png {   background: url("./fcfinder/files/png.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.pps {   background: url("./fcfinder/files/pps.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.ppt {   background: url("./fcfinder/files/ppt.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.psd {   background: url("./fcfinder/files/psd.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.pptx {   background: url("./fcfinder/files/pptx.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.rar {   background: url("./fcfinder/files/rar.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.rb {   background: url("./fcfinder/files/rb.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.swf {   background: url("./fcfinder/files/swf.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tar {   background: url("./fcfinder/files/tar.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tbz {   background: url("./fcfinder/files/tbgz.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tga {   background: url("./fcfinder/files/tga.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tgz {   background: url("./fcfinder/files/tgz.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tif {   background: url("./fcfinder/files/tif.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.tiff {   background: url("./fcfinder/files/tiff.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.txt {   background: url("./fcfinder/files/txt.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.mpeg {   background: url("./fcfinder/files/mpeg.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.wav {   background: url("./fcfinder/files/wav.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.wm {   background: url("./fcfinder/files/wm.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.wma {   background: url("./fcfinder/files/wma.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.xls {   background: url("./fcfinder/files/xls.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.xlsx {   background: url("./fcfinder/files/xlsx.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.xml {   background: url("./fcfinder/files/xml.png") center 5px no-repeat;     }
-#fcfinder .right ul.wrapper li div.zip {   background: url("./fcfinder/files/zip.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.seven_z,#fcfinder .right ul.wrapper li div.seven_z {   background: url("./fcfinder/files/7z.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.avi,#fcfinder .right ul.wrapper li div.avi {   background: url("./fcfinder/files/avi.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bmp,#fcfinder .right ul.wrapper li div.bmp{   background: url("./fcfinder/files/bmp.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bz,#fcfinder .right ul.wrapper li div.bz {   background: url("./fcfinder/files/bz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bz2,#fcfinder .right ul.wrapper li div.bz2 {   background: url("./fcfinder/files/bz2.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.css,#fcfinder .right ul.wrapper li div.css {   background: url("./fcfinder/files/css.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.doc,#fcfinder .right ul.wrapper li div.doc {   background: url("./fcfinder/files/doc.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.docx,#fcfinder .right ul.wrapper li div.docx {   background: url("./fcfinder/files/docx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.dv,#fcfinder .right ul.wrapper li div.dv {   background: url("./fcfinder/files/dv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.flv,#fcfinder .right ul.wrapper li div.flv {   background: url("./fcfinder/files/flv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.gif,#fcfinder .right ul.wrapper li div.gif {   background: url("./fcfinder/files/gif.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.gz,#fcfinder .right ul.wrapper li div.gz {   background: url("./fcfinder/files/gz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.html,#fcfinder .right ul.wrapper li div.html {   background: url("./fcfinder/files/html.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.htm,#fcfinder .right ul.wrapper li div.htm {   background: url("./fcfinder/files/htm.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ico,#fcfinder .right ul.wrapper li div.ico {   background: url("./fcfinder/files/ico.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.jpeg,#fcfinder .right ul.wrapper li div.jpeg {   background: url("./fcfinder/files/jpeg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.jpg,#fcfinder .right ul.wrapper li div.jpg {   background: url("./fcfinder/files/jpg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.js,#fcfinder .right ul.wrapper li div.js {   background: url("./fcfinder/files/js.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mid,#fcfinder .right ul.wrapper li div.mid {   background: url("./fcfinder/files/mid.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mkv,#fcfinder .right ul.wrapper li div.mkv {   background: url("./fcfinder/files/mkv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mov,#fcfinder .right ul.wrapper li div.mov {   background: url("./fcfinder/files/mov.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp3,#fcfinder .right ul.wrapper li div.mp3 {   background: url("./fcfinder/files/mp3.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp4,#fcfinder .right ul.wrapper li div.mp4 {   background: url("./fcfinder/files/mp4.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp4a,#fcfinder .right ul.wrapper li div.mp4a {   background: url("./fcfinder/files/mp4a.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mpg,#fcfinder .right ul.wrapper li div.mpg {   background: url("./fcfinder/files/mpg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ogg,#fcfinder .right ul.wrapper li div.ogg {   background: url("./fcfinder/files/ogg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pdf,#fcfinder .right ul.wrapper li div.pdf {   background: url("./fcfinder/files/pdf.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.php,#fcfinder .right ul.wrapper li div.php {   background: url("./fcfinder/files/php.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.png,#fcfinder .right ul.wrapper li div.png {   background: url("./fcfinder/files/png.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pps,#fcfinder .right ul.wrapper li div.pps {   background: url("./fcfinder/files/pps.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ppt,#fcfinder .right ul.wrapper li div.ppt {   background: url("./fcfinder/files/ppt.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.psd,#fcfinder .right ul.wrapper li div.psd {   background: url("./fcfinder/files/psd.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pptx,#fcfinder .right ul.wrapper li div.pptx {   background: url("./fcfinder/files/pptx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.rar,#fcfinder .right ul.wrapper li div.rar {   background: url("./fcfinder/files/rar.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.rb,#fcfinder .right ul.wrapper li div.rb {   background: url("./fcfinder/files/rb.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.swf,#fcfinder .right ul.wrapper li div.swf {   background: url("./fcfinder/files/swf.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tar,#fcfinder .right ul.wrapper li div.tar {   background: url("./fcfinder/files/tar.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tbz,#fcfinder .right ul.wrapper li div.tbz {   background: url("./fcfinder/files/tbgz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tga,#fcfinder .right ul.wrapper li div.tga {   background: url("./fcfinder/files/tga.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tgz,#fcfinder .right ul.wrapper li div.tgz {   background: url("./fcfinder/files/tgz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tif,#fcfinder .right ul.wrapper li div.tif {   background: url("./fcfinder/files/tif.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tiff,#fcfinder .right ul.wrapper li div.tiff {   background: url("./fcfinder/files/tiff.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.txt,#fcfinder .right ul.wrapper li div.txt {   background: url("./fcfinder/files/txt.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mpeg,#fcfinder .right ul.wrapper li div.mpeg {   background: url("./fcfinder/files/mpeg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wav,#fcfinder .right ul.wrapper li div.wav {   background: url("./fcfinder/files/wav.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wm,#fcfinder .right ul.wrapper li div.wm {   background: url("./fcfinder/files/wm.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wma,#fcfinder .right ul.wrapper li div.wma {   background: url("./fcfinder/files/wma.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xls,#fcfinder .right ul.wrapper li div.xls {   background: url("./fcfinder/files/xls.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xlsx,#fcfinder .right ul.wrapper li div.xlsx {   background: url("./fcfinder/files/xlsx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xml,#fcfinder .right ul.wrapper li div.xml {   background: url("./fcfinder/files/xml.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.zip,#fcfinder .right ul.wrapper li div.zip {   background: url("./fcfinder/files/zip.png") center 5px no-repeat;     }
 /*--*/
 
 
@@ -252,8 +252,8 @@ html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size
     top: 0;
 }
 #fcfinder .dialog h1 { margin: 0px; padding:5px; font-size:22px; border-bottom: 1px solid #ccc; font-weight: 500; }
-#fcfinder .dialog .file_bg { float: left; width: 64px; height: 64px; margin:15px; display: block;padding-right: 20px;}
-#fcfinder .dialog .file_bg.directory { background: url("./fcfinder/directory.png") no-repeat;height: 64px !important; }
+#fcfinder .dialog .file_bg { float: left; width: 64px; height: 64px !important; margin:15px; display: block;padding-right: 20px;}
+#fcfinder .dialog .file_bg.directory { background: url("./fcfinder/directory.png") no-repeat;}
 
 #fcfinder .dialog img.preview { margin: 0 auto; padding: 10px; display: block;}
 
