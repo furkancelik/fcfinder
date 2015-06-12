@@ -743,11 +743,14 @@
                 $.ajax({
                     url: opts.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
                         console.log(data);
-                        var permissions,_class = "";
+                        var permissions="";
+                        var _class = "";
                         if (data.permissions.read == "true"){ permissions = opts.i18.read_permission; }
                         if (data.permissions.write == "true"){ permissions = opts.i18.write_permission; }
                         if (data.permissions.write == "true" && data.permissions.read == "true"){ permissions = opts.i18.read_write_permission; }
-                        if (data.mime_type == "directory") { data.mime_type = opts.i18.directory; var _class = " directory"; }
+                        if (data.mime_type == "directory") { data.mime_type = opts.i18.directory; _class = " directory"; }
+                        else { _class = " "+file.removeClass("active").attr("class");
+                            file.addClass("active");}
                         $(fcfinder_selector).find(".dialog").html('<h1>'+opts.i18.dialog.info_h+'</h1>' +
                         '<div class="file_bg'+_class+'" style="'+file.attr("style")+'"></div>'+
                         '<span class="file_name">'+file.attr("data-name")+'</span><span class="file_type">'+data.mime_type+'</span>'+
@@ -783,7 +786,9 @@
                     url: opts.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
                         console.log(data);
                         var _class = "";
-                        if (data.mime_type == "directory") { data.mime_type = opts.i18.directory; var _class = " directory"; }
+                        if (data.mime_type == "directory") { data.mime_type = opts.i18.directory; _class = " directory"; }
+                        else { _class = " "+file.removeClass("active").attr("class");
+                            file.addClass("active");}
 
                         if (kind == "image_file"){
                             $(fcfinder_selector).find(".dialog").html('<h1>'+file.attr("data-name")+'</h1>' +
