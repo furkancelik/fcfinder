@@ -51,7 +51,8 @@ module Fcfinder
           when "create_directory"
             create_file_path = File.join(get_path(fc_params[:path]),fc_params[:directory_name])
             unless File.exist?(create_file_path)
-              if Dir.mkdir(create_file_path)
+              p create_file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+              if Dir.mkdir(create_file_path) && Dir.mkdir(create_file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
                 @run = ["true",{:top_dir=>fc_params[:path], :path=>set_path(create_file_path)},].to_json
               else
                 #0 => Herhangibir Hata var Dosya Oluşmadı
@@ -76,10 +77,10 @@ module Fcfinder
                 outputFile = get_path(fc_params[:path]).chomp("/")+".zip"
                 zf = ZipFileGenerator.new(directoryToZip, outputFile)
                 zf.write()
-                file = set_path(outputFile).sub("fcdir:/","")
+                file = set_path(outputFile).sub("fcdir:/","").split("/").join(":")
                 type = get_path(fc_params[:path].chomp("/")+".zip").chomp("/")
               else
-                file = fc_params[:path].sub("fcdir:/","")
+                file = fc_params[:path].sub("fcdir:/","").split("/").join(":")
                 type = get_path(fc_params[:path])
               end
               @run = { :file =>file, :type => MIME::Types.type_for(type).first.content_type }.to_json
@@ -125,21 +126,24 @@ module Fcfinder
                 FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
 
                 #thumbs'a kopyasını gönder
-                if !File.directory?(get_path(fc_params[:copy_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                if File.directory?(get_path(fc_params[:copy_file_path]))
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
-                      end
-                    }
-                  end
                   FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                else
+                  if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type))
+                    unless (File.exist?(thumbs))
+                      _file = ""
+                      thumbs.split("/").each { |file|
+                        _file << file+"/"
+                        p _file
+                        unless (File.exist?(_file))
+                          Dir.mkdir(_file.chomp("/"))
+                        end
+                      }
+                    end
+                    FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                  end
                 end
-
                 @run = ["true"].to_json
               end
             rescue Exception => e
@@ -155,20 +159,25 @@ module Fcfinder
                 FileUtils.cp_r(get_path(fc_params[:copy_file_path]),get_path(fc_params[:this_folder_path]))
 
                 #thumbs'a kopyasını gönder
-                if !File.directory?(get_path(fc_params[:copy_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type)
+                if File.directory?(get_path(fc_params[:copy_file_path]))
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
-                      end
-                    }
-                  end
                   FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                else
+                  if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:copy_file_path])).first.content_type))
+                    unless (File.exist?(thumbs))
+                      _file = ""
+                      thumbs.split("/").each { |file|
+                        _file << file+"/"
+                        p _file
+                        unless (File.exist?(_file))
+                          Dir.mkdir(_file.chomp("/"))
+                        end
+                      }
+                    end
+                    FileUtils.cp_r(get_path(fc_params[:copy_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                  end
                 end
+
 
                 @run = ["true"].to_json
             rescue Exception => e
@@ -188,20 +197,27 @@ module Fcfinder
                 #Kesme İşlemini Gerçekleştir
                 FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
 
-                if !File.directory?(get_path(fc_params[:cut_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                #thumbs'a kopyasını gönder
+                if File.directory?(get_path(fc_params[:cut_file_path]))
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
-                      end
-                    }
-                  end
                   FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                else
+                  if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type))
+                    unless (File.exist?(thumbs))
+                      _file = ""
+                      thumbs.split("/").each { |file|
+                        _file << file+"/"
+                        p _file
+                        unless (File.exist?(_file))
+                          Dir.mkdir(_file.chomp("/"))
+                        end
+                      }
+                    end
+                    FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                  end
                 end
+
+
                 @run = ["true"].to_json
               end
             rescue Exception => e
@@ -216,20 +232,26 @@ module Fcfinder
                 #Kesme İşlemini Gerçekleştir
                 FileUtils.mv(get_path(fc_params[:cut_file_path]),get_path(fc_params[:this_folder_path]))
 
-                if !File.directory?(get_path(fc_params[:cut_file_path])) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type)
+                #thumbs'a kopyasını gönder
+                if File.directory?(get_path(fc_params[:cut_file_path]))
                   thumbs = get_path(fc_params[:this_folder_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
-                      end
-                    }
-                  end
                   FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                else
+                  if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(get_path(fc_params[:cut_file_path])).first.content_type))
+                    unless (File.exist?(thumbs))
+                      _file = ""
+                      thumbs.split("/").each { |file|
+                        _file << file+"/"
+                        p _file
+                        unless (File.exist?(_file))
+                          Dir.mkdir(_file.chomp("/"))
+                        end
+                      }
+                    end
+                    FileUtils.mv(get_path(fc_params[:cut_file_path]).sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"),thumbs)
+                  end
                 end
+
                 @run = ["true"].to_json
             rescue Exception => e
               @run = ["false","-1",e.to_s].to_json
@@ -255,41 +277,49 @@ module Fcfinder
                 new_file_path = folder_name.chomp("/")+"/"+new_file_name
                 FileUtils.cp_r(file_path,new_file_path)
 
-                if !File.directory?(file_path) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
+                #thumbs'a kopyasını gönder
+                if File.directory?(file_path)
                   thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
-                      end
-                    }
-                  end
                   FileUtils.cp_r(thumbs,new_file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
+                else
+                  if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type))
+                    unless (File.exist?(thumbs))
+                      _file = ""
+                      thumbs.split("/").each { |file|
+                        _file << file+"/"
+                        p _file
+                        unless (File.exist?(_file))
+                          Dir.mkdir(_file.chomp("/"))
+                        end
+                      }
+                    end
+                    FileUtils.cp_r(thumbs,new_file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs"))
+                  end
                 end
 
                 @run = ["true"].to_json
               else
-
                   FileUtils.cp_r(file_path,folder_name+"/"+file_name+" copy 1"+extension)
 
-
-                if !File.directory?(file_path) ||  %w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type)
-                  thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
-                  unless (File.exist?(thumbs))
-                    _file = ""
-                    thumbs.split("/").each { |file|
-                      _file << file+"/"
-                      p _file
-                      unless (File.exist?(_file))
-                        Dir.mkdir(_file.chomp("/"))
+                  #thumbs dosyaları ekle
+                  if File.directory?(file_path)
+                    thumbs = file_path.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")
+                    FileUtils.cp_r(thumbs,folder_name.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")+"/"+file_name+" copy 1"+extension)
+                  else
+                    if (%w(image/x-ms-bmp image/jpeg image/gif image/png).include?(MIME::Types.type_for(file_path).first.content_type))
+                      unless (File.exist?(thumbs))
+                        _file = ""
+                        thumbs.split("/").each { |file|
+                          _file << file+"/"
+                          p _file
+                          unless (File.exist?(_file))
+                            Dir.mkdir(_file.chomp("/"))
+                          end
+                        }
                       end
-                    }
+                      FileUtils.cp_r(thumbs,folder_name.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")+"/"+file_name+" copy 1"+extension)
+                    end
                   end
-                  FileUtils.cp_r(thumbs,folder_name.sub(@fcdir.chomp("/"),@fcdir.chomp("/")+"/.thumbs")+"/"+file_name+" copy 1"+extension)
-                end
                 @run = ["true"].to_json
               end
             rescue Exception => e
