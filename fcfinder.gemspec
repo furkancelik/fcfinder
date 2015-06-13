@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mini_magick", "~> 4.2"
   spec.add_dependency "rubyzip", "~> 1.1"
 
-  spec.requirements << "zip"
-  spec.requirements << "mini_magick"
+  #spec.requirements << "zip"
+  #spec.requirements << "mini_magick"
 
 end
