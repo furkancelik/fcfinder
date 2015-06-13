@@ -5,6 +5,8 @@
 Rails İçin Web Dosya Gezgini 
 CKEditor ve Tinymce ile Hızlı ve Basit bir şekilde Entegreli olarak kullanabileceğiniz dosya gezgini.
 
+![Arayuzu](https://raw.githubusercontent.com/furkancelik/fcfinder/master/screenshots/fcfinder_interface.png)
+
 ## Gereklilikler
 
 ###ImageMagick
