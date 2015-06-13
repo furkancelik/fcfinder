@@ -59,8 +59,10 @@ ile rails için yükleme işlemini gerçekleştirebilirsiniz.
 class SizinControlleriniz < ApplicationController
 
   def index
-    if request.post?
-	  # Bu Satırla Sadece Giriş Yapan Kullanıcıların (Admin'in) Finder'e erişimini Sağlayabilirsiniz
+	if request.post?
+	  # Alttaki Satırla Sadece Giriş Yapan Kullanıcıların (Admin'in) Finder'e erişimini Sağlayabilirsiniz
+	  # Session Adını Sisteminizde Kullandığınız Adla Aynı Olmalı
+	  # Oturu Açma İşlemi Olmayacaksa Bu Satırı Kaldırabilirsiniz
 	  if session[:user_id]
 		# public klasörü altında istediğiniz isimde dosya oluşturabilirsiniz örnek açısından 'uploads' şeklinde oluşturuldu
 		# File.join(Rails.public_path, 'uploads', "/*")
@@ -77,11 +79,14 @@ class SizinControlleriniz < ApplicationController
                                                  :allowed_mime => {'pdf' => 'application/pdf'},
                                                  :disallowed_mime => {}
                                              }).run, :layout => false
-      else
+      # Eğer Oturum Açılmamışsa 
+	  #(session[:user_id] if bloğunu kaldırdıysanız bu else kısmınıda kaldırmalısınız)
+	  else
 	  # session_id değeri boş ise erişimi kapatıyor dosyalarınız güvende oluyor.
         render :text => "Access not allowed!".to_json, :layout => false
       end
     else
+	#
       render :layout => false
     end
   end
@@ -94,7 +99,7 @@ class SizinControlleriniz < ApplicationController
   end
 end
 ```
-###Rata Ayarı
+###Rota Ayarı
 
 ```ruby
 scope '/fcfinder' do
@@ -122,7 +127,7 @@ end
 //= require jquery_ujs
 ```
 
-bu satırlar ekli olmalıdır ***(jQuery'nin yüklü olduğuna emin olun)***
+bu satırlar ekli olmalıdır ***(jQuery'nin yüklü olduğuna emin olun!!)***
 
 **config/initializers/assets.rb** dosyasında en alta 
 
