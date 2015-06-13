@@ -115,7 +115,7 @@ end
 
 ###View Ayarı
 
-**app/assets/javascripts/application.js dosyanızda **
+**app/assets/javascripts/application.js dosyanızda**
 
 ```js
 //= require jquery
@@ -145,6 +145,7 @@ satırlarını eklemelisiniz
    
    <%= javascript_include_tag 'fcfinder', 'data-turbolinks-track' => true %>
    <%= stylesheet_link_tag    'fcfinder', media: 'all', 'data-turbolinks-track' => true %>
+   <%= csrf_meta_tags %>
   </head>
   <body>
     <div id="fcfinder"></div>
