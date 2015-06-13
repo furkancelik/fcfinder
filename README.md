@@ -120,6 +120,7 @@ end
 
 ###View Ayarı
 
+####1.Yöntem
 **app/assets/javascripts/application.js dosyanızda**
 
 ```js
@@ -128,6 +129,7 @@ end
 ```
 
 bu satırlar ekli olmalıdır ***(jQuery'nin yüklü olduğuna emin olun!!)***
+
 
 **config/initializers/assets.rb** dosyasında en alta 
 
@@ -151,6 +153,67 @@ satırlarını eklemelisiniz
    <%= javascript_include_tag 'fcfinder', 'data-turbolinks-track' => true %>
    <%= stylesheet_link_tag    'fcfinder', media: 'all', 'data-turbolinks-track' => true %>
    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="fcfinder"></div>
+    
+	<script type="text/javascript">
+      $(function(){
+        $("#fcfinder").fcFinder({
+			// bu değer rotada ayarladığınız adres olmalı
+			url:"/fcfinder",
+        getFileCallback: function(url) {
+          /**
+			Editör Entegre İşlemleri İlk Etap İçin Bu Değeri Boş Bırakabilirsiniz
+			Varsayılan Olarak CKEditor ile Entegrebir şekilde çalışıyor
+		  */   
+			}
+        });
+      });
+    </script>
+  </body>
+</html>
+```
+
+####2.Yöntem
+
+**app/assets/javascripts/application.js dosyanızda**
+jquery Dosyalarını Yüklü Olduğuna emin olun ve 
+
+```js
+//= require jquery
+//= require jquery_ujs
+```
+altına 
+
+```js
+//= require fcfinder
+```
+satırını ekleyin
+
+
+**app/assets/stylesheets/application.css dosyasına**
+
+```css
+ *= require fcfinder
+```
+
+satırını ekleyin
+
+
+
+**Viewdeki dosyanızın içeriği bu şekilde olmalıdır**
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FcFinder</title>
+    
+   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+   <%= csrf_meta_tags %>
+   
   </head>
   <body>
     <div id="fcfinder"></div>
