@@ -152,7 +152,7 @@ satırlarını eklemelisiniz
     
 	<script type="text/javascript">
       $(function(){
-        $("#fcfinders").fcFinder({
+        $("#fcfinder").fcFinder({
 			// bu değer rotada ayarladığınız adres olmalı
 			url:"/fcfinder",
         getFileCallback: function(url) {
