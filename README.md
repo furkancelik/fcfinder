@@ -219,7 +219,7 @@ tinymce.init({
 	});
 ```
 
-**FcFinder'in bulunduğu sayfada **
+**FcFinder'in bulunduğu sayfada**
 
 ```js
 $("#fcfinder").fcFinder({
