@@ -474,17 +474,17 @@
                         fcfinder.find(".right ul.widget li a.refresh").trigger("click");
                     }else{
                         if (data[1]=="0"){
-                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.large_file.format(data[2]),{type:"p",dialog_class:'danger'});
+                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.large_file.format(data[2]),{type:"p",dialog_class:'danger'});
                         }
                         if (data[1]=="-1"){
                             var txt = [];
                             $.each(data[2],function(k,v){
                                 txt.push(v[0]);
                             });
-                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error_type.format(txt.join(", ")),{type:"p",dialog_class:'danger'});
+                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.error_type.format(txt.join(", ")),{type:"p",dialog_class:'danger'});
                         }
                         else{
-                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.load_error.format(data[2]),{type:"p",dialog_class:'danger'});
+                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.load_error.format(data[2]),{type:"p",dialog_class:'danger'});
                         }
                     }
                 }
@@ -520,7 +520,7 @@
                         }
                     }
                     else{
-                        fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.select_file_error,{type:"p",dialog_class:'danger'});
+                        fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.select_file_error,{type:"p",dialog_class:'danger'});
                     }
                 }});
             }
@@ -773,7 +773,7 @@
                     }
                 }});
             }else {
-                fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error_msg,{type:"p",dialog_class:'danger'});
+                fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.error_msg,{type:"p",dialog_class:'danger'});
             }
 
             return false;
@@ -790,7 +790,7 @@
                     url: opts.url, dataType: 'json', type: 'POST', data: data, success: function (data) {
 
                         if (data[0]=="false"){
-                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.download_error.format(data[2]),{type:"p",dialog_class:'danger'});
+                            fnc.prepend_dialog(opts.i18n.faild_process,opts.i18n.error.download_error.format(data[2]),{type:"p",dialog_class:'danger'});
                         }
                         else{
                             window.open(location+"/download/"+data.file);
@@ -848,7 +848,7 @@
                         else { _class = " "+file.removeClass("active").attr("class");
                             file.addClass("active");}
                         $(fcfinder_selector).find(".dialog").html('<h1>'+opts.i18n.dialog.info_h+'</h1>' +
-                        '<div class="file_bg'+_class+'" style="'+file.attr("style")+'"></div>'+
+                        '<div class="file_bg'+_class+'" style=\''+file.attr("style")+'\'></div>'+
                         '<span class="file_name">'+file.attr("data-name")+'</span><span class="file_type">'+data.mime_type+'</span>'+
                         '<ul class="file_info">' +
                         '<li><span>'+opts.i18n.dialog.info_size+'</span>'+data.size+'</li>' +
@@ -864,6 +864,7 @@
             }
             return false;
         });
+
 
         //Dosyayı Önizle
         $body.on("click",fcfinder_selector+" .right ul.widget li a.preview",function(){
@@ -1652,6 +1653,10 @@
 
 
 
+        //Hakkında Sayfası
+        $body.on("click",fcfinder_selector+" .right ul.widget li a.about",function(){
+            return false;
+        });
 
 
 
