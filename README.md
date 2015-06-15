@@ -46,7 +46,9 @@ Rails uygulamaları için Gemfile dosyanıza alttaki satırı eklemelisiniz
 gem 'fcfinder'
 ```
 
-bundle install
+```
+$ bundle install
+```
 
 ile rails için yükleme işlemini gerçekleştirebilirsiniz.
 
