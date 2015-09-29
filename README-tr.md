@@ -2,27 +2,27 @@
 
 [![Gem Version](https://badge.fury.io/rb/fcfinder.svg)](http://badge.fury.io/rb/fcfinder)
 
-Web File Manager For The Rails 
-Integrated in ckeditor and TinyMCE with File Explorer you can use as a quick and simple way.
+Rails İçin Web Dosya Gezgini 
+CKEditor ve Tinymce ile Hızlı ve Basit bir şekilde Entegreli olarak kullanabileceğiniz dosya gezgini.
 
 ![Arayuzu](https://raw.githubusercontent.com/furkancelik/fcfinder/master/screenshots/fcfinder_interface.png)
 
-## Requirements
+## Gereklilikler
 
 ###ImageMagick
 
 [imagemagick](http://github.com)'in kurulu olması gerekmektedir.
 
-For A Windows Installation;
-[imagemagick](http://github.com) from the address the Download button 
-Windows binary from the release area **compatible with ruby** (same as installed x86 x64)
-ImageMagick -******-dll.exe download the file and you can install it in the installation process, make sure that is added to the PATH environment variable.
+Windows Kurulumu İçin;
+[imagemagick](http://github.com) adresinden download butonundan 
+Windows Binary Release alanından **ruby ile uyumlu** (kurulu olan x64 x86 ile aynı)
+ImageMagick-******-dll.exe Dosyasını İndirip Kurabilirsiniz kurulum işleminde path ortam değişkenine eklendiğine emin olun.
 
-To The Command Line
+Komut Satırına
 
 `convert -version`
 
-when you write in this way, you can see that you have successfully installed.
+yazdığınızda bu şekilde başarıyla yüklediğinizi görebilirsiniz.
 
 ```
 Version: ImageMagick 6.9.1-4 Q16 x86 2015-05-31 http://www.imagemagick.org
@@ -32,15 +32,15 @@ Features:  Cipher DPC Modules OpenMP
 ...
 ```
 
-### Puma Server (Optional)
-Requirement requirement but not Webrick large files can give a problem in the installation process.
-the Puma for Windows installation [Here](https://github.com/hicknhack-software/rails-disco/wiki/Installing-puma-on-windows) you can look at.
+### Puma Server (İsteğe Bağlı)
+Gereklilik şartı yok ama büyük dosyaları yükleme işleminde webrick sorun çıkartabiliyor
+pumanın windows için kurulumuna [buradan](https://github.com/hicknhack-software/rails-disco/wiki/Installing-puma-on-windows) bakabilirsiniz.
 
 
 
-## Setup
+## Kurulum
 
-Gemfile for rails applications, you must add the following line to your file.
+Rails uygulamaları için Gemfile dosyanıza alttaki satırı eklemelisiniz
 
 ```ruby
 gem 'fcfinder'
@@ -50,101 +50,98 @@ gem 'fcfinder'
 $ bundle install
 ```
 
-with rails you can perform the installation process.
+ile rails için yükleme işlemini gerçekleştirebilirsiniz.
 
 
-## Use
+## Kullanım
 
-
-###Setting The Controller
+###Controller Ayarı
 
 ```ruby
-class YourController < ApplicationController
+class SizinControlleriniz < ApplicationController
 
   def index
 	if request.post?
-	  # The bottom line is that only the logged in user (admin) can access the Finder
-	  # The Session Name Must Be The Same As The Name You Use On Your System
-	  # The Logon Process Will Be If You Can Remove This Line
+	  # Alttaki Satırla Sadece Giriş Yapan Kullanıcıların (Admin'in) Finder'e erişimini Sağlayabilirsiniz
+	  # Session Adını Sisteminizde Kullandığınız Adla Aynı Olmalı
+	  # Oturu Açma İşlemi Olmayacaksa Bu Satırı Kaldırabilirsiniz
 	  if session[:user_id]
-		# example file with the name you want under the terms you can create the public folder, 'uploads' was created in the form of
+		# public klasörü altında istediğiniz isimde dosya oluşturabilirsiniz örnek açısından 'uploads' şeklinde oluşturuldu
 		# File.join(Rails.public_path, 'uploads', "/*")
-		# Files you want to be listed as a parameter
-		# server address,
-		# post parameters,
-		# Parameter Hash in the hash
-		# :max_file_size = indicates the size of the file to be loaded (byte)
-		# :allowed_mime = the file types that you want to allow extra
-		# :disallowed_mime = disallowed file types
+		# Paremetre olarak listelenmesini istediğiniz dosyalar,
+		# sunucu adresi,
+		# post paremetrleri,
+		# Hash paremetresi bu hash içerisinde
+		# :max_file_size = yüklenecek dosyanın boyutunu belirtiyor (byte)
+		# :allowed_mime = ekstra olarak izin vermek istediğiniz dosya tipleri
+		# :disallowed_mime = izin verilmeyen dosya tipleri
         render text: Fcfinder::Connector.new(File.join(Rails.public_path, 'uploads', "/*"), request.env["HTTP_HOST"], params[:fcfinder],
                                              {
                                                  :max_file_size => 1_000_000,
                                                  :allowed_mime => {'pdf' => 'application/pdf'},
                                                  :disallowed_mime => {}
                                              }).run, :layout => false
-      # If Not Logged On
-	  #( session[:user_id] if you must remove the else part of the if statement block is removed)
+      # Eğer Oturum Açılmamışsa 
+	  #(session[:user_id] if bloğunu kaldırdıysanız bu else kısmınıda kaldırmalısınız)
 	  else
-	  # if the value is null is blocking access session_id, keep your files safe.
+	  # session_id değeri boş ise erişimi kapatıyor dosyalarınız güvende oluyor.
         render :text => "Access not allowed!".to_json, :layout => false
       end
     else
+	#
       render :layout => false
     end
   end
 
 
-  #to download the file
+  #dosya indirme işlemi için 
   def download
-	# 'uploads' folder under the public folder part again.
+	# 'uploads' kısmı yine public klasörü altında olan klasörünüz.
     send_file File.join(Rails.public_path,'uploads',params[:path].split(":").join("/")+"."+params[:format])
   end
 end
 ```
-
-###Route Setting
+###Rota Ayarı
 
 ```ruby
 scope '/fcfinder' do
-  match '/', to: 'your_controller#index', via: [:get, :post]
-  get '/download/:path', to: 'your_controller#download'
+  match '/', to: 'sizin_controlleriniz#index', via: [:get, :post]
+  get '/download/:path', to: 'sizin_controlleriniz#download'
 end
 ```
-
-**This way if you can use a namespace if you want to use under**
+**Eğer bir namespace altında kullanmak isterseniz bu şekilde kullanabilirsiniz**
 
 ```ruby
 namespace :admin do
   scope '/fcfinder' do
-    match '/', to: 'your_controller#index', via: [:get, :post]
-	get '/download/:path', to: 'your_controller#download'
+    match '/', to: 'sizin_controlleriniz#index', via: [:get, :post]
+	get '/download/:path', to: 'sizin_controlleriniz#download'
   end
 end 
 ```
 
-###View Setting
+###View Ayarı
 
-####1.Method
-**app/assets/javascripts/application.js in your file**
+####1.Yöntem
+**app/assets/javascripts/application.js dosyanızda**
 
 ```js
 //= require jquery
 //= require jquery_ujs
 ```
 
-these lines must be attached ***(make sure jQuery is loaded!!)***
+bu satırlar ekli olmalıdır ***(jQuery'nin yüklü olduğuna emin olun!!)***
 
 
-**config/initializers/assets.rb** in the file to the bottom
+**config/initializers/assets.rb** dosyasında en alta 
 
 ```ruby
 Rails.application.config.assets.precompile += %w( fcfinder.js )
 Rails.application.config.assets.precompile += %w( fcfinder.css )
 ```
+satırlarını eklemelisiniz
 
-you must add the lines
-
-**View the content of your file should be like this**
+**Viewdeki dosyanızın içeriği bu şekilde olmalıdır**
 
 ```html
 <!DOCTYPE html>
@@ -165,12 +162,12 @@ you must add the lines
 	<script type="text/javascript">
       $(function(){
         $("#fcfinder").fcFinder({
-			// this value must be the address that you set in the route
+			// bu değer rotada ayarladığınız adres olmalı
 			url:"/fcfinder",
         getFileCallback: function(url) {
           /**
-			Integrated Editor For The First Stage Of The Process, You Can Leave This Value Blank
-			By default CKEditor is working in an integrated manner with
+			Editör Entegre İşlemleri İlk Etap İçin Bu Değeri Boş Bırakabilirsiniz
+			Varsayılan Olarak CKEditor ile Entegrebir şekilde çalışıyor
 		  */   
 			}
         });
@@ -180,34 +177,34 @@ you must add the lines
 </html>
 ```
 
-####2.Method
+####2.Yöntem
 
-**app/assets/javascripts/application.js in your file**
-make sure that the jQuery files are installed
+**app/assets/javascripts/application.js dosyanızda**
+jquery Dosyalarını Yüklü Olduğuna emin olun ve 
 
 ```js
 //= require jquery
 //= require jquery_ujs
 ```
-under
+altına 
 
 ```js
 //= require fcfinder
 ```
-add the line
+satırını ekleyin
 
 
-**app/assets/stylesheets/application.css in file**
+**app/assets/stylesheets/application.css dosyasına**
 
 ```css
  *= require fcfinder
 ```
 
-add the line
+satırını ekleyin
 
 
 
-**View the content of your file should be like this**
+**Viewdeki dosyanızın içeriği bu şekilde olmalıdır**
 
 ```html
 <!DOCTYPE html>
@@ -226,12 +223,12 @@ add the line
 	<script type="text/javascript">
       $(function(){
         $("#fcfinder").fcFinder({
-			// this value must be the address that you set in the route
+			// bu değer rotada ayarladığınız adres olmalı
 			url:"/fcfinder",
         getFileCallback: function(url) {
           /**
-			Integrated Editor For The First Stage Of The Process, You Can Leave This Value Blank
-			By default CKEditor is working in an integrated manner with
+			Editör Entegre İşlemleri İlk Etap İçin Bu Değeri Boş Bırakabilirsiniz
+			Varsayılan Olarak CKEditor ile Entegrebir şekilde çalışıyor
 		  */   
 			}
         });
@@ -242,31 +239,29 @@ add the line
 ```
 
 
-**You Can Now Start Your Server And Test It :)**
+**Şimdi Sunucunuzu Başlatıp Test Edebilirsiniz :)**
 
-## Integrated Operations
+## Entegre İşlemleri
 ### CKEditor
 
-Comes integrated with ckeditor by default. 
-Ckeditor In A Page That Contains Flour
-
+Varsayılan olarak ckeditor ile entegreli olarak geliyor. 
+CKEditorün Bulunduğu Sayfada 
 ```js
 CKEDITOR.replace( 'editor1',{
-	/* In this way, you will specify the path to the Ckeditor in the Finder. */
+	/* Bu Şekilde CKEditorde finder yolunu belirteceksiniz. */
 	filebrowserBrowseUrl : 'http://localhost:3000/fcfinder'
 });
 ```
 
 ### Tinymce
 
-On the page that contains the TinyMCE editor
-
+Tinymce Editorun bulunduğu sayfada
 ```js
 function fcFinderBrowser (field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
-		/* URL Finder */
+		/* Finder urlsi */
         file: "http://localhost:3000/admin/fcfinder",
-		title: 'FCFinder File Manager',
+		title: 'FCFinder Dosya Yöneticisi',
         width: 900,
         height: 450,
         resizable: 'yes'
@@ -289,7 +284,7 @@ tinymce.init({
 	});
 ```
 
-**Resides on the page where fcfinder**
+**FcFinder'in bulunduğu sayfada**
 
 ```js
 $("#fcfinder").fcFinder({
@@ -310,10 +305,9 @@ $("#fcfinder").fcFinder({
 });
 ```
 
-### Integrated process for the input
+### Input için Entegre İşlemi
 
-**the page where input is needed**
-
+**inputun bulunduğu sayfa**
 ```html
 <html>
 <head>
@@ -339,7 +333,7 @@ $("#fcfinder").fcFinder({
 </html>
 ```
 
-**The page where is located the Finder (the Finder parameter setting)**
+**Finder bulunduğu sayfa (finder paremetre ayarı)**
 
 
 ```js
