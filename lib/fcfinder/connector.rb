@@ -97,7 +97,7 @@ module Fcfinder
 
     def path_to_url(path)
       if File.exist?(path)
-        ['true',path]
+        ['true',get_url(set_path(path))]
       else
         %w(false 0)
       end
@@ -557,7 +557,7 @@ module Fcfinder
           'zip'   => 'application/zip',
           'rar'   => 'application/x-rar',
           'tar'   => 'application/x-tar',
-          'rar'   => 'application/x-rar-compressed',
+          #'rar'   => 'application/x-rar-compressed',
           '7z'    => 'application/x-7z-compressed',
           # texts
           'txt'   => 'text/plain',

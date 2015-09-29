@@ -1,0 +1,347 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,latin-ext);
+* {outline: none; position: relative;
+    /*font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;*/
+    font-family: 'Roboto', Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+    font-weight: 300;
+}
+html, body{margin:0px; padding: 0px;   height: 100%; min-height: 100%; font-size: 100%;}
+#fcfinder { background: #dddddd; max-width: 100%; height: 100%; position: relative; }
+#fcfinder .left { height:94%; border: 1px solid #c0c0c0; background: #f0f0f0; width: 25%; min-width: 135px; margin:5px 0 0 5px; border-radius: 5px; float: left; overflow: auto; }
+#fcfinder .left #all_folders { width: 100%; display: flex;}
+#fcfinder .right {  height:94%; margin: 5px 0px 0px 0px; float: left; }
+#fcfinder .right ul.widget {height:35px; width: 99%; margin:4px 0px 0px 0px; padding:0px 0px 0px 5px; font-size: 15px; }
+#fcfinder .right ul.widget li { float: left; list-style: none; margin-right:10px;   }
+#fcfinder .right ul.widget li a{
+    border-radius: 32px; width:32px; height: 32px; display: block; font-size: 0%;
+    position:relative;
+    overflow:hidden;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    z-index:0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+}
+#fcfinder .right ul.widget li a:hover{
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.80);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.80) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.80) 0 2px 5px 0;
+}
+
+
+#fcfinder .ink {display: block;  position: absolute;background:rgba(255, 255, 255, 0.3);border-radius: 100%;-webkit-transform:scale(0);-moz-transform:scale(0);-o-transform:scale(0);transform:scale(0);}
+#fcfinder .animate {-webkit-animation:ripple 0.65s linear;-moz-animation:ripple 0.65s linear;-ms-animation:ripple 0.65s linear;-o-animation:ripple 0.65s linear;animation:ripple 0.65s linear;}
+@-webkit-keyframes ripple {100% {opacity: 0; -webkit-transform: scale(2.5);}}
+@-moz-keyframes ripple {100% {opacity: 0; -moz-transform: scale(2.5);}}
+@-o-keyframes ripple {100% {opacity: 0; -o-transform: scale(2.5);}}
+@keyframes ripple {100% {opacity: 0; transform: scale(2.5);}}
+
+
+/*#fcfinder .right ul.widget li a:hover { border-radius: 5px; border: 1px solid #ccc;}*/
+
+#fcfinder .right ul.widget li a.up_folder { background: url(<%= asset_path 'fcfinder/up_folder.png' %>) no-repeat; }
+#fcfinder .right ul.widget li a.upload { background: url("./fcfinder/upload.png") no-repeat; }
+#fcfinder .right ul.widget li a.refresh { background: url("./fcfinder/refresh.png") no-repeat; }
+#fcfinder .right ul.widget li a.settings { background: url("./fcfinder/settings.png") no-repeat; }
+#fcfinder .right ul.widget li a.new_folder{ background: url("./fcfinder/new_folder.png") no-repeat; }
+#fcfinder .right ul.widget li a.download{ background: url("./fcfinder/download.png") no-repeat; }
+
+#fcfinder .right ul.widget li a.info{ background: url("./fcfinder/info.png") no-repeat; }
+#fcfinder .right ul.widget li a.preview{ background: url("./fcfinder/preview.png") no-repeat; }
+#fcfinder .right ul.widget li a.edit{ background: url("./fcfinder/edit.png") no-repeat; }
+#fcfinder .right ul.widget li a.cut{ background: url("./fcfinder/cut.png") no-repeat; }
+#fcfinder .right ul.widget li a.copy{ background: url("./fcfinder/copy.png") no-repeat; }
+#fcfinder .right ul.widget li a.paste{ background: url("./fcfinder/paste.png") no-repeat; }
+#fcfinder .right ul.widget li a.duplicate{ background: url("./fcfinder/duplicate.png") no-repeat; }
+#fcfinder .right ul.widget li a.rename{ background: url("./fcfinder/rename.png") no-repeat; }
+#fcfinder .right ul.widget li a.delete{ background: url("./fcfinder/delete.png") no-repeat; }
+#fcfinder .right ul.widget li a.list_view{ background: url("./fcfinder/list_view.png") no-repeat; }
+#fcfinder .right ul.widget li a.icon_view{ background: url("./fcfinder/icon_view.png") no-repeat; }
+#fcfinder .right ul.widget li a.show_date{ background: url("./fcfinder/show_date.png") no-repeat; }
+#fcfinder .right ul.widget li a.show_size{ background: url("./fcfinder/show_size.png") no-repeat; }
+#fcfinder .right ul.widget li a.sort{ background: url("./fcfinder/sort.png") no-repeat; }
+#fcfinder .right ul.widget li a.name_sorter{ background: url("./fcfinder/name_sorter.png") no-repeat; }
+#fcfinder .right ul.widget li a.size_sorter{ background: url("./fcfinder/size_sorter.png") no-repeat; }
+#fcfinder .right ul.widget li a.date_sorter{ background: url("./fcfinder/date_sorter.png") no-repeat; }
+#fcfinder .right ul.widget li a.kind_sorter{ background: url("./fcfinder/kind_sorter.png") no-repeat; }
+#fcfinder .right ul.widget li a.about{ background: url("./fcfinder/about.png") no-repeat; }
+
+#fcfinder .right ul.widget li a.passive {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);}
+
+
+
+
+
+#fcfinder .right ul.widget div { position: absolute; padding:0; margin:0; z-index:1; display: none; padding-top:8px; margin-left: -10px; }
+#fcfinder .right ul.widget li:hover div { display: block; }
+
+#fcfinder .right ul.widget div ul { padding:0; margin:0px; background: #DDD; clear: both; float: left; padding-left:3px;border-radius:0px 0px 5px 5px; border: 2px solid #CCC; border-top: 0px none;}
+#fcfinder .right ul.widget li div ul li { clear: both; margin-bottom: 8px; padding:0; text-align: center; margin-left:5px;}
+#fcfinder .right ul.widget li div ul li:hover a {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.80);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.80) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.80) 0 2px 5px 0;
+}
+
+
+
+/*#fcfinder .right .widget  {height:35px; border: 1px solid #c0c0c0; background: #f0f0f0; width: 99%; margin:0px 0px 0 5px; border-radius: 5px;}*/
+#fcfinder .right ul.wrapper {height:2%; border: 1px solid #c0c0c0; background: #f0f0f0; margin:5px 0px 0 5px; border-radius: 5px; list-style: none; padding:0px; overflow:auto;}
+
+#fcfinder .right ul.wrapper.list_view {}
+#fcfinder .right ul.wrapper.list_view li div { display: flex; float: left; width:100%; height: 35px !important; padding: 0; margin: 0; border: 0; background-size: 24px 24px !important; background-position: 5px 5px !important;}
+#fcfinder .right ul.wrapper.list_view li div.directory { background: url("./fcfinder/directory_mini.png") 5px 5px no-repeat;}
+#fcfinder .right ul.wrapper.list_view li div span.file_name { font-size:13px; overflow: hidden; float: left; margin: 0; padding:8px 5px 0 35px; width: 200px; text-align: left;}
+#fcfinder .right ul.wrapper.list_view li div span.file_name input { width:95%; padding: 0 2px;font-size: 12px;height: 15px;border-radius: 5px;display: block;border: 1px solid #999;}
+#fcfinder .right ul.wrapper.list_view li div span.file_size { float: left; font-size: 12px; color: #666; display:block !important;; margin: 0; padding: 8px 5px 0 10px; text-align:left; width: 100px;}
+#fcfinder .right ul.wrapper.list_view li div span.file_date { float: left; font-size: 12px; color: #666; display:block !important; margin: 0; padding: 8px 5px 0 10px; text-align:left; width: 180px;}
+#fcfinder .right ul.wrapper.list_view li div:hover {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 0px none;border-radius: 0;}
+#fcfinder .right ul.wrapper.list_view li div.active {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 0px none; border-radius: 0;}
+#fcfinder .right ul.wrapper.list_view li div.list_head { width: 100%; background: #ddd; color: #000;  font-size: 14px; border-radius: 0 !important; border-bottom: 1px solid #ccc; cursor: default; }
+#fcfinder .right ul.wrapper.list_view li div.list_head:hover {  color:#000; background-color:#ddd !important; box-shadow:none !important; -webkit-box-shadow:none !important;-moz-box-shadow:none !important; border-bottom: 1px solid #ccc;}
+#fcfinder .right ul.wrapper.list_view li div.list_head span.file_name { color: #000; font-size: 13px; width:200px; text-align: left;}
+#fcfinder .right ul.wrapper.list_view li div.list_head span.file_size { color: #000; font-size: 13px; width:100px; text-align: left;}
+#fcfinder .right ul.wrapper.list_view li div.list_head span.file_date { color: #000; font-size: 13px; width:180px; text-align: left;}
+/*----*/
+#fcfinder .right ul.wrapper.icon_view {}
+
+#fcfinder .right ul.wrapper li { margin:0px; display:block; width: 100%;}
+#fcfinder .right ul.wrapper li div {  border: 2px solid transparent; position: relative; font-size:13px; text-align: center;  float: left; margin:5px; padding: 5px; width:75px; height:80px;/*line-height: 145px;*/ overflow: hidden; display: block; outline: none; cursor: pointer; border-radius: 5px; max-height: 128px;  }
+
+#fcfinder .right ul.wrapper li div.directory {   background: url("./fcfinder/directory.png") center 5px no-repeat;     }
+#fcfinder .right ul.wrapper li div.other {   background: url("./fcfinder/files/other.png") center 5px no-repeat;     }
+/*---*/
+#fcfinder .dialog .file_bg.seven_z,#fcfinder .right ul.wrapper li div.seven_z {   background: url("./fcfinder/files/7z.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.avi,#fcfinder .right ul.wrapper li div.avi {   background: url("./fcfinder/files/avi.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bmp,#fcfinder .right ul.wrapper li div.bmp{   background: url("./fcfinder/files/bmp.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bz,#fcfinder .right ul.wrapper li div.bz {   background: url("./fcfinder/files/bz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.bz2,#fcfinder .right ul.wrapper li div.bz2 {   background: url("./fcfinder/files/bz2.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.css,#fcfinder .right ul.wrapper li div.css {   background: url("./fcfinder/files/css.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.doc,#fcfinder .right ul.wrapper li div.doc {   background: url("./fcfinder/files/doc.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.docx,#fcfinder .right ul.wrapper li div.docx {   background: url("./fcfinder/files/docx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.dv,#fcfinder .right ul.wrapper li div.dv {   background: url("./fcfinder/files/dv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.flv,#fcfinder .right ul.wrapper li div.flv {   background: url("./fcfinder/files/flv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.gif,#fcfinder .right ul.wrapper li div.gif {   background: url("./fcfinder/files/gif.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.gz,#fcfinder .right ul.wrapper li div.gz {   background: url("./fcfinder/files/gz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.html,#fcfinder .right ul.wrapper li div.html {   background: url("./fcfinder/files/html.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.htm,#fcfinder .right ul.wrapper li div.htm {   background: url("./fcfinder/files/htm.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ico,#fcfinder .right ul.wrapper li div.ico {   background: url("./fcfinder/files/ico.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.jpeg,#fcfinder .right ul.wrapper li div.jpeg {   background: url("./fcfinder/files/jpeg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.jpg,#fcfinder .right ul.wrapper li div.jpg {   background: url("./fcfinder/files/jpg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.js,#fcfinder .right ul.wrapper li div.js {   background: url("./fcfinder/files/js.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mid,#fcfinder .right ul.wrapper li div.mid {   background: url("./fcfinder/files/mid.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mkv,#fcfinder .right ul.wrapper li div.mkv {   background: url("./fcfinder/files/mkv.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mov,#fcfinder .right ul.wrapper li div.mov {   background: url("./fcfinder/files/mov.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp3,#fcfinder .right ul.wrapper li div.mp3 {   background: url("./fcfinder/files/mp3.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp4,#fcfinder .right ul.wrapper li div.mp4 {   background: url("./fcfinder/files/mp4.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mp4a,#fcfinder .right ul.wrapper li div.mp4a {   background: url("./fcfinder/files/mp4a.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mpg,#fcfinder .right ul.wrapper li div.mpg {   background: url("./fcfinder/files/mpg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ogg,#fcfinder .right ul.wrapper li div.ogg {   background: url("./fcfinder/files/ogg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pdf,#fcfinder .right ul.wrapper li div.pdf {   background: url("./fcfinder/files/pdf.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.php,#fcfinder .right ul.wrapper li div.php {   background: url("./fcfinder/files/php.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.png,#fcfinder .right ul.wrapper li div.png {   background: url("./fcfinder/files/png.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pps,#fcfinder .right ul.wrapper li div.pps {   background: url("./fcfinder/files/pps.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.ppt,#fcfinder .right ul.wrapper li div.ppt {   background: url("./fcfinder/files/ppt.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.psd,#fcfinder .right ul.wrapper li div.psd {   background: url("./fcfinder/files/psd.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.pptx,#fcfinder .right ul.wrapper li div.pptx {   background: url("./fcfinder/files/pptx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.rar,#fcfinder .right ul.wrapper li div.rar {   background: url("./fcfinder/files/rar.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.rb,#fcfinder .right ul.wrapper li div.rb {   background: url("./fcfinder/files/rb.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.swf,#fcfinder .right ul.wrapper li div.swf {   background: url("./fcfinder/files/swf.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tar,#fcfinder .right ul.wrapper li div.tar {   background: url("./fcfinder/files/tar.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tbz,#fcfinder .right ul.wrapper li div.tbz {   background: url("./fcfinder/files/tbgz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tga,#fcfinder .right ul.wrapper li div.tga {   background: url("./fcfinder/files/tga.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tgz,#fcfinder .right ul.wrapper li div.tgz {   background: url("./fcfinder/files/tgz.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tif,#fcfinder .right ul.wrapper li div.tif {   background: url("./fcfinder/files/tif.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.tiff,#fcfinder .right ul.wrapper li div.tiff {   background: url("./fcfinder/files/tiff.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.txt,#fcfinder .right ul.wrapper li div.txt {   background: url("./fcfinder/files/txt.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.mpeg,#fcfinder .right ul.wrapper li div.mpeg {   background: url("./fcfinder/files/mpeg.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wav,#fcfinder .right ul.wrapper li div.wav {   background: url("./fcfinder/files/wav.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wm,#fcfinder .right ul.wrapper li div.wm {   background: url("./fcfinder/files/wm.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.wma,#fcfinder .right ul.wrapper li div.wma {   background: url("./fcfinder/files/wma.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xls,#fcfinder .right ul.wrapper li div.xls {   background: url("./fcfinder/files/xls.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xlsx,#fcfinder .right ul.wrapper li div.xlsx {   background: url("./fcfinder/files/xlsx.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.xml,#fcfinder .right ul.wrapper li div.xml {   background: url("./fcfinder/files/xml.png") center 5px no-repeat;     }
+#fcfinder .dialog .file_bg.zip,#fcfinder .right ul.wrapper li div.zip {   background: url("./fcfinder/files/zip.png") center 5px no-repeat;     }
+/*--*/
+
+
+
+
+#fcfinder .right ul.wrapper li div:hover {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 2px solid #216DCC;}
+#fcfinder .right ul.wrapper li div.active {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); color: #fff; -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; background-color:#1E92CC !important; border: 2px solid #216DCC;}
+#fcfinder .right ul.wrapper li div.cutting { opacity: 0.5;}
+#fcfinder .right ul.wrapper li div span.file_name { font-size:13px; text-align: center; display: block; margin-top: 64px; height: 16px; overflow: hidden;}
+#fcfinder .right ul.wrapper li div span.file_name input { width: 69px;padding: 0 2px;font-size: 12px;height: 14px;border-radius: 5px;display: block;border: 1px solid #999;}
+#fcfinder .right ul.wrapper li div span.file_date,
+#fcfinder .right ul.wrapper li div span.file_size {  font-size: 12px; color: #666; display: none;}
+
+#fcfinder .right ul.wrapper li div:hover span.file_date,
+#fcfinder .right ul.wrapper li div:hover span.file_size ,
+#fcfinder .right ul.wrapper li div.active span.file_date,
+#fcfinder .right ul.wrapper li div.active span.file_size {color: #ddd;}
+
+
+#fcfinder .right ul.wrapper li div.image_file { background: none; background-size: 80px 60px;}
+
+
+
+
+
+
+#fcfinder ul.bottom { margin: 0; padding: 0; list-style: none; position: fixed;left: 10px;font-size: 13px;color: #555;bottom: 5px;  }
+#fcfinder .left ul.folders { list-style: none; margin:10px 10px; padding: 0px; font-size: 14px; }
+#fcfinder .left ul.folders li ul.folders { margin-top:4px; margin-left:20px; margin-bottom: 0px;}
+#fcfinder .left ul.folders li { margin:1px 0px;}
+#fcfinder .left ul.folders li a { text-decoration: none; color: #555; display: flex;}
+
+
+
+#fcfinder .left ul.folders li a span.braca {width: 16px; height: 16px; padding:3px 0px 0px 0px; float: left;}
+#fcfinder .left ul.folders li a span.braca.closed { background: url("./fcfinder/tree/plus.png") no-repeat left center;}
+#fcfinder .left ul.folders li a span.braca.opened {background: url("./fcfinder/tree/minus.png") no-repeat left center;}
+
+#fcfinder .left ul.folders li a span.folder {border:1px solid transparent;  background: url("./fcfinder/tree/folder.png") no-repeat 2px center; padding:1px 10px 2px 22px; margin-left: 2px;
+    position:relative;
+    overflow:hidden;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    z-index:0;
+}
+
+
+
+
+
+#fcfinder .left ul.folders li a:hover{ color:#fff;}
+#fcfinder .left ul.folders li a:hover span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #ccc; border: 1px solid #999; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;}
+
+#fcfinder .left ul.folders li a.active{ color:#fff;}
+#fcfinder .left ul.folders li a.active span.folder { border-radius: 3px; background: url("./fcfinder/tree/folder.png") no-repeat 2px center #1e92cc; border: 1px solid #216dcc;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;}
+
+#fcfinder .upload_field {cursor: pointer;}
+#fcfinder span.load {background: url("./fcfinder/tree/loader.gif"); float: left;width: 16px; height: 16px;}
+#fcfinder span.folder_load {background: url("./fcfinder/tree/loader.gif") no-repeat; display:block; min-height: 16px; margin: 7px 0px 0px 37px; padding-left: 18px; color: #000;}
+
+#fcfinder .clear { clear: both; width: 100%; height:0px;}
+
+
+#fcfinder .dialog { border-radius:4px;
+    background-color: #FFF;
+    padding: 10px;
+    min-width: 250px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+    min-height: 150px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    -webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    -moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;
+    z-index: 6;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#fcfinder .dialog h1 { margin: 0px; padding:5px; font-size:22px; border-bottom: 1px solid #ccc; font-weight: 500; }
+#fcfinder .dialog .file_bg { float: left; width: 64px; height: 64px !important; margin:15px; display: block;padding-right: 20px;}
+#fcfinder .dialog .file_bg.directory { background: url("./fcfinder/directory.png") no-repeat;}
+
+#fcfinder .dialog img.preview { margin: 0 auto; padding: 10px; display: block;}
+
+#fcfinder .dialog span.file_name{ font-size:18px; font-weight: bold; display: block; margin-top: 15px;}
+#fcfinder .dialog span.file_type{margin-top:5px;font-size:15px;display: block;}
+#fcfinder .dialog ul.file_info{ list-style: none; margin: 0; padding: 0; clear: both;font-size: 14px;}
+#fcfinder .dialog ul.file_info li { }
+#fcfinder .dialog ul.file_info li span { width: 125px;    text-align: right;    display: block;    float: left;    padding-right: 10px;}
+#fcfinder .dialog ul.file_info li a{ color: #06f;}
+#fcfinder .dialog ul.file_info li a:hover {color: #3F51B5;}
+#fcfinder .dialog a.close { position: relative; overflow: hidden; font-size: 13px; font-weight: bold; color: #3F51B5; text-decoration: none; border-radius: 5px; text-transform: uppercase; padding:10px 15px; display: block; float: right;}
+#fcfinder .dialog a.close:hover{background-color: rgba(158, 158, 158, 0.2);}
+#fcfinder .dialog a.btn { position: relative; overflow: hidden; font-size: 13px; font-weight: bold; color: #3F51B5; text-decoration: none; border-radius: 5px; text-transform: uppercase; padding:10px 15px; display: block; float: right;}
+#fcfinder .dialog a.btn:hover{background-color: rgba(158, 158, 158, 0.2);}
+
+#fcfinder .dialog div.content { padding:15px 5px;}
+#fcfinder .dialog div.content div { padding:5px;}
+#fcfinder .dialog-scope { position: fixed; z-index: 5; background:#000; opacity: 0.5;  width: 100%; height: 100%; left: 0; top:0;  }
+
+#fcfinder .dialog.danger { border:2px solid #A94442;
+    -webkit-box-shadow: 0px 0px 20px 5px #A94442;
+    -moz-box-shadow: 0px 0px 20px 5px #A94442;
+    box-shadow: 0px 0px 20px 5px #A94442;
+}
+#fcfinder .dialog.warning{ border: 2px solid #CEA969;
+    -webkit-box-shadow: 0px 0px 20px 5px #CEA969;
+    -moz-box-shadow: 0px 0px 20px 5px #CEA969;
+    box-shadow: 0px 0px 20px 5px #CEA969;
+}
+#fcfinder .dialog.success { border: 2px solid #6CBC6D;
+    -webkit-box-shadow: 0px 0px 20px 5px #6CBC6D;
+    -moz-box-shadow: 0px 0px 20px 5px #6CBC6D;
+    box-shadow: 0px 0px 20px 5px #6CBC6D;
+}
+
+
+
+
+#fcfinder ul#ctxMenu {margin: 0; padding: 0; list-style: none; position: absolute; display: block; width:200px; max-height:350px;height: 300px; overflow: auto; overflow-x:hidden; z-index: 4;border: solid 1px #CCC; background: #fff; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);-webkit-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0;-moz-box-shadow:rgba(0, 0, 0, 0.26) 0 2px 5px 0; border-radius: 3px;}
+#fcfinder ul#ctxMenu li { padding:3px 0; font-size: 13px; }
+#fcfinder ul#ctxMenu li a {padding:8px; display: block; color: #000; text-decoration: none; border-left: 5px solid transparent; }
+#fcfinder ul#ctxMenu li a.none:hover { background: none;border-left: 5px solid transparent; }
+
+#fcfinder ul#ctxMenu li a:hover {background: #ededed; border-left: 5px solid #ddd; }
+#fcfinder ul#ctxMenu li.hr {padding:0px;font-size:0%; border-bottom: 1px solid #ccc;}
+
+#progress {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: -6px;
+    width: 1%;
+    height: 2px;
+    background: #1293cc;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    -moz-transition: width 500ms ease-out,opacity 400ms linear;
+    -ms-transition: width 500ms ease-out,opacity 400ms linear;
+    -o-transition: width 500ms ease-out,opacity 400ms linear;
+    -webkit-transition: width 500ms ease-out,opacity 400ms linear;
+    transition: width 500ms ease-out,opacity 400ms linear;
+}
+
+#progress dd, #progress dt {
+    position: absolute;
+    top: 0;
+    height: 3px;
+    -moz-box-shadow: #1293cc 1px 0 6px 1px;
+    -ms-box-shadow: #1293cc 1px 0 6px 1px;
+    -webkit-box-shadow: #1293cc 1px 0 6px 1px;
+    box-shadow: #1293cc 1px 0 6px 1px;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    background:#1293CC;
+}
+
+#progress dt {
+    opacity: .6;
+    width: 180px;
+    right: -80px;
+    clip: rect(-6px,90px,14px,-6px);
+}
+
+#progress dd {
+    opacity: .6;
+    width: 20px;
+    right: 0;
+    clip: rect(-6px,22px,14px,10px);
+}

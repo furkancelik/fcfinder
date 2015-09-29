@@ -291,7 +291,7 @@
 
 
         //HTML'yi Yükle
-        fcfinder.append('<div class="left"><div id="all_folders">'+
+	fcfinder.append('<div class="left"><div id="all_folders">'+
         '<ul class="folders">'+
         '<li><a><span class="folder">'+opts.i18n.loading+'<span class="load"></span></span>'+
         '</a></li>'+
