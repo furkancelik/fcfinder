@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Rails icin web dosya gezgini}
   spec.description   = %q{Dosya yukleme klasor olusturma gibi islemleri hızlıbir şekilde yapabileceginiz cke tinymce gibi editorlerle entegreli kullanacieceginiz dosya gezgini}
-  spec.homepage      = "https://github.com/furkancelik/fcfinder"
+  spec.homepage      = "https://github.com/furkancelik/fcfinder.git"
   spec.license       = "MIT"
 
   
