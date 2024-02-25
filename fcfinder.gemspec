@@ -14,6 +14,10 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/furkancelik/fcfinder.git"
   spec.license       = "MIT"
 
+  spec.metadata = {
+    "source_code_uri" => "https://github.com/furkancelik/fcfinder.git"
+  }
+
   
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
