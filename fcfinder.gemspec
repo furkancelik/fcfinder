@@ -15,7 +15,8 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.metadata = {
-    "source_code_uri" => "https://github.com/furkancelik/fcfinder.git"
+    "source_code_uri" => "https://github.com/furkancelik/fcfinder.git",
+    "github_repo" => "https://github.com/furkancelik/fcfinder"
   }
 
   
